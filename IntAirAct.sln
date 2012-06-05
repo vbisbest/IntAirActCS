@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntAirAct", "IntAirAct\IntAirAct.csproj", "{8A1CECE0-6F76-40A8-AEDC-B3D241D8A962}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kayak", "lib\kayak\Kayak\Kayak.csproj", "{79DDD0CE-6F79-4212-A972-8618AD6E405F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{8A1CECE0-6F76-40A8-AEDC-B3D241D8A962}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A1CECE0-6F76-40A8-AEDC-B3D241D8A962}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A1CECE0-6F76-40A8-AEDC-B3D241D8A962}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79DDD0CE-6F79-4212-A972-8618AD6E405F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79DDD0CE-6F79-4212-A972-8618AD6E405F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79DDD0CE-6F79-4212-A972-8618AD6E405F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79DDD0CE-6F79-4212-A972-8618AD6E405F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
