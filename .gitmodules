@@ -1,0 +1,3 @@
+[submodule "lib/kayak"]
+	path = lib/kayak
+	url = https://github.com/kayak/kayak.git
