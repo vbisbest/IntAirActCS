@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using IntAirAct;
+
+using IAIntAirAct;
 
 namespace IntAirActDemo
 {
@@ -10,10 +11,12 @@ namespace IntAirActDemo
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello");
-            Class1 b = new Class1();
-            Console.WriteLine(b.hello());
+            IntAirAct ia = new IntAirAct();
+            
+            ia.start();
+            Console.WriteLine("Started IntAirAct");
             Console.ReadLine();
+            ia.stop();
         }
     }
 }

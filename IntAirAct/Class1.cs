@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Nancy;
 
-namespace IntAirAct
+namespace IAIntAirAct
 {
-    public class Class1
+    public class Class1 : NancyModule
     {
-        public String hello()
+        public Class1()
         {
-            return "hello";
+            Get["/hello"] = parameters => "Hello World";
         }
+
     }
 }
