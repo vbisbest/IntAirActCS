@@ -9,7 +9,6 @@ namespace IAIntAirAct
 {
     public class IntAirAct
     {
-
         public int port { get; set; }
 
         private NancyHost host;
