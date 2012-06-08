@@ -12,6 +12,8 @@ namespace IntAirAct
 {
     public class IAIntAirAct : IDisposable
     {
+        
+
         public HashSet<Capability> capabilities { get; private set; }
         public bool client { get; set; }
         public string defaultMimeType { get; set; }
@@ -48,13 +50,20 @@ namespace IntAirAct
                 // find next free port
                 port = TcpPort.FindNextAvailablePort(12345);
             }
-            host = new NancyHost(GetUriParams(port));
+            Uri[] uris = GetUriParams(port);
+            foreach (Uri uri in uris)
+            {
+                Console.WriteLine(uri);
+            }
+            
+            host = new NancyHost(uris);
             host.Start();
 
             try
             {
                 zeroConf = new ZCZeroConf();
                 zeroConf.publishRegType = "_intairact._tcp";
+                zeroConf.publishPort = port;
                 zeroConf.Start();
             }
             catch (ZeroConfException e)

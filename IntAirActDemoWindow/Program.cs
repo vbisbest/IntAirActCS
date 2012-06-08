@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,14 +15,11 @@ namespace IntAirActDemoWindow
         [STAThread]
         static void Main()
         {
-            Debug.WriteLine("Test");
-
             IAIntAirAct ia = new IAIntAirAct();
 
             ia.Start();
             Console.WriteLine("Started IntAirAct");
             Console.ReadLine();
-            ia.Stop();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
