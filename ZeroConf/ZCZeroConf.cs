@@ -8,6 +8,8 @@ using Bonjour;
 
 namespace ZeroConf
 {
+    public delegate void ServiceUpdateEventHandler(object sender, EventArgs e);
+
     /// <summary>
     /// Zero Configuration using Apple's Bonjour SDK
     /// By Daniel Sabourin
@@ -67,6 +69,8 @@ namespace ZeroConf
         // from foundDevices.
         private static Dictionary<String, Service> foundDevices = new Dictionary<string, Service>();
         private static Dictionary<String, Service> resolvedDevices = new Dictionary<string, Service>();
+
+        public event ServiceUpdateEventHandler serviceUpdateEventHandler;
 
         /// <summary>
         /// The constructor for Zero Configuration. zc.start() will always start browsing
@@ -239,6 +243,8 @@ namespace ZeroConf
             String key = escapeString(serviceName) + "." + regType + "" + domain;
             foundDevices.Remove(key);
             resolvedDevices.Remove(key);
+
+            notifyServiceUpdate();
         }
 
         //
@@ -267,6 +273,8 @@ namespace ZeroConf
                     ownService = service;
                 }
 
+                notifyServiceUpdate();
+
                 Console.WriteLine(service);
             }
             else
@@ -280,6 +288,12 @@ namespace ZeroConf
             Console.WriteLine("Operation returned an error code " + error);
 
             Console.WriteLine(sref.GetHashCode());
+        }
+
+        protected virtual void notifyServiceUpdate()
+        {
+            if (serviceUpdateEventHandler != null)
+                serviceUpdateEventHandler(this, EventArgs.Empty);
         }
 
         /// <summary>
