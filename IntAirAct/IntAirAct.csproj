@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="Capability.cs" />
+    <Compile Include="IntAirActException.cs" />
     <Compile Include="HelloModule.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="IAIntAirAct.cs" />
@@ -56,17 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Bonjour">
-      <Guid>{18FBED6D-F2B7-4EC8-A4A4-46282E635308}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZeroConf\ZeroConf.csproj">

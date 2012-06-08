@@ -9,15 +9,15 @@ namespace ZeroConf
     /// </summary>
     public class Service
     {
-        public string name;
-        public string host;
-        public ushort port;
+        public string name { get; set; }
+        public string host { get; set; }
+        public ushort port { get; set; }
 
         public Service(String name, String host, ushort port)
         {
             this.name = name;
             this.host = host;
-            this.port = port;  // Initialized to zero because we need to resolve to get the port later
+            this.port = port;
         }
 
         public override string ToString()

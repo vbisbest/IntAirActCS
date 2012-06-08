@@ -12,8 +12,6 @@ namespace IntAirAct
 {
     public class IAIntAirAct : IDisposable
     {
-        
-
         public HashSet<Capability> capabilities { get; private set; }
         public bool client { get; set; }
         public string defaultMimeType { get; set; }
@@ -41,6 +39,10 @@ namespace IntAirAct
         public void Dispose()
         {
             Stop();
+            if (zeroConf != null)
+            {
+                zeroConf.Dispose();
+            }
         }
 
         public void Start()
@@ -50,20 +52,28 @@ namespace IntAirAct
                 // find next free port
                 port = TcpPort.FindNextAvailablePort(12345);
             }
-            
-            host = new NancyHost(GetUriParams(port));
-            host.Start();
+
+            try
+            {
+                host = new NancyHost(GetUriParams(port));
+                host.Start();
+                }
+            catch (HttpListenerException e)
+            {
+                throw new IntAirActException(e.Message);
+            }
 
             try
             {
                 zeroConf = new ZCZeroConf();
                 zeroConf.publishRegType = "_intairact._tcp";
                 zeroConf.publishPort = port;
+                zeroConf.server = server;
                 zeroConf.Start();
             }
             catch (ZeroConfException e)
             {
-                Console.WriteLine("An exception ocurred: " + e.Message);
+                throw new IntAirActException(e.Message);
             }
         }
 
