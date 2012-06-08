@@ -5,7 +5,7 @@ using System.Text;
 
 using Nancy;
 
-namespace IAIntAirAct
+namespace IntAirAct
 {
     public class Class1 : NancyModule
     {

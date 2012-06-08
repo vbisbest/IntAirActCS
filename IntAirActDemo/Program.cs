@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using IAIntAirAct;
+using IntAirAct;
 
 namespace IntAirActDemo
 {
@@ -11,12 +11,12 @@ namespace IntAirActDemo
     {
         static void Main(string[] args)
         {
-            IntAirAct ia = new IntAirAct();
+            IAIntAirAct ia = new IAIntAirAct();
             
-            ia.start();
+            ia.Start();
             Console.WriteLine("Started IntAirAct");
             Console.ReadLine();
-            ia.stop();
+            ia.Stop();
         }
     }
 }
