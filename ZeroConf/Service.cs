@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,13 +7,13 @@ namespace ZeroConf
     /// <summary>
     /// A Device represents a Bonjour service found on the network.
     /// </summary>
-    public class ZeroConfService
+    public class Service
     {
         public string name;
         public string host;
         public ushort port;
 
-        public ZeroConfService(String name, String host, ushort port)
+        public Service(String name, String host, ushort port)
         {
             this.name = name;
             this.host = host;
@@ -29,7 +29,7 @@ namespace ZeroConf
         {
             if(obj.GetType().IsSubclassOf(this.GetType()))
             {
-                ZeroConfService other = (ZeroConfService) obj;
+                Service other = (Service) obj;
                 return name.Equals(other.name);
             }
             return base.Equals(obj);

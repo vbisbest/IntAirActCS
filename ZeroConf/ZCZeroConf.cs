@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
@@ -15,21 +15,21 @@ namespace ZeroConf
     /// </summary>
     public class ZCZeroConf : IDisposable
     {
-        private Bonjour.DNSSDEventManager m_eventManager = null;
-        private Bonjour.DNSSDService m_service = null;
+        private DNSSDEventManager m_eventManager = null;
+        private DNSSDService m_service = null;
 
-        private Bonjour.DNSSDService m_registrar = null;
+        private DNSSDService m_registrar = null;
 
-        private Bonjour.DNSSDService m_browser = null;
-        private Bonjour.DNSSDService m_resolver = null;
+        private DNSSDService m_browser = null;
+        private DNSSDService m_resolver = null;
 
-        public ZeroConfService ownService { get; private set; }
+        public Service ownService { get; private set; }
 
-        public List<ZeroConfService> services
+        public List<Service> services
         {
             get
             {
-                return new List<ZeroConfService>(resolvedDevices.Values);
+                return new List<Service>(resolvedDevices.Values);
             }
             private set
             {
@@ -65,8 +65,8 @@ namespace ZeroConf
         // There are 2 dictionaries. foundDevices is for all devices that currently have not been resolved (i.e no port)
         // Once a device has been resolved, the entry will move from foundDevices to resolvedDevices and will be removed
         // from foundDevices.
-        private static Dictionary<String, ZeroConfService> foundDevices = new Dictionary<string, ZeroConfService>();
-        private static Dictionary<String, ZeroConfService> resolvedDevices = new Dictionary<string, ZeroConfService>();
+        private static Dictionary<String, Service> foundDevices = new Dictionary<string, Service>();
+        private static Dictionary<String, Service> resolvedDevices = new Dictionary<string, Service>();
 
         /// <summary>
         /// The constructor for Zero Configuration. zc.start() will always start browsing
@@ -219,7 +219,7 @@ namespace ZeroConf
             
             if (!foundDevices.ContainsKey(key))
             {
-                foundDevices[key] = new ZeroConfService(serviceName, "", 0);
+                foundDevices[key] = new Service(serviceName, "", 0);
 
                 DNSSDService res = m_service.Resolve(0, ifIndex, serviceName, regType, domain, m_eventManager);
                 Console.WriteLine(String.Format("res: {0}", res.GetHashCode()));
@@ -253,7 +253,7 @@ namespace ZeroConf
 
             sref.Stop();
 
-            ZeroConfService service;
+            Service service;
             if (foundDevices.TryGetValue(fullName, out service))
             {
                 foundDevices.Remove(fullName);

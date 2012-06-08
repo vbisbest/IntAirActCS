@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="Capability.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="HelloModule.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="IAIntAirAct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

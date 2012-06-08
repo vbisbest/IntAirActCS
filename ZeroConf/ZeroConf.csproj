@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ZeroConfException.cs" />
-    <Compile Include="ZeroConfService.cs" />
+    <Compile Include="Service.cs" />
     <Compile Include="ZCZeroConf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

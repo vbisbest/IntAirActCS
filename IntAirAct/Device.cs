@@ -6,7 +6,7 @@ using ZeroConf;
 
 namespace IntAirAct
 {
-    public class Device : ZeroConfService
+    public class Device : Service
     {
         public HashSet<Capability> capabilities { get; set; }
 
