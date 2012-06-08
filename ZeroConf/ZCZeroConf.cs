@@ -17,13 +17,14 @@ namespace ZeroConf
     /// </summary>
     public class ZCZeroConf : IDisposable
     {
+        private bool isDisposed = false;
+
         private DNSSDEventManager m_eventManager = null;
         private DNSSDService m_service = null;
 
         private DNSSDService m_registrar = null;
 
         private DNSSDService m_browser = null;
-        private DNSSDService m_resolver = null;
 
         public Service ownService { get; private set; }
 
@@ -140,27 +141,31 @@ namespace ZeroConf
             m_eventManager.OperationFailed += new _IDNSSDEvents_OperationFailedEventHandler(this.OperationFailed);
         }
 
+        ~ZCZeroConf()
+        {
+            Dispose(false);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (!isDisposed && disposing)
+            {
+                // Code to dispose the managed resources of the class
+                Stop();
+
+                m_eventManager.ServiceFound -= new _IDNSSDEvents_ServiceFoundEventHandler(this.ServiceFound);
+                m_eventManager.ServiceLost -= new _IDNSSDEvents_ServiceLostEventHandler(this.ServiceLost);
+                m_eventManager.ServiceResolved -= new _IDNSSDEvents_ServiceResolvedEventHandler(this.ServiceResolved);
+                m_eventManager.OperationFailed -= new _IDNSSDEvents_OperationFailedEventHandler(this.OperationFailed);
+            }
+            // Code to dispose the un-managed resources of the class
+            isDisposed = true;
+        }
+
         public void Dispose()
         {
-            if (m_registrar != null)
-            {
-                m_registrar.Stop();
-            }
-
-            if (m_browser != null)
-            {
-                m_browser.Stop();
-            }
-
-            if (m_resolver != null)
-            {
-                m_resolver.Stop();
-            }
-
-            m_eventManager.ServiceFound -= new _IDNSSDEvents_ServiceFoundEventHandler(this.ServiceFound);
-            m_eventManager.ServiceLost -= new _IDNSSDEvents_ServiceLostEventHandler(this.ServiceLost);
-            m_eventManager.ServiceResolved -= new _IDNSSDEvents_ServiceResolvedEventHandler(this.ServiceResolved);
-            m_eventManager.OperationFailed -= new _IDNSSDEvents_OperationFailedEventHandler(this.OperationFailed);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -191,7 +196,15 @@ namespace ZeroConf
         /// </summary>
         public void Stop()
         {
-            
+            if (m_registrar != null)
+            {
+                m_registrar.Stop();
+            }
+
+            if (m_browser != null)
+            {
+                m_browser.Stop();
+            }
         }
 
         private void ServiceRegistered(DNSSDService sref, DNSSDFlags flags, String serviceName, String regType, String domain)

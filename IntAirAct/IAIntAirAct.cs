@@ -10,57 +10,94 @@ using ZeroConf;
 
 namespace IntAirAct
 {
+    public delegate void DeviceUpdateEventHandler(object sender, EventArgs e);
+
     public class IAIntAirAct : IDisposable
     {
         public HashSet<Capability> capabilities { get; private set; }
         public bool client { get; set; }
         public string defaultMimeType { get; set; }
         public List<Device> devices { get; private set; }
+        public event ServiceUpdateEventHandler deviceUpdateEventHandler;
         public bool isRunning { get; private set; }
+        public Device ownDevice
+        {
+            get
+            {
+                Service service = zeroConf.ownService;
+                return new Device(service.name, service.host, service.port);
+            }
+            private set
+            {
+            }
+        }
         public ushort port { get; set; }
         public bool server { get; set; }
         public string type { get; set; }
 
         private NancyHost host;
         private ZCZeroConf zeroConf;
+        private bool isDisposed = false;
 
         public IAIntAirAct()
         {
             client = true;
+            defaultMimeType = "application/json";
+            isRunning = false;
             port = 0;
             server = true;
         }
 
         ~IAIntAirAct()
         {
-            Stop();
+            Dispose(false);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (!isDisposed && disposing)
+            {
+                // Code to dispose the managed resources of the class
+                Stop();
+                if (zeroConf != null)
+                {
+                    zeroConf.Dispose();
+                }
+            }
+            // Code to dispose the un-managed resources of the class
+            isDisposed = true;
         }
 
         public void Dispose()
         {
-            Stop();
-            if (zeroConf != null)
-            {
-                zeroConf.Dispose();
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void Start()
         {
-            if (port == 0)
+            if (isRunning)
             {
-                // find next free port
-                port = TcpPort.FindNextAvailablePort(12345);
+                return;
             }
 
-            try
+            if (server)
             {
-                host = new NancyHost(GetUriParams(port));
-                host.Start();
+                if (port == 0)
+                {
+                    // find next free port
+                    port = TcpPort.FindNextAvailablePort(12345);
                 }
-            catch (HttpListenerException e)
-            {
-                throw new IntAirActException(e.Message);
+
+                try
+                {
+                    host = new NancyHost(GetUriParams(port));
+                    host.Start();
+                }
+                catch (HttpListenerException e)
+                {
+                    throw new IntAirActException(e.Message);
+                }
             }
 
             try
@@ -76,6 +113,8 @@ namespace IntAirAct
             {
                 throw new IntAirActException(e.Message);
             }
+
+            isRunning = true;
         }
 
         public void Stop()
@@ -85,11 +124,30 @@ namespace IntAirAct
                 zeroConf.Stop();
             }
             host.Stop();
+
+            isRunning = false;
         }
 
-        private void serviceUpdate(object sender, EventArgs e) {
-            // This method will be called when a device is lost. A good thing to do is to call getDevices() for an updated list.
-            Console.WriteLine("YAY UPDATE");
+        private void notifyDeviceUpdate()
+        {
+            if (deviceUpdateEventHandler != null)
+                deviceUpdateEventHandler(this, EventArgs.Empty);
+        }
+
+        private void serviceUpdate(object sender, EventArgs e)
+        {
+            List<Device> list = new List<Device>();
+
+            // synchronize this.devices with zeroConf.devices
+            foreach (Service service in zeroConf.services)
+            {
+                Device d = new Device(service.name, service.host, service.port);
+                list.Add(d);
+            }
+
+            devices = list;
+
+            notifyDeviceUpdate();
         }
 
         private static Uri[] GetUriParams(ushort port)
