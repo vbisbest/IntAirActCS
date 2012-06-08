@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +7,9 @@ using Nancy;
 
 namespace IntAirAct
 {
-    public class Class1 : NancyModule
+    public class HelloModule : NancyModule
     {
-        public Class1()
+        public HelloModule()
         {
             Get["/hello"] = parameters =>
             {
