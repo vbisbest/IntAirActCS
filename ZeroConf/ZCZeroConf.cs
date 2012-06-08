@@ -194,15 +194,7 @@ namespace ZeroConf
             
         }
 
-        public void
-        ServiceRegistered
-                    (
-                    DNSSDService sref,
-                    DNSSDFlags flags,
-                    String serviceName,
-                    String regType,
-                    String domain
-                    )
+        private void ServiceRegistered(DNSSDService sref, DNSSDFlags flags, String serviceName, String regType, String domain)
         {
             Console.WriteLine(String.Format("Registered: sref: {0}, flags: {1}, serviceName: {2}, regType: {3}, domain: {4}", sref.GetHashCode(), flags, serviceName, regType, domain));
 
@@ -215,7 +207,7 @@ namespace ZeroConf
         //
         // Called by DNSServices core as a result of a Browse call
         //
-        public void ServiceFound(DNSSDService sref, DNSSDFlags flags, uint ifIndex, String serviceName, String regType, String domain)
+        private void ServiceFound(DNSSDService sref, DNSSDFlags flags, uint ifIndex, String serviceName, String regType, String domain)
         {
             Console.WriteLine(String.Format("Found: sref: {0}, flags: {1}, ifIndex: {2}, serviceName: {3}, regType: {4}, domain: {5}", sref.GetHashCode(), flags, ifIndex, serviceName, regType, domain));
 
@@ -235,7 +227,7 @@ namespace ZeroConf
         //
         // Called by DNSServices core as a result of a Browse call
         //
-        public void ServiceLost(DNSSDService sref, DNSSDFlags flags, uint ifIndex, String serviceName, String regType, String domain)
+        private void ServiceLost(DNSSDService sref, DNSSDFlags flags, uint ifIndex, String serviceName, String regType, String domain)
         {
             Console.WriteLine(String.Format("Lost: sref: {0}, flags: {1}, serviceName: {2}, regType: {3}, domain: {4}", sref.GetHashCode(), flags, serviceName, regType, domain));
 
@@ -253,7 +245,7 @@ namespace ZeroConf
         // Called by DNSServices core as a result of DNSService.Resolve()
         // call
         //
-        public void ServiceResolved(DNSSDService sref, DNSSDFlags flags, uint ifIndex, String fullName, String hostName, ushort port, TXTRecord txtRecord)
+        private void ServiceResolved(DNSSDService sref, DNSSDFlags flags, uint ifIndex, String fullName, String hostName, ushort port, TXTRecord txtRecord)
         {
             Console.WriteLine(String.Format("Resolved: sref: {0}, flags: {1}, ifIndex: {2}, fullName: {3}, hostName: {4}, port: {5}, txtRecord: {6}", sref.GetHashCode(), flags, ifIndex, fullName, hostName, port, txtRecord));
 
@@ -283,14 +275,14 @@ namespace ZeroConf
             }
         }
 
-        public void OperationFailed(DNSSDService sref, DNSSDError error)
+        private void OperationFailed(DNSSDService sref, DNSSDError error)
         {
             Console.WriteLine("Operation returned an error code " + error);
 
             Console.WriteLine(sref.GetHashCode());
         }
 
-        protected virtual void notifyServiceUpdate()
+        private void notifyServiceUpdate()
         {
             if (serviceUpdateEventHandler != null)
                 serviceUpdateEventHandler(this, EventArgs.Empty);

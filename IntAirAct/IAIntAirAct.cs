@@ -66,6 +66,7 @@ namespace IntAirAct
             try
             {
                 zeroConf = new ZCZeroConf();
+                zeroConf.serviceUpdateEventHandler += new ServiceUpdateEventHandler(serviceUpdate);
                 zeroConf.publishRegType = "_intairact._tcp";
                 zeroConf.publishPort = port;
                 zeroConf.server = server;
@@ -84,6 +85,11 @@ namespace IntAirAct
                 zeroConf.Stop();
             }
             host.Stop();
+        }
+
+        private void serviceUpdate(object sender, EventArgs e) {
+            // This method will be called when a device is lost. A good thing to do is to call getDevices() for an updated list.
+            Console.WriteLine("YAY UPDATE");
         }
 
         private static Uri[] GetUriParams(ushort port)
