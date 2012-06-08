@@ -50,13 +50,8 @@ namespace IntAirAct
                 // find next free port
                 port = TcpPort.FindNextAvailablePort(12345);
             }
-            Uri[] uris = GetUriParams(port);
-            foreach (Uri uri in uris)
-            {
-                Console.WriteLine(uri);
-            }
             
-            host = new NancyHost(uris);
+            host = new NancyHost(GetUriParams(port));
             host.Start();
 
             try

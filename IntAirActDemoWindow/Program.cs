@@ -18,12 +18,12 @@ namespace IntAirActDemoWindow
             IAIntAirAct ia = new IAIntAirAct();
 
             ia.Start();
-            Console.WriteLine("Started IntAirAct");
-            Console.ReadLine();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
+            ia.Stop();
         }
     }
 }
