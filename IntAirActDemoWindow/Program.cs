@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using IntAirAct;
 using System.Diagnostics;
+using IntAirAct;
 
 namespace IntAirActDemoWindow
 {
@@ -16,7 +16,6 @@ namespace IntAirActDemoWindow
         static void Main()
         {
             IAIntAirAct ia = new IAIntAirAct();
-
             ia.Start();
 
             Application.EnableVisualStyles();

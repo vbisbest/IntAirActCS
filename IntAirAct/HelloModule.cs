@@ -9,11 +9,11 @@ namespace IntAirAct
 {
     public class HelloModule : NancyModule
     {
-        public HelloModule()
+        public HelloModule(Hello hello)
         {
             Get["/hello"] = parameters =>
             {
-                Response resp = (Response)"{\"responses\":{\"message\":\"hello world\"}}";
+                Response resp = (Response)hello.hello();
                 resp.WithContentType("application/json;charset=utf-8");
                 resp.WithHeader("Server", "Hello");
                 resp.Headers.Remove("Date");

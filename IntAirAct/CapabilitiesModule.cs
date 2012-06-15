@@ -13,18 +13,8 @@ namespace IntAirAct
         {
             Get["/capabilities"] = parameters =>
             {
-                Capability capability = new Capability();
-                capability.capability = "hello";
-
-                Capability capability2 = new Capability();
-                capability2.capability = "hello";
-
-                HashSet<Object> set = new HashSet<Object>();
-                set.Add(capability);
-                set.Add(capability2);
-
                 Dictionary<Object, Object> dic = new Dictionary<Object, Object>();
-                dic.Add("capabilities", set);
+                dic.Add("capabilities", intAirAct.capabilities);
 
                 string json = JsonConvert.SerializeObject(dic);
 

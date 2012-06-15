@@ -50,12 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Action.cs" />
+    <Compile Include="Model\Action.cs" />
+    <Compile Include="DefaultIntAirActBootstrapper.cs" />
     <Compile Include="CapabilitiesModule.cs" />
-    <Compile Include="Capability.cs" />
+    <Compile Include="Model\Capability.cs" />
+    <Compile Include="Hello.cs" />
     <Compile Include="IntAirActException.cs" />
     <Compile Include="HelloModule.cs" />
-    <Compile Include="Device.cs" />
+    <Compile Include="Model\Device.cs" />
     <Compile Include="IAIntAirAct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -14,6 +14,8 @@ namespace IntAirAct
 
     public class IAIntAirAct : IDisposable
     {
+        private int i = 0;
+
         public HashSet<Capability> capabilities { get; private set; }
         public bool client { get; set; }
         public string defaultMimeType { get; set; }
@@ -41,6 +43,7 @@ namespace IntAirAct
 
         public IAIntAirAct()
         {
+            capabilities = new HashSet<Capability>();
             client = true;
             defaultMimeType = "application/json";
             isRunning = false;
@@ -115,6 +118,7 @@ namespace IntAirAct
             }
 
             isRunning = true;
+            TinyIoC.TinyIoCContainer.Current.Register<IAIntAirAct>(this);
         }
 
         public void Stop()
@@ -123,7 +127,10 @@ namespace IntAirAct
             {
                 zeroConf.Stop();
             }
-            host.Stop();
+            if (host != null)
+            {
+                host.Stop();
+            }
 
             isRunning = false;
         }
