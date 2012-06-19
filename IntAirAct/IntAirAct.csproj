@@ -66,7 +66,6 @@
     <Compile Include="DefaultIntAirActBootstrapper.cs" />
     <Compile Include="CapabilitiesModule.cs" />
     <Compile Include="Model\Capability.cs" />
-    <Compile Include="Hello.cs" />
     <Compile Include="IntAirActException.cs" />
     <Compile Include="HelloModule.cs" />
     <Compile Include="Model\Device.cs" />

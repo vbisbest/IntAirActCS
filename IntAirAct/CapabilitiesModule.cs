@@ -16,13 +16,10 @@ namespace IntAirAct
                 Dictionary<Object, Object> dic = new Dictionary<Object, Object>();
                 dic.Add("capabilities", intAirAct.capabilities);
 
-                string json = JsonConvert.SerializeObject(dic);
-
-                Response resp = (Response)json;
-                resp.WithContentType("application/json;charset=utf-8");
-                resp.WithHeader("Server", "Hello");
-                resp.Headers.Remove("Date");
-                return resp;
+                Response response = Response.AsJson<Dictionary<Object, Object>>(dic);
+                response.WithContentType("application/json;charset=utf-8");
+                response.WithHeader("Server", "Hello");
+                return response;
             };
         }
 
