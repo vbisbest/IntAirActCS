@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
-using Nancy.Hosting.Self;
 using System.Threading;
 using System.Net.NetworkInformation;
 using ZeroConf;
@@ -37,7 +36,6 @@ namespace IntAirAct
         public bool server { get; set; }
         public string type { get; set; }
 
-        private NancyHost host;
         private ZCZeroConf zeroConf;
         private bool isDisposed = false;
 
@@ -92,15 +90,7 @@ namespace IntAirAct
                     port = TcpPort.FindNextAvailablePort(12345);
                 }
 
-                try
-                {
-                    host = new NancyHost(GetUriParams(port));
-                    host.Start();
-                }
-                catch (HttpListenerException e)
-                {
-                    throw new IntAirActException(e.Message);
-                }
+                new Gate.Hosts.Firefly.ServerFactory().Create(Gate.Adapters.Nancy.NancyAdapter.App(), port);
             }
 
             try
@@ -126,10 +116,6 @@ namespace IntAirAct
             if (zeroConf != null)
             {
                 zeroConf.Stop();
-            }
-            if (host != null)
-            {
-                host.Stop();
             }
 
             isRunning = false;
@@ -177,6 +163,7 @@ namespace IntAirAct
             }
             // Localhost URI 
             uriParams.Add(new Uri(string.Format("http://localhost:{0}", port)));
+            uriParams.Add(new Uri(string.Format("http://+:{0}", port)));
             return uriParams.ToArray();
         }
 
