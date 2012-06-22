@@ -13,8 +13,6 @@ namespace IntAirAct
 
     public class IAIntAirAct : IDisposable
     {
-        private int i = 0;
-
         public HashSet<Capability> capabilities { get; private set; }
         public bool client { get; set; }
         public string defaultMimeType { get; set; }
