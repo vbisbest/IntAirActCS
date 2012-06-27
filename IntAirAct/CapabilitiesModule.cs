@@ -10,10 +10,7 @@ namespace IntAirAct
     {
         public CapabilitiesModule(IAIntAirAct intAirAct)
         {
-            Get["/capabilities"] = parameters =>
-            {
-                return Response.RespondWith(intAirAct.capabilities, "capabilities");
-            };
+            Get["/capabilities"] = parameters => Response.RespondWith(intAirAct.capabilities, "capabilities");
         }
 
     }
