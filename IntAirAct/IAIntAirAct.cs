@@ -94,7 +94,7 @@ namespace IntAirAct
             try
             {
                 zeroConf = new ZCZeroConf();
-                zeroConf.serviceUpdateEventHandler += new ServiceUpdateEventHandler(serviceUpdate);
+                zeroConf.serviceUpdateEventHandler += new ServiceUpdateEventHandler(ServiceUpdate);
                 zeroConf.publishRegType = "_intairact._tcp";
                 zeroConf.publishPort = port;
                 zeroConf.server = server;
@@ -119,13 +119,7 @@ namespace IntAirAct
             isRunning = false;
         }
 
-        private void notifyDeviceUpdate()
-        {
-            if (deviceUpdateEventHandler != null)
-                deviceUpdateEventHandler(this, EventArgs.Empty);
-        }
-
-        private void serviceUpdate(object sender, EventArgs e)
+        private void ServiceUpdate(object sender, EventArgs e)
         {
             List<Device> list = new List<Device>();
 
@@ -138,31 +132,13 @@ namespace IntAirAct
 
             devices = list;
 
-            notifyDeviceUpdate();
+            NotifyDeviceUpdate();
         }
 
-        private static Uri[] GetUriParams(ushort port)
+        private void NotifyDeviceUpdate()
         {
-            var uriParams = new List<Uri>();
-            string hostName = Dns.GetHostName();
-            // Host name URI
-            string hostNameUri = string.Format("http://{0}:{1}", Dns.GetHostName(), port);
-            uriParams.Add(new Uri(hostNameUri));
-            // Host address URI(s) 
-            var hostEntry = Dns.GetHostEntry(hostName);
-            foreach (var ipAddress in hostEntry.AddressList)
-            {
-                if (ipAddress.AddressFamily == AddressFamily.InterNetwork)  // IPv4 addresses only 
-                {
-                    var addrBytes = ipAddress.GetAddressBytes();
-                    string hostAddressUri = string.Format("http://{0}.{1}.{2}.{3}:{4}", addrBytes[0], addrBytes[1], addrBytes[2], addrBytes[3], port);
-                    uriParams.Add(new Uri(hostAddressUri));
-                }
-            }
-            // Localhost URI 
-            uriParams.Add(new Uri(string.Format("http://localhost:{0}", port)));
-            uriParams.Add(new Uri(string.Format("http://+:{0}", port)));
-            return uriParams.ToArray();
+            if (deviceUpdateEventHandler != null)
+                deviceUpdateEventHandler(this, EventArgs.Empty);
         }
 
         public static class TcpPort

@@ -67,10 +67,10 @@
     <Compile Include="CapabilitiesModule.cs" />
     <Compile Include="Model\Capability.cs" />
     <Compile Include="IntAirActException.cs" />
-    <Compile Include="HelloModule.cs" />
     <Compile Include="Model\Device.cs" />
     <Compile Include="IAIntAirAct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponseSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
