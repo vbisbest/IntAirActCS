@@ -17,6 +17,8 @@ namespace IntAirActDemoWindow
         {
             IAIntAirAct ia = new IAIntAirAct();
 
+            ia.AddMappingForClass(typeof(Image), "images");
+
             Capability ca = new Capability();
             ca.capability = "PUT /action/displayImage";
             ia.capabilities.Add(ca);

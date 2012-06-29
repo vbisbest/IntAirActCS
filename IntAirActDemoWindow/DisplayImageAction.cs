@@ -3,28 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Nancy;
-using Nancy.ModelBinding;
-using Nancy.IO;
-using System.IO;
+using IntAirAct;
 
 namespace IntAirActDemoWindow
 {
     public class DisplayImageAction : NancyModule
     {
-        public DisplayImageAction()
+        public DisplayImageAction(IAIntAirAct intAirAct)
         {
-            Put["action/displayImage"] = parameters =>
+            Action<Image, Device> ac = delegate(Image img, Device dev)
             {
-                RequestStream bodyStream = this.Context.Request.Body;
-                bodyStream.Position = 0;
-                string bodyText;
-                using (var bodyReader = new StreamReader(bodyStream))
-                {
-                    bodyText = bodyReader.ReadToEnd();
-                }
-                Console.WriteLine(bodyText);
-                return (Response)"Hello";
+                Console.WriteLine(String.Format("Displaying {0} of Device {1}", img, dev));
             };
+
+            Put["action/displayImage"] = _ => Response.Execute(intAirAct, ac);
         }
     }
 }

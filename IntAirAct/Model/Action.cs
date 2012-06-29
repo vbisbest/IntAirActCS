@@ -8,7 +8,12 @@ namespace IntAirAct
     public class Action
     {
         public string action { get; set; }
-        public Array parameters { get; set; }
+        public List<Object> parameters { get; set; }
+
+        public Action()
+        {
+            parameters = new List<Object>();
+        }
 
         public override string ToString()
         {

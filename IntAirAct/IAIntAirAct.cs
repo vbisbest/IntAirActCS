@@ -6,6 +6,8 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Net.NetworkInformation;
 using ZeroConf;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace IntAirAct
 {
@@ -34,8 +36,9 @@ namespace IntAirAct
         public bool server { get; set; }
         public string type { get; set; }
 
-        private ZCZeroConf zeroConf;
+        private ZCZeroConf zeroConf = new ZCZeroConf();
         private bool isDisposed = false;
+        private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
 
         public IAIntAirAct()
         {
@@ -45,6 +48,10 @@ namespace IntAirAct
             isRunning = false;
             port = 0;
             server = true;
+
+            AddMappingForClass(typeof(Device), "devices");
+            AddMappingForClass(typeof(Action), "actions");
+            AddMappingForClass(typeof(Capability), "capabilities");
         }
 
         ~IAIntAirAct()
@@ -93,7 +100,6 @@ namespace IntAirAct
 
             try
             {
-                zeroConf = new ZCZeroConf();
                 zeroConf.serviceUpdateEventHandler += new ServiceUpdateEventHandler(ServiceUpdate);
                 zeroConf.publishRegType = "_intairact._tcp";
                 zeroConf.publishPort = port;
@@ -139,6 +145,28 @@ namespace IntAirAct
         {
             if (deviceUpdateEventHandler != null)
                 deviceUpdateEventHandler(this, EventArgs.Empty);
+        }
+
+        public Object DeserializeObject(JObject token)
+        {
+            foreach (KeyValuePair<string, JToken> keyvaluepair in token)
+            {
+                Type t;
+                if (mappings.TryGetValue(keyvaluepair.Key, out t))
+                {
+                    JsonSerializer ser = new JsonSerializer();
+                    using (JTokenReader jsonReader = new JTokenReader(keyvaluepair.Value))
+                    {
+                        return ser.Deserialize(jsonReader, t);
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void AddMappingForClass(Type type, string rootKeypath)
+        {
+            mappings.Add(rootKeypath, type);
         }
 
         public static class TcpPort
