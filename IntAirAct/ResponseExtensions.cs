@@ -50,7 +50,9 @@ namespace IntAirAct
 
             if (!methodInfo.ReturnType.Equals(typeof(void)))
             {
-                Console.WriteLine(String.Format("Returning: {0}", returnValue));
+                Action act = new Action();
+                act.parameters.Add(returnValue);
+                return formatter.RespondWith(act, "actions", HttpStatusCode.Created);
             }
 
             Response res = new Response();

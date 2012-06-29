@@ -17,6 +17,15 @@ namespace IntAirActDemoWindow
             };
 
             Put["action/displayImage"] = _ => Response.Execute(intAirAct, ac);
+
+            Func<Image, Image, Image> func = delegate(Image img1, Image img2)
+            {
+                Image res = new Image();
+                res.identifier = img1.identifier + img2.identifier;
+                return res;
+            };
+
+            Put["action/addImages"] = _ => Response.Execute(intAirAct, func);
         }
     }
 }
