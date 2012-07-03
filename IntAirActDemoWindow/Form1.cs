@@ -14,6 +14,7 @@ namespace IntAirActDemoWindow
         public Form1()
         {
             InitializeComponent();
+            TinyIoC.TinyIoCContainer.Current.Register<PictureBox>(this.pictureBox1);
         }
     }
 }

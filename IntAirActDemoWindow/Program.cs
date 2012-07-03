@@ -15,17 +15,17 @@ namespace IntAirActDemoWindow
         [STAThread]
         static void Main()
         {
-            IAIntAirAct ia = new IAIntAirAct();
-
-            ia.AddMappingForClass(typeof(Image), "images");
-
-            ia.capabilities.Add(new Capability("GET /images"));
-
-            ia.Start();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Form form = new Form1();
+
+            IAIntAirAct ia = new IAIntAirAct();
+            ia.client = false;
+            ia.AddMappingForClass(typeof(Image), "images");
+            ia.capabilities.Add(new Capability("PUT /action/displayImage"));
+            ia.Start();
+            
+            Application.Run(form);
 
             ia.Stop();
         }
