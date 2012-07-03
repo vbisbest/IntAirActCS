@@ -12,18 +12,15 @@ namespace IntAirActDemoWindow
     {
         public DisplayImageAction(IAIntAirAct intAirAct, PictureBox pictureBox)
         {
-            Action<Image, Device> ac = delegate(Image img, Device dev)
+            Action<Image, Device> action = delegate(Image img, Device dev)
             {
-                // show loading animation
                 Console.WriteLine(String.Format("Displaying {0} of Device {1}", img, dev));
 
-                // create url out of image and device
                 string url = String.Format("http://{0}:{1}/image/{2}.jpg", dev.host, dev.port, img.identifier);
-
                 pictureBox.LoadAsync(url);
             };
 
-            Put["action/displayImage"] = _ => Response.Execute(intAirAct, ac);
+            Put["action/displayImage"] = _ => Response.Execute(action);
         }
     }
 }

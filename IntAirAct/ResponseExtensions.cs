@@ -22,8 +22,10 @@ namespace IntAirAct
             return response;
         }
 
-        public static Response Execute(this IResponseFormatter formatter, IAIntAirAct intAirAct, Delegate del)
+        public static Response Execute(this IResponseFormatter formatter, Delegate del)
         {
+            IAIntAirAct intAirAct = TinyIoC.TinyIoCContainer.Current.Resolve<IAIntAirAct>();
+
             MethodInfo methodInfo = del.Method;
             ParameterInfo[] pars = methodInfo.GetParameters();
             
