@@ -11,6 +11,8 @@ namespace IntAirActDemoWindow
     {
         public DisplayImageAction(IAIntAirAct intAirAct)
         {
+            intAirAct.capabilities.Add(new Capability("PUT /action/displayImage"));
+
             Action<Image, Device> ac = delegate(Image img, Device dev)
             {
                 Console.WriteLine(String.Format("Displaying {0} of Device {1}", img, dev));

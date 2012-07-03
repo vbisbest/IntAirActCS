@@ -19,13 +19,7 @@ namespace IntAirActDemoWindow
 
             ia.AddMappingForClass(typeof(Image), "images");
 
-            Capability ca = new Capability();
-            ca.capability = "PUT /action/displayImage";
-            ia.capabilities.Add(ca);
-
-            Capability ca2 = new Capability();
-            ca2.capability = "GET /images";
-            ia.capabilities.Add(ca2);
+            ia.capabilities.Add(new Capability("GET /images"));
 
             ia.Start();
 

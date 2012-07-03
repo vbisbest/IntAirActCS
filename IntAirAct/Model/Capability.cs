@@ -9,6 +9,11 @@ namespace IntAirAct
     {
         public string capability { get; set; }
 
+        public Capability(string capability)
+        {
+            this.capability = capability;
+        }
+
         public override string ToString()
         {
             return String.Format("Capability[capability: {0}]", capability);
