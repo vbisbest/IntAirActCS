@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using IntAirAct;
 
-namespace IntAirActDemoWindow
+namespace IntAirActImageWindows
 {
     static class Program
     {

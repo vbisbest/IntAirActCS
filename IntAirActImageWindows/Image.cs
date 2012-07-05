@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace IntAirActDemoWindow
+namespace IntAirActImageWindows
 {
     public class Image
     {

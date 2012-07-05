@@ -6,7 +6,7 @@ using Nancy;
 using IntAirAct;
 using System.Windows.Forms;
 
-namespace IntAirActDemoWindow
+namespace IntAirActImageWindows
 {
     public class DisplayImageAction : NancyModule
     {
