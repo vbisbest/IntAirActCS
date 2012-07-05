@@ -16,6 +16,8 @@ namespace IntAirActDemoWindow
             {
                 Console.WriteLine(String.Format("Displaying {0} of Device {1}", img, dev));
 
+                //string url = intAirAct.GetResourcePath(dev, img);
+
                 string url = String.Format("http://{0}:{1}/image/{2}.jpg", dev.host, dev.port, img.identifier);
                 pictureBox.LoadAsync(url);
             };
