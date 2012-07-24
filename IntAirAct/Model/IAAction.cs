@@ -5,12 +5,12 @@ using System.Text;
 
 namespace IntAirAct
 {
-    public class Action
+    public class IAAction
     {
         public string action { get; set; }
         public List<Object> parameters { get; set; }
 
-        public Action()
+        public IAAction()
         {
             parameters = new List<Object>();
         }

@@ -52,7 +52,7 @@ namespace IntAirAct
 
             if (!methodInfo.ReturnType.Equals(typeof(void)))
             {
-                Action act = new Action();
+                IAAction act = new IAAction();
                 act.parameters.Add(returnValue);
                 return formatter.RespondWith(act, "actions", HttpStatusCode.Created);
             }

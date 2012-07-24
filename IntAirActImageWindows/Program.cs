@@ -23,7 +23,7 @@ namespace IntAirActImageWindows
             ia.client = false;
             ia.AddMappingForClass(typeof(Image), "images");
             //ia.RouteClass(typeof(Image), "/images/:identifier");
-            ia.capabilities.Add(new Capability("PUT /action/displayImage"));
+            ia.capabilities.Add(new IACapability("PUT /action/displayImage"));
             ia.Start();
             
             Application.Run(form);

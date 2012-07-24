@@ -5,11 +5,11 @@ using System.Text;
 
 namespace IntAirAct
 {
-    public class Capability
+    public class IACapability
     {
         public string capability { get; set; }
 
-        public Capability(string capability)
+        public IACapability(string capability)
         {
             this.capability = capability;
         }

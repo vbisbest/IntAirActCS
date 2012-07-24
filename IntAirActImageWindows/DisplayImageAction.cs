@@ -12,7 +12,7 @@ namespace IntAirActImageWindows
     {
         public DisplayImageAction(IAIntAirAct intAirAct, PictureBox pictureBox)
         {
-            Action<Image, Device> action = delegate(Image img, Device dev)
+            Action<Image, IADevice> action = delegate(Image img, IADevice dev)
             {
                 Console.WriteLine(String.Format("Displaying {0} of Device {1}", img, dev));
 

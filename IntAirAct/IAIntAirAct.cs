@@ -15,18 +15,18 @@ namespace IntAirAct
 
     public class IAIntAirAct : IDisposable
     {
-        public HashSet<Capability> capabilities { get; private set; }
+        public HashSet<IACapability> capabilities { get; private set; }
         public bool client { get; set; }
         public string defaultMimeType { get; set; }
-        public List<Device> devices { get; private set; }
+        public List<IADevice> devices { get; private set; }
         public event ServiceUpdateEventHandler deviceUpdateEventHandler;
         public bool isRunning { get; private set; }
-        public Device ownDevice
+        public IADevice ownDevice
         {
             get
             {
                 Service service = zeroConf.ownService;
-                return new Device(service.name, service.host, service.port);
+                return new IADevice(service.name, service.host, service.port);
             }
             private set
             {
@@ -42,16 +42,16 @@ namespace IntAirAct
 
         public IAIntAirAct()
         {
-            capabilities = new HashSet<Capability>();
+            capabilities = new HashSet<IACapability>();
             client = true;
             defaultMimeType = "application/json";
             isRunning = false;
             port = 0;
             server = true;
 
-            AddMappingForClass(typeof(Device), "devices");
-            AddMappingForClass(typeof(Action), "actions");
-            AddMappingForClass(typeof(Capability), "capabilities");
+            AddMappingForClass(typeof(IADevice), "devices");
+            AddMappingForClass(typeof(IAAction), "actions");
+            AddMappingForClass(typeof(IACapability), "capabilities");
         }
 
         ~IAIntAirAct()
@@ -127,12 +127,12 @@ namespace IntAirAct
 
         private void ServiceUpdate(object sender, EventArgs e)
         {
-            List<Device> list = new List<Device>();
+            List<IADevice> list = new List<IADevice>();
 
             // synchronize this.devices with zeroConf.devices
             foreach (Service service in zeroConf.services)
             {
-                Device d = new Device(service.name, service.host, service.port);
+                IADevice d = new IADevice(service.name, service.host, service.port);
                 list.Add(d);
             }
 

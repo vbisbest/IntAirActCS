@@ -6,13 +6,13 @@ using ZeroConf;
 
 namespace IntAirAct
 {
-    public class Device : Service
+    public class IADevice : Service
     {
-        public HashSet<Capability> capabilities { get; set; }
+        public HashSet<IACapability> capabilities { get; set; }
 
-        public Device(string name, string host, ushort port) : base(name, host, port)
+        public IADevice(string name, string host, ushort port) : base(name, host, port)
         {
-            capabilities = new HashSet<Capability>();
+            capabilities = new HashSet<IACapability>();
         }
 
         public override string ToString()
