@@ -58,6 +58,7 @@ namespace IntAirAct
             }
 
             Response res = new Response();
+            res.WithContentType("application/json");
             res.StatusCode = HttpStatusCode.Created;
             return res;
         }
