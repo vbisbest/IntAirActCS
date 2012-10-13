@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using ZeroConf;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using RestSharp;
 
 namespace IntAirAct
 {
@@ -167,6 +168,17 @@ namespace IntAirAct
         public void AddMappingForClass(Type type, string rootKeypath)
         {
             mappings.Add(rootKeypath, type);
+        }
+
+        public void CallAction(IAAction action, IADevice device)
+        {
+            RestClient client = new RestClient(String.Format("http://{0}:{1}", device.host, device.port));
+            RestRequest request = new RestRequest("action/{action}", Method.PUT);
+            request.AddUrlSegment("action", action.action);
+            string json = "{'actions':" + JsonConvert.SerializeObject(action) + "}";
+            Console.WriteLine("Sending an action: " + json);
+            request.AddBody(json);
+            client.Execute(request);
         }
 
         public static class TcpPort
