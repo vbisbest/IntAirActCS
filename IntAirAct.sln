@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9CE310
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDiscovery", "ServiceDiscovery\ServiceDiscovery.csproj", "{CD87E926-3CD6-4878-8EDE-9EB6600C75DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publisher.csproj", "{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,16 +66,6 @@ Global
 		{CD87E926-3CD6-4878-8EDE-9EB6600C75DF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CD87E926-3CD6-4878-8EDE-9EB6600C75DF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CD87E926-3CD6-4878-8EDE-9EB6600C75DF}.Release|x86.ActiveCfg = Release|Any CPU
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Debug|x86.ActiveCfg = Debug|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Debug|x86.Build.0 = Debug|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Release|Any CPU.ActiveCfg = Release|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Release|Mixed Platforms.Build.0 = Release|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Release|x86.ActiveCfg = Release|x86
-		{7BB6C8D0-D547-467B-9EE3-B2887940BAEC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

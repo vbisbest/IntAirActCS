@@ -41,7 +41,7 @@ namespace ServiceDiscovery
 
         public void stopSearching()
         {
-            logger.TraceEvent(TraceEventType.Stop, 0, "stopSearching");
+            logger.TraceEvent(TraceEventType.Verbose, 0, "stopSearching");
         }
 
         public void searchForServices()
