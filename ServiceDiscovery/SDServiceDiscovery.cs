@@ -8,7 +8,7 @@ namespace ServiceDiscovery
 {
     public class SDServiceDiscovery
     {
-        private static TraceSource logger = new TraceSource("SDServiceDiscovery");
+        private static TraceSource logger = new TraceSource("ServiceDiscovery");
 
         private bool isDisposed = false;
 
@@ -22,7 +22,7 @@ namespace ServiceDiscovery
             if (!isDisposed && disposing)
             {
                 // Code to dispose the managed resources of the class
-                stop();
+                Stop();
             }
             // Code to dispose the un-managed resources of the class
             isDisposed = true;
@@ -34,17 +34,17 @@ namespace ServiceDiscovery
             GC.SuppressFinalize(this);
         }
             
-        public void stop()
+        public void Stop()
         {
-            stopSearching();
+            StopSearching();
         }
 
-        public void stopSearching()
+        public void StopSearching()
         {
-            logger.TraceEvent(TraceEventType.Verbose, 0, "stopSearching");
+            logger.TraceEvent(TraceEventType.Stop, 0, "ServiceDiscovery");
         }
 
-        public void searchForServices()
+        public void SearchForServices()
         {
         }
     }
