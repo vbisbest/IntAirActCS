@@ -17,16 +17,24 @@ namespace Publisher
         [STAThread]
         static void Main()
         {
-            logger.TraceEvent(TraceEventType.Start, 0, "Publisher");
+            logger.TraceEvent(TraceEventType.Start, 0);
 
-            SDServiceDiscovery serviceDiscovery = new SDServiceDiscovery();
-            serviceDiscovery.Stop();
+            SDServiceDiscovery serviceDiscovery;
+            try
+            {
+                serviceDiscovery = new SDServiceDiscovery();
+                serviceDiscovery.Stop();
+            } catch (Exception e)
+            {
+                logger.TraceEvent(TraceEventType.Critical, 0, e.Message);
+            }
+            
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
 
-            logger.TraceEvent(TraceEventType.Stop, 0, "Publisher");
+            logger.TraceEvent(TraceEventType.Stop, 0);
         }
     }
 }
