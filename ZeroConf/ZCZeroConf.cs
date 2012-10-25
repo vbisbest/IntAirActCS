@@ -265,7 +265,7 @@ namespace ZeroConf
             sref.Stop();
 
             Service service;
-            if (foundDevices.TryGetValue(fullName, out service))
+            if (foundDevices.TryGetValue(fullName.ToLower(), out service))
             {
                 foundDevices.Remove(fullName);
                 service.port = port;
@@ -308,7 +308,7 @@ namespace ZeroConf
         /// <returns>Properly escaped string</returns>
         private static string escapeString(String s)
         {
-            return s.Replace("\\", "\\\\").Replace(" ", @"\032").Replace(".", @"\.");
+            return s.Replace("\\", "\\\\").Replace(" ", @"\032").Replace(".", @"\.").ToLower();
         }
     }
 }
