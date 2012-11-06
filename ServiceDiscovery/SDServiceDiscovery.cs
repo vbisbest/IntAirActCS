@@ -53,6 +53,17 @@ namespace ServiceDiscovery
             StopSearching();
         }
 
+        public void SearchForServices(String type)
+        {
+            SearchForServices(type, "local.");
+        }
+
+        public void SearchForServices(String type, String domain)
+        {
+            m_browser = m_service.Browse(0, 0, publishRegType, null, m_eventManager);
+            Console.WriteLine(String.Format("m_browser: {0}", m_browser.GetHashCode()));
+        }
+
         public void StopSearching()
         {
             logger.TraceEvent(TraceEventType.Stop, 0);
@@ -60,6 +71,7 @@ namespace ServiceDiscovery
 
         public void SearchForServices()
         {
+
         }
     }
 }
