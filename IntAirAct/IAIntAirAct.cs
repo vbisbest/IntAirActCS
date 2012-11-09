@@ -9,6 +9,8 @@ using ZeroConf;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using RestSharp;
+using TinyIoC;
+using Nancy.Routing;
 
 namespace IntAirAct
 {
@@ -16,6 +18,7 @@ namespace IntAirAct
 
     public class IAIntAirAct : IDisposable
     {
+        public Dictionary<IARoute, Action<IARequest, IAResponse>> routes { get; private set; }
         public HashSet<IACapability> capabilities { get; private set; }
         public bool client { get; set; }
         public string defaultMimeType { get; set; }
@@ -49,6 +52,7 @@ namespace IntAirAct
             isRunning = false;
             port = 0;
             server = true;
+            routes = new Dictionary<IARoute, Action<IARequest, IAResponse>>();
 
             AddMappingForClass(typeof(IADevice), "devices");
             AddMappingForClass(typeof(IAAction), "actions");
@@ -179,6 +183,13 @@ namespace IntAirAct
             Console.WriteLine("Sending an action: " + json);
             request.AddBody(json);
             client.Execute(request);
+        }
+
+        public void Route(IARoute route, Action<IARequest, IAResponse> action)
+        {
+            routes.Add(route, action);
+            RebuildableCache ir = (RebuildableCache)TinyIoCContainer.Current.Resolve<IRouteCache>();
+            ir.RebuildCache();
         }
 
         public static class TcpPort

@@ -74,7 +74,12 @@
     <Compile Include="IntAirActException.cs" />
     <Compile Include="Model\IADevice.cs" />
     <Compile Include="IAIntAirAct.cs" />
+    <Compile Include="Model\IARequest.cs" />
+    <Compile Include="Model\IAResponse.cs" />
+    <Compile Include="Model\IARoute.cs" />
+    <Compile Include="NancyRouteAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RebuildableCache.cs" />
     <Compile Include="RequestAsString.cs" />
     <Compile Include="ResponseExtensions.cs" />
   </ItemGroup>
