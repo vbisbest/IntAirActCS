@@ -20,7 +20,6 @@ namespace IntAirActImageWindows
             Form form = new Form1();
 
             IAIntAirAct ia = new IAIntAirAct();
-            ia.client = false;
             ia.AddMappingForClass(typeof(Image), "images");
             //ia.RouteClass(typeof(Image), "/images/:identifier");
             ia.capabilities.Add(new IACapability("PUT /action/displayImage"));

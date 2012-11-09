@@ -20,7 +20,6 @@ namespace IntAirAct
     {
         public Dictionary<IARoute, Action<IARequest, IAResponse>> routes { get; private set; }
         public HashSet<IACapability> capabilities { get; private set; }
-        public bool client { get; set; }
         public string defaultMimeType { get; set; }
         public List<IADevice> devices { get; private set; }
         public event ServiceUpdateEventHandler deviceUpdateEventHandler;
@@ -37,7 +36,6 @@ namespace IntAirAct
             }
         }
         public ushort port { get; set; }
-        public bool server { get; set; }
         public string type { get; set; }
 
         private ZCZeroConf zeroConf = new ZCZeroConf();
@@ -47,11 +45,9 @@ namespace IntAirAct
         public IAIntAirAct()
         {
             capabilities = new HashSet<IACapability>();
-            client = true;
             defaultMimeType = "application/json";
             isRunning = false;
             port = 0;
-            server = true;
             routes = new Dictionary<IARoute, Action<IARequest, IAResponse>>();
 
             AddMappingForClass(typeof(IADevice), "devices");
@@ -92,28 +88,27 @@ namespace IntAirAct
                 return;
             }
 
-            if (server)
+            var app = Gate.Adapters.Nancy.NancyAdapter.App();
+
+            this.Route(new IARoute("GET", "/capabilities"), delegate(IARequest request, IAResponse response)
             {
-                this.Route(new IARoute("GET", "/capabilities"), delegate(IARequest request, IAResponse response)
-                {
-                    response.RespondWith(this.capabilities, "capabilities");
-                });
+                response.RespondWith(this.capabilities, "capabilities");
+            });
 
-                if (port == 0)
-                {
-                    // find next free port
-                    port = TcpPort.FindNextAvailablePort(12345);
-                }
-
-                new Gate.Hosts.Firefly.ServerFactory().Create(Gate.Adapters.Nancy.NancyAdapter.App(), port);
+            if (port == 0)
+            {
+                // find next free port
+                port = TcpPort.FindNextAvailablePort(12345);
             }
+
+            new Gate.Hosts.Firefly.ServerFactory().Create(app, port);
 
             try
             {
                 zeroConf.serviceUpdateEventHandler += new ServiceUpdateEventHandler(ServiceUpdate);
                 zeroConf.publishRegType = "_intairact._tcp";
                 zeroConf.publishPort = port;
-                zeroConf.server = server;
+                zeroConf.server = true;
                 zeroConf.Start();
             }
             catch (ZeroConfException e)
