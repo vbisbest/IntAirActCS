@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace IntAirAct
 {
@@ -16,6 +17,22 @@ namespace IntAirAct
             this.StatusCode = 200;
             this.Body = new byte[0];
             this.Metadata = new Dictionary<string,string>();
+        }
+
+        public void RespondWith(Object model, string keypath, int statusCode = 200)
+        {
+            this.StatusCode = statusCode;
+
+            Dictionary<Object, Object> dic = new Dictionary<Object, Object>();
+            dic.Add(keypath, model);
+
+            String json = JsonConvert.SerializeObject(dic);
+
+            System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+            this.Body = encoding.GetBytes(json);
+
+            this.Metadata.Add("Content-Type", "application/json;charset=utf-8");
+            this.Metadata.Add("Server", "Hello");
         }
 
         public override string ToString()

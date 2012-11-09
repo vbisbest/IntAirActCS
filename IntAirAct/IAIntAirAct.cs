@@ -94,6 +94,11 @@ namespace IntAirAct
 
             if (server)
             {
+                this.Route(new IARoute("GET", "/capabilities"), delegate(IARequest request, IAResponse response)
+                {
+                    response.RespondWith(this.capabilities, "capabilities");
+                });
+
                 if (port == 0)
                 {
                     // find next free port
