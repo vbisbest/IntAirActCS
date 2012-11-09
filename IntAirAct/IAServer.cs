@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IntAirAct
 {
-    interface IAServer
+    public interface IAServer
     {
         ushort Port { get; set; }
 
