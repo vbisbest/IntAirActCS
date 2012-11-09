@@ -19,7 +19,9 @@ namespace IntAirActImageWindows
             Application.SetCompatibleTextRenderingDefault(false);
             Form form = new Form1();
 
-            IAIntAirAct ia = new IAIntAirAct();
+            Owin.AppDelegate app = Gate.Adapters.Nancy.NancyAdapter.App();
+            NancyServerAdapter adapter = new NancyServerAdapter(app);
+            IAIntAirAct ia = new IAIntAirAct(adapter);
             ia.AddMappingForClass(typeof(Image), "images");
             //ia.RouteClass(typeof(Image), "/images/:identifier");
             ia.capabilities.Add(new IACapability("PUT /action/displayImage"));

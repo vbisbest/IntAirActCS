@@ -41,14 +41,16 @@ namespace IntAirAct
         private ZCZeroConf zeroConf = new ZCZeroConf();
         private bool isDisposed = false;
         private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
+        private IAServer server;
 
-        public IAIntAirAct()
+        public IAIntAirAct(IAServer server)
         {
             capabilities = new HashSet<IACapability>();
             defaultMimeType = "application/json";
             isRunning = false;
             port = 0;
             routes = new Dictionary<IARoute, Action<IARequest, IAResponse>>();
+            this.server = server;
 
             AddMappingForClass(typeof(IADevice), "devices");
             AddMappingForClass(typeof(IAAction), "actions");
@@ -88,20 +90,12 @@ namespace IntAirAct
                 return;
             }
 
-            var app = Gate.Adapters.Nancy.NancyAdapter.App();
-
             this.Route(new IARoute("GET", "/capabilities"), delegate(IARequest request, IAResponse response)
             {
                 response.RespondWith(this.capabilities, "capabilities");
             });
 
-            if (port == 0)
-            {
-                // find next free port
-                port = TcpPort.FindNextAvailablePort(12345);
-            }
-
-            new Gate.Hosts.Firefly.ServerFactory().Create(app, port);
+            server.Start();
 
             try
             {
@@ -125,6 +119,11 @@ namespace IntAirAct
             if (zeroConf != null)
             {
                 zeroConf.Stop();
+            }
+
+            if (server != null)
+            {
+                server.Stop();
             }
 
             isRunning = false;
@@ -190,61 +189,6 @@ namespace IntAirAct
             routes.Add(route, action);
             RebuildableCache ir = (RebuildableCache)TinyIoCContainer.Current.Resolve<IRouteCache>();
             ir.RebuildCache();
-        }
-
-        public static class TcpPort
-        {
-            private const string PortReleaseGuid =
-                "8875BD8E-4D5B-11DE-B2F4-691756D89593";
-
-            /// <summary>
-            /// Check if startPort is available, incrementing and
-            /// checking again if it's in use until a free port is found
-            /// </summary>
-            /// <param name="startPort">The first port to check</param>
-            /// <returns>The first available port</returns>
-            public static ushort FindNextAvailablePort(ushort startPort)
-            {
-                ushort port = startPort;
-                bool isAvailable = true;
-
-                var mutex = new Mutex(false,
-                    string.Concat("Global/", PortReleaseGuid));
-                mutex.WaitOne();
-                try
-                {
-                    IPGlobalProperties ipGlobalProperties =
-                        IPGlobalProperties.GetIPGlobalProperties();
-                    IPEndPoint[] endPoints =
-                        ipGlobalProperties.GetActiveTcpListeners();
-
-                    do
-                    {
-                        if (!isAvailable)
-                        {
-                            port++;
-                            isAvailable = true;
-                        }
-
-                        foreach (IPEndPoint endPoint in endPoints)
-                        {
-                            if (endPoint.Port != port) continue;
-                            isAvailable = false;
-                            break;
-                        }
-
-                    } while (!isAvailable && port < IPEndPoint.MaxPort);
-
-                    if (!isAvailable)
-                        throw new Exception();
-
-                    return port;
-                }
-                finally
-                {
-                    mutex.ReleaseMutex();
-                }
-            }
         }
     }
 }
