@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAServer.cs" />
     <Compile Include="Model\IAAction.cs" />
     <Compile Include="DefaultIntAirActBootstrapper.cs" />
     <Compile Include="Model\IACapability.cs" />
