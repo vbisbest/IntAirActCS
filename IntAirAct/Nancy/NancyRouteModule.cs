@@ -8,9 +8,9 @@ using System.IO;
 
 namespace IntAirAct
 {
-    public class NancyRouteAdapter : NancyModule
+    public class NancyRouteModule : NancyModule
     {
-        public NancyRouteAdapter(IAIntAirAct intairact)
+        public NancyRouteModule(IAIntAirAct intairact)
         {
             foreach (KeyValuePair<IARoute, Action<IARequest, IAResponse>> kvp in intairact.routes)
             {

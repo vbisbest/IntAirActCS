@@ -9,14 +9,14 @@ using Nancy.Routing;
 
 namespace IntAirAct
 {
-    public class DefaultIntAirActBootstrapper : DefaultNancyBootstrapper
+    public class NancyBootstrapper : DefaultNancyBootstrapper
     {
         protected override TinyIoCContainer GetApplicationContainer()
         {
             return TinyIoCContainer.Current;
         }
 
-        protected override void ApplicationStartup(TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
+        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             this.RegisterTypes(container, new[] { new TypeRegistration(typeof(IRouteCache), typeof(RebuildableCache)) });
             base.ApplicationStartup(container, pipelines);
