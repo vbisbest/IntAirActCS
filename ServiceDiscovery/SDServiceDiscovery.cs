@@ -68,9 +68,5 @@ namespace ServiceDiscovery
             logger.TraceEvent(TraceEventType.Stop, 0);
         }
 
-        public void SearchForServices()
-        {
-
-        }
     }
 }
