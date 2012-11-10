@@ -59,6 +59,7 @@ namespace ServiceDiscovery
         public void Stop()
         {
             logger.TraceEvent(TraceEventType.Stop, 0);
+            stopPublishing()
             StopSearching();
         }
 
@@ -184,6 +185,17 @@ namespace ServiceDiscovery
             netServices[key] = netService;
 
             return true;
+        }
+
+        void stopPublishing()
+        {
+            foreach (NetService netService in netServices.Values)
+            {
+                netService.Stop();
+            }
+            netServices.Clear();
+
+            this.IsPublishing = false;
         }
 
         void netServiceBrowserDidFindDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
