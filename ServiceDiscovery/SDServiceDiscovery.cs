@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using Bonjour;
 
 namespace ServiceDiscovery
 {
@@ -17,7 +16,7 @@ namespace ServiceDiscovery
         {
             try
             {
-                new DNSSDService();
+                
             }
             catch
             {
@@ -60,8 +59,6 @@ namespace ServiceDiscovery
 
         public void SearchForServices(String type, String domain)
         {
-            m_browser = m_service.Browse(0, 0, publishRegType, null, m_eventManager);
-            Console.WriteLine(String.Format("m_browser: {0}", m_browser.GetHashCode()));
         }
 
         public void StopSearching()
