@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using ZeroconfService;
 
 namespace ServiceDiscovery
 {
@@ -16,12 +17,13 @@ namespace ServiceDiscovery
         {
             try
             {
-                
+                logger.TraceEvent(TraceEventType.Information, 0, String.Format("Bonjour Version: {0}", NetService.DaemonVersion));
             }
-            catch
+            catch (Exception ex)
             {
-                logger.TraceEvent(TraceEventType.Critical, 0, "Bonjour Service not available");
-                throw new Exception("Bonjour Service not available");
+                String message = ex is DNSServiceException ? "Bonjour is not installed!" : ex.Message;
+                logger.TraceEvent(TraceEventType.Critical, 0, message);
+                throw new Exception(message);
             }
         }
 
