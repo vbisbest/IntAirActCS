@@ -169,6 +169,20 @@ namespace ServiceDiscovery
 
             this.IsPublishing = true;
 
+            NetService netService = new NetService(domain, type, name, port);
+
+            netService.DidPublishService += new NetService.ServicePublished(netServiceDidPublish);
+            netService.DidNotPublishService += new NetService.ServiceNotPublished(netServiceDidNotPublish);
+
+            /* HARDCODE TXT RECORD */
+            System.Collections.Hashtable dict = new System.Collections.Hashtable();
+            dict.Add("txtvers", "1");
+            netService.TXTRecordData = NetService.DataFromTXTRecordDictionary(dict);
+
+            netService.Publish();
+
+            netServices[key] = netService;
+
             return true;
         }
 
@@ -194,6 +208,16 @@ namespace ServiceDiscovery
         void netServiceBrowserDidRemoveService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didRemoveService: {1}", aNetServiceBrowser, netService));
+        }
+
+        void netServiceDidPublish(NetService sender)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didPublish", sender));
+        }
+
+        void netServiceDidNotPublish(NetService sender, DNSServiceException exception)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didNotPublish: {1}", sender, exception));
         }
 
         void netServiceDidNotResolve(NetService sender, DNSServiceException exception)
