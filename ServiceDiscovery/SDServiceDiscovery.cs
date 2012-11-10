@@ -183,6 +183,7 @@ namespace ServiceDiscovery
 
             netService.Publish();
 
+            logger.TraceEvent(TraceEventType.Information, 0, String.Format("Search started for type {0} in domain {1}", type, domain));
 
             return true;
         }
@@ -228,7 +229,7 @@ namespace ServiceDiscovery
 
         void netServiceBrowserDidFindService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
         {
-            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didFindService: {1}", aNetServiceBrowser, netService));
+            logger.TraceEvent(TraceEventType.Information, 0, String.Format("{0}: didFindService: {1}", aNetServiceBrowser, netService));
             netService.DidUpdateTXT += new NetService.ServiceTXTUpdated(netServiceDidUpdateTXTRecordData);
             netService.DidResolveService += new NetService.ServiceResolved(netServiceDidResolveAddress);
             netService.DidNotResolveService += new NetService.ServiceNotResolved(netServiceDidNotResolve);
@@ -257,7 +258,7 @@ namespace ServiceDiscovery
 
         void netServiceDidResolveAddress(NetService sender)
         {
-            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didResolveAddress", sender));
+            logger.TraceEvent(TraceEventType.Information, 0, String.Format("{0}: didResolveAddress", sender));
             SDService service = new SDService(sender.Name, sender.HostName, (ushort) sender.Port, sender.Type, null);
             bool ownService = false;
             foreach (NetService netService in this.netServices.Values)
