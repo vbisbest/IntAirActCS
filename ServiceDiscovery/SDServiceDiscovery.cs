@@ -126,11 +126,30 @@ namespace ServiceDiscovery
         void netServiceBrowserDidFindService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didFindService: {1}", aNetServiceBrowser, netService));
+            netService.DidUpdateTXT += new NetService.ServiceTXTUpdated(netServiceDidUpdateTXTRecordData);
+            netService.DidResolveService += new NetService.ServiceResolved(netServiceDidResolveAddress);
+            netService.DidNotResolveService += new NetService.ServiceNotResolved(netServiceDidNotResolve);
+            netService.ResolveWithTimeout(10);
         }
 
         void netServiceBrowserDidRemoveService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didRemoveService: {1}", aNetServiceBrowser, netService));
+        }
+
+        void netServiceDidNotResolve(NetService sender, DNSServiceException exception)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didNotResolve: {1}", sender, exception));
+        }
+
+        void netServiceDidResolveAddress(NetService sender)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didResolveAddress", sender));
+        }
+
+        void netServiceDidUpdateTXTRecordData(NetService sender)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didUpdateTXTRecordData", sender));
         }
 
         System.ComponentModel.ISynchronizeInvoke mInvokeableObject = null;
