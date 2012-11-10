@@ -151,6 +151,20 @@ namespace ServiceDiscovery
             {
                 type += ".";
             }
+
+            String key = this.keyForPublish(type, domain, port);
+
+            if (this.IsPublishing)
+            {
+                if (netServices.ContainsKey(key))
+                {
+                    logger.TraceEvent(TraceEventType.Warning, 0, String.Format("Already publishing service of type {0} in domain {1} on port {2}", type, domain, port));
+                    return false;
+                }
+            }
+
+            this.IsPublishing = true;
+
             return true;
         }
 
@@ -214,6 +228,11 @@ namespace ServiceDiscovery
         private String keyForSearch(String type, String domain)
         {
             return String.Format("{0}{1}", type, domain);
+        }
+
+        private String keyForPublish(String type, String domain, ushort port)
+        {
+            return String.Format("{0}{1}:{2}", type, domain, port);
         }
 
     }
