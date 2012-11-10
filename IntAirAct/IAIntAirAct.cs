@@ -51,6 +51,11 @@ namespace IntAirAct
             AddMappingForClass(typeof(IADevice), "devices");
             AddMappingForClass(typeof(IAAction), "actions");
             AddMappingForClass(typeof(IACapability), "capabilities");
+
+            this.Route(new IARoute("GET", "/capabilities"), delegate(IARequest request, IAResponse response)
+            {
+                response.RespondWith(this.capabilities, "capabilities");
+            });
         }
 
         ~IAIntAirAct()
@@ -85,11 +90,6 @@ namespace IntAirAct
             {
                 return;
             }
-
-            this.Route(new IARoute("GET", "/capabilities"), delegate(IARequest request, IAResponse response)
-            {
-                response.RespondWith(this.capabilities, "capabilities");
-            });
 
             server.Start();
 
