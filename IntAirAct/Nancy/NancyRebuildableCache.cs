@@ -8,7 +8,7 @@ using Nancy;
 
 namespace IntAirAct
 {
-    public class RebuildableCache : RouteCache
+    public class NancyRebuildableCache : RouteCache
     {
 
         private readonly IModuleKeyGenerator moduleKeyGenerator;
@@ -18,13 +18,13 @@ namespace IntAirAct
         private readonly INancyModuleCatalog moduleCatalog;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RebuildableCache"/> class.
+        /// Initializes a new instance of the <see cref="NancyRebuildableCache"/> class.
         /// </summary>
         /// <param name="moduleCatalog">The <see cref="INancyModuleCatalog"/> that should be used by the cache.</param>
         /// <param name="moduleKeyGenerator">The <see cref="IModuleKeyGenerator"/> used to generate module keys.</param>
         /// <param name="contextFactory">The <see cref="INancyContextFactory"/> that should be used to create a context instance.</param>
         /// <param name="routeSegmentExtractor"> </param>
-        public RebuildableCache(INancyModuleCatalog moduleCatalog, IModuleKeyGenerator moduleKeyGenerator, INancyContextFactory contextFactory) : base(moduleCatalog, moduleKeyGenerator, contextFactory)
+        public NancyRebuildableCache(INancyModuleCatalog moduleCatalog, IModuleKeyGenerator moduleKeyGenerator, INancyContextFactory contextFactory) : base(moduleCatalog, moduleKeyGenerator, contextFactory)
         {
             this.moduleKeyGenerator = moduleKeyGenerator;
             //this.routeSegmentExtractor = routeSegmentExtractor;

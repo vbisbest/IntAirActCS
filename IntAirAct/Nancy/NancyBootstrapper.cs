@@ -18,7 +18,7 @@ namespace IntAirAct
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            this.RegisterTypes(container, new[] { new TypeRegistration(typeof(IRouteCache), typeof(RebuildableCache)) });
+            this.RegisterTypes(container, new[] { new TypeRegistration(typeof(IRouteCache), typeof(NancyRebuildableCache)) });
             base.ApplicationStartup(container, pipelines);
         }
     }

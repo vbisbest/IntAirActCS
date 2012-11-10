@@ -45,7 +45,7 @@ namespace IntAirAct
         public void Route(IARoute route, Action<IARequest, IAResponse> action)
         {
             Routes.Add(route, action);
-            RebuildableCache ir = (RebuildableCache)TinyIoCContainer.Current.Resolve<IRouteCache>();
+            NancyRebuildableCache ir = (NancyRebuildableCache)TinyIoCContainer.Current.Resolve<IRouteCache>();
             ir.RebuildCache();
         }
 
