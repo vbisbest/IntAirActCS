@@ -112,6 +112,8 @@ namespace ServiceDiscovery
                 netServiceBrowser.Stop();
             }
             netServiceBrowsers.Clear();
+
+            this.IsSearching = false;
         }
 
         public void StopSearchingForServices(String type)
@@ -128,6 +130,8 @@ namespace ServiceDiscovery
                 netServiceBrowsers[key].Stop();
                 netServiceBrowsers.Remove(key);
             }
+
+            this.IsSearching = (netServiceBrowsers.Count != 0);
         }
 
         public bool publishService(String type, ushort port)
