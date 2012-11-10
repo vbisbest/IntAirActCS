@@ -12,6 +12,7 @@ namespace ServiceDiscovery
         private static TraceSource logger = new TraceSource("ServiceDiscovery");
 
         public bool IsSearching { get; private set; }
+        public bool IsPublishing { get; private set; }
 
         private Dictionary<String, NetServiceBrowser> netServiceBrowsers;
         private Dictionary<String, NetService> netServices;
