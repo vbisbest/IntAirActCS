@@ -22,5 +22,10 @@ namespace ServiceDiscovery
             this.TXTRecord = TXTRecord;
         }
 
+        public override string ToString()
+        {
+            return String.Format("SDService[Name: {0}, Hostname: {1}, Port: {2}, Type: {3}, TXTRecord: {4}]", Name, Hostname, Port, Type, TXTRecord);
+        }
+
     }
 }
