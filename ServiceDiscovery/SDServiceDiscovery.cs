@@ -14,6 +14,7 @@ namespace ServiceDiscovery
         public bool IsSearching { get; private set; }
 
         private Dictionary<String, NetServiceBrowser> netServiceBrowsers;
+        private Dictionary<String, NetService> netServices;
         private bool isDisposed = false;
 
         public SDServiceDiscovery()
@@ -145,6 +146,17 @@ namespace ServiceDiscovery
         void netServiceDidResolveAddress(NetService sender)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didResolveAddress", sender));
+            SDService service = new SDService(sender.Name, sender.HostName, (ushort) sender.Port, sender.Type, null);
+            bool ownService = false;
+            foreach (NetService netService in this.netServices.Values)
+            {
+                if (netService.Name.Equals(sender.Name))
+                {
+                    ownService = true;
+                    break;
+                }
+            }
+            //TODO: Send out Notification of resolved Service
         }
 
         void netServiceDidUpdateTXTRecordData(NetService sender)
