@@ -27,5 +27,31 @@ namespace ServiceDiscovery
             return String.Format("SDService[Name: {0}, Hostname: {1}, Port: {2}, Type: {3}, TXTRecord: {4}]", Name, Hostname, Port, Type, TXTRecord);
         }
 
+        public override bool Equals(System.Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            SDService p = obj as SDService;
+            if ((System.Object)p == null)
+            {
+                return false;
+            }
+
+            if (this.Name.Equals(p.Name))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode() ^ 7;
+        }
+
     }
 }
