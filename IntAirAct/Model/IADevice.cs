@@ -17,7 +17,7 @@ namespace IntAirAct
 
         public override string ToString()
         {
-            return String.Format("Device[name: {0}, host: {1}, port: {2}, capabilities: {3}]", name, host, port, this.SupportedRoutes);
+            return String.Format("IADevice[name: {0}, host: {1}, port: {2}, capabilities: {3}]", name, host, port, this.SupportedRoutes);
         }
     }
 }

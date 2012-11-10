@@ -17,7 +17,7 @@ namespace IntAirAct
 
         public override string ToString()
         {
-            return String.Format("Action[action: {0}, parameters: {1}]", action, parameters);
+            return String.Format("IAAction[action: {0}, parameters: {1}]", action, parameters);
         }
     }
 }
