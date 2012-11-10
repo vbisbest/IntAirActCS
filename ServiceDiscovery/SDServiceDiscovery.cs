@@ -198,6 +198,24 @@ namespace ServiceDiscovery
             this.IsPublishing = false;
         }
 
+        void stopPublishingService(String type, ushort port)
+        {
+            this.stopPublishingService(type, port, "");
+        }
+
+        void stopPublishingService(String type, ushort port, String domain)
+        {
+            String key = this.keyForPublish(type, domain, port);
+
+            if (netServices.ContainsKey(key))
+            {
+                netServices[key].Stop();
+                netServices.Remove(key);
+            }
+
+            this.IsPublishing = (netServices.Count != 0);
+        }
+
         void netServiceBrowserDidFindDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didFindDomain: {1}", aNetServiceBrowser, domainString));
