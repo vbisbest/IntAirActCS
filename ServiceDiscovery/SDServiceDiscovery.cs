@@ -113,6 +113,22 @@ namespace ServiceDiscovery
             netServiceBrowsers.Clear();
         }
 
+        public void StopSearchingForServices(String type)
+        {
+            this.StopSearchingForServices(type, "");
+        }
+
+        public void StopSearchingForServices(String type, String domain)
+        {
+            String key = this.keyForSearch(type, domain);
+
+            if (netServiceBrowsers.ContainsKey(key))
+            {
+                netServiceBrowsers[key].Stop();
+                netServiceBrowsers.Remove(key);
+            }
+        }
+
         void netServiceBrowserDidFindDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didFindDomain: {1}", aNetServiceBrowser, domainString));
