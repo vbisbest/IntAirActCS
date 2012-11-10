@@ -129,6 +129,26 @@ namespace ServiceDiscovery
             }
         }
 
+        public bool publishService(String type, ushort port)
+        {
+            return this.publishService(type, port, "");
+        }
+
+        public bool publishService(String type, ushort port, String name)
+        {
+            return this.publishService(type, port, name, "");
+        }
+
+        public bool publishService(String type, ushort port, String name, String domain)
+        {
+            return this.publishService(type, port, name, domain, new Dictionary<string,string>());
+        }
+
+        public bool publishService(String type, ushort port, String name, String domain, Dictionary<String, String> TXTRecord)
+        {
+            return true;
+        }
+
         void netServiceBrowserDidFindDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didFindDomain: {1}", aNetServiceBrowser, domainString));
