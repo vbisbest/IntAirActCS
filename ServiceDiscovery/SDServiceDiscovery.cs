@@ -146,6 +146,10 @@ namespace ServiceDiscovery
 
         public bool publishService(String type, ushort port, String name, String domain, Dictionary<String, String> TXTRecord)
         {
+            if (!type.EndsWith("."))
+            {
+                type += ".";
+            }
             return true;
         }
 
