@@ -1,0 +1,3 @@
+[submodule "Frameworks/ZeroConfigNetServices"]
+	path = Frameworks/ZeroConfigNetServices
+	url = https://github.com/ase-lab/ZeroConfigNetServices.git
