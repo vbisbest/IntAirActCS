@@ -95,12 +95,10 @@ namespace ServiceDiscovery
             netServiceBrowser.DidRemoveDomain += new NetServiceBrowser.DomainRemoved(netServiceBrowserDidRemoveDomain);
             netServiceBrowser.DidFindService += new NetServiceBrowser.ServiceFound(netServiceBrowserDidFindService);
             netServiceBrowser.DidRemoveService += new NetServiceBrowser.ServiceRemoved(netServiceBrowserDidRemoveService);
-            
-            netServiceBrowser.SearchForRegistrationDomains();
-            
-            netServiceBrowser.SearchForService(type, domain);
 
             netServiceBrowsers[key] = netServiceBrowser;
+            
+            netServiceBrowser.SearchForService(type, domain);
 
             logger.TraceEvent(TraceEventType.Information, 0, String.Format("Search started for type {0} in domain {1}", type, domain));
 
@@ -181,9 +179,10 @@ namespace ServiceDiscovery
             dict.Add("txtvers", "1");
             netService.TXTRecordData = NetService.DataFromTXTRecordDictionary(dict);
 
+            netServices[key] = netService;
+
             netService.Publish();
 
-            netServices[key] = netService;
 
             return true;
         }
