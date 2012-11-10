@@ -20,7 +20,6 @@ namespace IntAirAct
     {
         public Dictionary<IARoute, Action<IARequest, IAResponse>> routes { get; private set; }
         public HashSet<IACapability> capabilities { get; private set; }
-        public string defaultMimeType { get; set; }
         public List<IADevice> devices { get; private set; }
         public event ServiceUpdateEventHandler deviceUpdateEventHandler;
         public bool isRunning { get; private set; }
@@ -46,7 +45,6 @@ namespace IntAirAct
         public IAIntAirAct(IAServer server)
         {
             capabilities = new HashSet<IACapability>();
-            defaultMimeType = "application/json";
             isRunning = false;
             port = 0;
             routes = new Dictionary<IARoute, Action<IARequest, IAResponse>>();
