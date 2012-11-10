@@ -1,16 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-
-using System.Threading;
-using System.Net.NetworkInformation;
 using ZeroConf;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using RestSharp;
 using TinyIoC;
-using Nancy.Routing;
 
 namespace IntAirAct
 {
