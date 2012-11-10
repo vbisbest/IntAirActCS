@@ -20,7 +20,7 @@ namespace IntAirAct
         public NancyServerAdapter(Owin.AppDelegate app)
         {
             this.Routes = new Dictionary<IARoute, Action<IARequest, IAResponse>>();
-            this.app = Gate.Adapters.Nancy.NancyAdapter.App();
+            this.app = app;
             this.Port = 0;
         }
 
