@@ -107,7 +107,6 @@ namespace IntAirAct
             }
 
             isRunning = true;
-            TinyIoC.TinyIoCContainer.Current.Register<IAIntAirAct>(this);
         }
 
         public void Stop()
