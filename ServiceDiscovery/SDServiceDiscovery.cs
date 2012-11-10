@@ -87,7 +87,7 @@ namespace ServiceDiscovery
             NetServiceBrowser netServiceBrowser = new NetServiceBrowser();
             netServiceBrowser.InvokeableObject = this.InvokeableObject;
             netServiceBrowser.DidFindDomain += new NetServiceBrowser.DomainFound(netServiceBrowserDidFindDomain);
-            netServiceBrowser.DidRemoveDomain += new NetServiceBrowser.DomainFound(netServiceBrowserDidRemoveDomain);
+            netServiceBrowser.DidRemoveDomain += new NetServiceBrowser.DomainRemoved(netServiceBrowserDidRemoveDomain);
             netServiceBrowser.DidFindService += new NetServiceBrowser.ServiceFound(netServiceBrowserDidFindService);
             netServiceBrowser.DidRemoveService += new NetServiceBrowser.ServiceRemoved(netServiceBrowserDidRemoveService);
             
