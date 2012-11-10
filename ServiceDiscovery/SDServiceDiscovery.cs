@@ -56,7 +56,7 @@ namespace ServiceDiscovery
 
         public void SearchForServices(String type)
         {
-            SearchForServices(type, "local.");
+            SearchForServices(type, "");
         }
 
         public void SearchForServices(String type, String domain)
