@@ -32,6 +32,7 @@ namespace ServiceDiscovery
             }
 
             netServiceBrowsers = new Dictionary<string, NetServiceBrowser>();
+            netServices = new Dictionary<string, NetService>();
         }
 
         ~SDServiceDiscovery()
