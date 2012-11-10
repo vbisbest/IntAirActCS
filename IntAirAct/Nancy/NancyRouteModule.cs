@@ -30,6 +30,11 @@ namespace IntAirAct
                         writer.Write(iaResponse.Body);
                         writer.Flush();
                     };
+                    response.Headers = iaResponse.Metadata;
+                    if (iaResponse.Metadata["Content-Type"] != null)
+                    {
+                        response.ContentType = iaResponse.Metadata["Content-Type"];
+                    }
                     return response;
                 };
             }
