@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
 using IntAirAct;
+using TinyIoC;
 
 namespace IntAirActImageWindows
 {
@@ -19,11 +20,15 @@ namespace IntAirActImageWindows
             Application.SetCompatibleTextRenderingDefault(false);
             Form form = new Form1();
 
+            // don't mess with the order here, TinyIoC is very picky about it
+            TinyIoCContainer container = TinyIoCContainer.Current;
+            NancyServerAdapter adapter = new NancyServerAdapter();
             Owin.AppDelegate app = Gate.Adapters.Nancy.NancyAdapter.App();
-            NancyServerAdapter adapter = new NancyServerAdapter(app);
+            adapter.App = app;
+            container.Register<NancyServerAdapter>(adapter);
             IAIntAirAct ia = new IAIntAirAct(adapter);
+
             ia.AddMappingForClass(typeof(Image), "images");
-            //ia.RouteClass(typeof(Image), "/images/:identifier");
             ia.capabilities.Add(new IACapability("PUT /action/displayImage"));
             ia.Start();
             

@@ -12,16 +12,25 @@ namespace IntAirAct
 {
     public class NancyServerAdapter : IAServer
     {
+        public Dictionary<IARoute, Action<IARequest, IAResponse>> Routes { get; set; }
+        public Owin.AppDelegate App { get; set; }
         public ushort Port { get; set; }
-        public Dictionary<IARoute, Action<IARequest, IAResponse>> Routes { get; private set; }
-        private Owin.AppDelegate app;
         private IDisposable server;
+        private NancyRebuildableCache cache;
 
-        public NancyServerAdapter(Owin.AppDelegate app)
+        public NancyServerAdapter()
         {
             this.Routes = new Dictionary<IARoute, Action<IARequest, IAResponse>>();
-            this.app = app;
             this.Port = 0;
+        }
+
+        private NancyRebuildableCache resolveCache()
+        {
+            if (cache == null)
+            {
+                cache = TinyIoCContainer.Current.Resolve<IRouteCache>() as NancyRebuildableCache;
+            }
+            return cache;
         }
 
         public void Start()
@@ -31,7 +40,7 @@ namespace IntAirAct
                 Port = TcpPort.FindNextAvailablePort(12345);
             }
 
-            server = new Gate.Hosts.Firefly.ServerFactory().Create(app, Port);
+            server = new Gate.Hosts.Firefly.ServerFactory().Create(App, Port);
         }
 
         public void Stop()
@@ -45,8 +54,7 @@ namespace IntAirAct
         public void Route(IARoute route, Action<IARequest, IAResponse> action)
         {
             Routes.Add(route, action);
-            NancyRebuildableCache ir = (NancyRebuildableCache)TinyIoCContainer.Current.Resolve<IRouteCache>();
-            ir.RebuildCache();
+            resolveCache().RebuildCache();
         }
 
         public static class TcpPort

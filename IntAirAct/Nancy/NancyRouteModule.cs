@@ -10,9 +10,9 @@ namespace IntAirAct
 {
     public class NancyRouteModule : NancyModule
     {
-        public NancyRouteModule(IAIntAirAct intairact)
+        public NancyRouteModule(NancyServerAdapter adapter)
         {
-            foreach (KeyValuePair<IARoute, Action<IARequest, IAResponse>> kvp in intairact.routes)
+            foreach (KeyValuePair<IARoute, Action<IARequest, IAResponse>> kvp in adapter.Routes)
             {
                 IARoute route = kvp.Key;
                 Action<IARequest, IAResponse> action = kvp.Value;
