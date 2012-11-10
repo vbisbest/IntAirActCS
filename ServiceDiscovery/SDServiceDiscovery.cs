@@ -59,7 +59,7 @@ namespace ServiceDiscovery
         public void Stop()
         {
             logger.TraceEvent(TraceEventType.Stop, 0);
-            stopPublishing()
+            stopPublishing();
             StopSearching();
         }
 
