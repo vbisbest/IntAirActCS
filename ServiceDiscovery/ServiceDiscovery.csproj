@@ -44,6 +44,12 @@
     <Compile Include="SDServiceDiscovery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Frameworks\ZeroConfigNetServices\ZeroconfService\ZeroconfService.csproj">
+      <Project>{AD5CF7A9-93C4-48DD-ACD8-38DD434F1491}</Project>
+      <Name>ZeroconfService</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
