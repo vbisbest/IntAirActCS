@@ -11,6 +11,9 @@ namespace ServiceDiscovery
     {
         private static TraceSource logger = new TraceSource("ServiceDiscovery");
 
+        public bool IsSearching { get; private set; }
+
+        private Dictionary<String, NetServiceBrowser> netServiceBrowsers;
         private bool isDisposed = false;
 
         public SDServiceDiscovery()
@@ -25,6 +28,8 @@ namespace ServiceDiscovery
                 logger.TraceEvent(TraceEventType.Critical, 0, message);
                 throw new Exception(message);
             }
+
+            netServiceBrowsers = new Dictionary<string, NetServiceBrowser>();
         }
 
         ~SDServiceDiscovery()
@@ -54,18 +59,62 @@ namespace ServiceDiscovery
             StopSearching();
         }
 
-        public void SearchForServices(String type)
+        public bool SearchForServices(String type)
         {
-            SearchForServices(type, "");
+            return SearchForServices(type, "");
         }
 
-        public void SearchForServices(String type, String domain)
+        public bool SearchForServices(String type, String domain)
         {
+            if (!type.EndsWith("."))
+            {
+                type += ".";
+            }
+
+            String key = this.keyForSearch(type, domain);
+
+            if (this.IsSearching)
+            {
+                if (netServiceBrowsers.ContainsKey(key))
+                {
+                    logger.TraceEvent(TraceEventType.Warning, 0, String.Format("Already searching for type {0} in domain {1}", type, domain));
+                    return false;
+                }
+            }
+
+            this.IsSearching = true;
+
+            NetServiceBrowser netServiceBrowser = new NetServiceBrowser();
+            netServiceBrowser.InvokeableObject = this.InvokeableObject;
+            netServiceBrowsers[key] = netServiceBrowser;
+            netServiceBrowser.SearchForService(type, domain);
+
+            logger.TraceEvent(TraceEventType.Information, 0, String.Format("Search started for type {0} in domain {1}", type, domain));
+
+            return true;
         }
 
         public void StopSearching()
         {
             logger.TraceEvent(TraceEventType.Stop, 0);
+
+            foreach (NetServiceBrowser netServiceBrowser in netServiceBrowsers.Values)
+            {
+                netServiceBrowser.Stop();
+            }
+            netServiceBrowsers.Clear();
+        }
+
+        System.ComponentModel.ISynchronizeInvoke mInvokeableObject = null;
+        public System.ComponentModel.ISynchronizeInvoke InvokeableObject
+        {
+            get { return mInvokeableObject; }
+            set { mInvokeableObject = value; }
+        }
+
+        private String keyForSearch(String type, String domain)
+        {
+            return String.Format("{0}{1}", type, domain);
         }
 
     }
