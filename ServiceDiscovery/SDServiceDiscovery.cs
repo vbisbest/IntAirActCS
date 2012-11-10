@@ -86,8 +86,16 @@ namespace ServiceDiscovery
 
             NetServiceBrowser netServiceBrowser = new NetServiceBrowser();
             netServiceBrowser.InvokeableObject = this.InvokeableObject;
-            netServiceBrowsers[key] = netServiceBrowser;
+            netServiceBrowser.DidFindDomain += new NetServiceBrowser.DomainFound(netServiceBrowserDidFindDomain);
+            netServiceBrowser.DidRemoveDomain += new NetServiceBrowser.DomainFound(netServiceBrowserDidRemoveDomain);
+            netServiceBrowser.DidFindService += new NetServiceBrowser.ServiceFound(netServiceBrowserDidFindService);
+            netServiceBrowser.DidRemoveService += new NetServiceBrowser.ServiceRemoved(netServiceBrowserDidRemoveService);
+            
+            netServiceBrowser.SearchForRegistrationDomains();
+            
             netServiceBrowser.SearchForService(type, domain);
+
+            netServiceBrowsers[key] = netServiceBrowser;
 
             logger.TraceEvent(TraceEventType.Information, 0, String.Format("Search started for type {0} in domain {1}", type, domain));
 
@@ -103,6 +111,26 @@ namespace ServiceDiscovery
                 netServiceBrowser.Stop();
             }
             netServiceBrowsers.Clear();
+        }
+
+        void netServiceBrowserDidFindDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didFindDomain: {1}", aNetServiceBrowser, domainString));
+        }
+
+        void netServiceBrowserDidRemoveDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didRemoveDomain: {1}", aNetServiceBrowser, domainString));
+        }
+
+        void netServiceBrowserDidFindService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didFindService: {1}", aNetServiceBrowser, netService));
+        }
+
+        void netServiceBrowserDidRemoveService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
+        {
+            logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didRemoveService: {1}", aNetServiceBrowser, netService));
         }
 
         System.ComponentModel.ISynchronizeInvoke mInvokeableObject = null;
