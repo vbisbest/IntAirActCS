@@ -18,7 +18,6 @@ namespace IntAirAct
 
     public class IAIntAirAct : IDisposable
     {
-        public Dictionary<IARoute, Action<IARequest, IAResponse>> routes { get; private set; }
         public HashSet<IACapability> capabilities { get; private set; }
         public List<IADevice> devices { get; private set; }
         public event ServiceUpdateEventHandler deviceUpdateEventHandler;
@@ -47,7 +46,6 @@ namespace IntAirAct
             capabilities = new HashSet<IACapability>();
             isRunning = false;
             port = 0;
-            routes = new Dictionary<IARoute, Action<IARequest, IAResponse>>();
             this.server = server;
 
             AddMappingForClass(typeof(IADevice), "devices");
@@ -184,9 +182,7 @@ namespace IntAirAct
 
         public void Route(IARoute route, Action<IARequest, IAResponse> action)
         {
-            routes.Add(route, action);
-            NancyRebuildableCache ir = (NancyRebuildableCache)TinyIoCContainer.Current.Resolve<IRouteCache>();
-            ir.RebuildCache();
+            server.Route(route, action);
         }
     }
 }
