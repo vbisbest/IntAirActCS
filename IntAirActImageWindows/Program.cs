@@ -30,7 +30,6 @@ namespace IntAirActImageWindows
             IAIntAirAct ia = new IAIntAirAct(adapter);
 
             ia.AddMappingForClass(typeof(Image), "images");
-            ia.capabilities.Add(new IACapability("PUT /action/displayImage"));
             ia.Start();
             
             Application.Run(form);

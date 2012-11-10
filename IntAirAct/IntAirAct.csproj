@@ -70,7 +70,6 @@
     <Compile Include="IAServer.cs" />
     <Compile Include="Model\IAAction.cs" />
     <Compile Include="Nancy\NancyBootstrapper.cs" />
-    <Compile Include="Model\IACapability.cs" />
     <Compile Include="IntAirActException.cs" />
     <Compile Include="Model\IADevice.cs" />
     <Compile Include="IAIntAirAct.cs" />
