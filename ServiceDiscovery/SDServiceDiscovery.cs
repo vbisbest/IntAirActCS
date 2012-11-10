@@ -57,6 +57,7 @@ namespace ServiceDiscovery
             
         public void Stop()
         {
+            logger.TraceEvent(TraceEventType.Stop, 0);
             StopSearching();
         }
 
@@ -105,8 +106,6 @@ namespace ServiceDiscovery
 
         public void StopSearching()
         {
-            logger.TraceEvent(TraceEventType.Stop, 0);
-
             foreach (NetServiceBrowser netServiceBrowser in netServiceBrowsers.Values)
             {
                 netServiceBrowser.Stop();
