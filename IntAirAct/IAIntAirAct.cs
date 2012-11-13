@@ -24,7 +24,20 @@ namespace IntAirAct
                 return new IADevice(service.name, service.host, service.port);
             }
         }
-        public ushort port { get; set; }
+
+        public ushort port
+        {
+            get
+            {
+                return this.server.Port;
+            }
+
+            set
+            {
+                this.server.Port = value;
+            }
+        }
+
         public string type { get; set; }
 
         private ZCZeroConf zeroConf = new ZCZeroConf();
@@ -36,8 +49,8 @@ namespace IntAirAct
         {
             SupportedRoutes = new HashSet<IARoute>();
             isRunning = false;
-            port = 0;
             this.server = server;
+            port = 0;
 
             AddMappingForClass(typeof(IADevice), "devices");
             AddMappingForClass(typeof(IAAction), "actions");
