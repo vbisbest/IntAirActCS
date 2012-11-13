@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using TinyIoC;
 using ServiceDiscovery;
+using System.Net;
 
 namespace IntAirAct
 {
@@ -197,9 +198,22 @@ namespace IntAirAct
             }
             else
             {
-                IADevice device = new IADevice(service.Name, service.Hostname, service.Port, null);
-                this.devices.Add(device);
-                OnDeviceFound(device, false);
+                RestClient client = new RestClient(String.Format("http://{0}:{1}", service.Hostname, service.Port));
+                RestRequest request = new RestRequest("/routes", Method.GET);
+                client.ExecuteAsync(request, response =>
+                {
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        Console.WriteLine(response.Content);
+                        IADevice device = new IADevice(service.Name, service.Hostname, service.Port, null);
+                        this.devices.Add(device);
+                        OnDeviceFound(device, false);
+                    }
+                    else
+                    {
+                        Console.WriteLine(String.Format("An error ocurred trying to request routes from {0}", client.BaseUrl));
+                    }
+                });
             }
         }
 
