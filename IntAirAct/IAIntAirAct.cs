@@ -16,6 +16,7 @@ namespace IntAirAct
     {
         public bool IsRunning { get; private set; }
         public IADevice OwnDevice { get; private set; }
+        public HashSet<IARoute> SupportedRoutes { get; set; }
         public event DeviceFoundHandler DeviceFound;
         public event DeviceLostHandler DeviceLost;
 
@@ -24,15 +25,15 @@ namespace IntAirAct
         private IAServer server;
         private SDServiceDiscovery serviceDiscovery;
         private List<IADevice> devices = new List<IADevice>();
-        private HashSet<IARoute> supportedRoutes = new HashSet<IARoute>();
 
-        #region Constructor, Deconstructor, Dispose
+        #region Constructor, Deconstructor
 
         public IAIntAirAct(IAServer server, SDServiceDiscovery serviceDiscovery)
         {
             this.server = server;
             this.serviceDiscovery = serviceDiscovery;
             this.IsRunning = false;
+            this.SupportedRoutes = new HashSet<IARoute>();
             port = 0;
 
             this.Setup();
@@ -126,14 +127,6 @@ namespace IntAirAct
             set
             {
                 this.server.Port = value;
-            }
-        }
-
-        public HashSet<IARoute> SupportedRoutes
-        {
-            get
-            {
-                return new HashSet<IARoute>(this.supportedRoutes);
             }
         }
 
