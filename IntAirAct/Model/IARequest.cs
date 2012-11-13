@@ -44,27 +44,6 @@ namespace IntAirAct
                 && (this.Body == request.Body);
         }
 
-        public override bool Equals(System.Object obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            IARequest p = obj as IARequest;
-            if ((System.Object)p == null)
-            {
-                return false;
-            }
-
-            if (this.Route.Equals(p.Route) && this.Metadata.Equals(p.Metadata) && this.Parameters.Equals(p.Parameters) && this.Body.Equals(p.Body))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         public override int GetHashCode()
         {
             int hash = 89;
