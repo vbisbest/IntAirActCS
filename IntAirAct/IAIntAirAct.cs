@@ -45,14 +45,7 @@ namespace IntAirAct
             isRunning = false;
             port = 0;
 
-            AddMappingForClass(typeof(IADevice), "devices");
-            AddMappingForClass(typeof(IAAction), "actions");
-            AddMappingForClass(typeof(IARoute), "capabilities");
-
-            this.Route(new IARoute("GET", "/routes"), delegate(IARequest request, IAResponse response)
-            {
-                response.RespondWith(this.SupportedRoutes, "routes");
-            });
+            this.Setup();
         }
 
         ~IAIntAirAct()
@@ -148,6 +141,37 @@ namespace IntAirAct
         {
             SupportedRoutes.Add(route);
             server.Route(route, action);
+        }
+
+        private void Setup()
+        {
+            AddMappingForClass(typeof(IADevice), "devices");
+            AddMappingForClass(typeof(IAAction), "actions");
+            AddMappingForClass(typeof(IARoute), "capabilities");
+
+            serviceDiscovery.ServiceFound += new ServiceFoundHandler(this.OnServiceFound);
+            serviceDiscovery.ServiceLost += new ServiceLostHandler(this.OnServiceLost);
+            serviceDiscovery.ServiceDiscoveryError += new ServiceDiscoveryErrorHandler(this.OnServiceDiscoveryError);
+
+            this.Route(new IARoute("GET", "/routes"), delegate(IARequest request, IAResponse response)
+            {
+                response.RespondWith(this.SupportedRoutes, "routes");
+            });
+        }
+
+        private void OnServiceFound(SDService service, bool ownService)
+        {
+
+        }
+
+        private void OnServiceLost(SDService service)
+        {
+
+        }
+
+        private void OnServiceDiscoveryError(EventArgs eventArg)
+        {
+
         }
     }
 }
