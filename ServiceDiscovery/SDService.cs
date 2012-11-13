@@ -27,30 +27,27 @@ namespace ServiceDiscovery
             return String.Format("SDService[Name: {0}, Hostname: {1}, Port: {2}, Type: {3}, TXTRecord: {4}]", Name, Hostname, Port, Type, TXTRecord);
         }
 
-        public override bool Equals(System.Object obj)
+        public override bool Equals(Object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            SDService p = obj as SDService;
-            if ((System.Object)p == null)
-            {
-                return false;
-            }
-
-            if (this.Name.Equals(p.Name))
+            if (this == obj)
             {
                 return true;
             }
 
-            return false;
+            if (obj == null || (obj as SDService) == null)
+            {
+                return false;
+            }
+
+            SDService response = (SDService)obj;
+            return (this.Name == response.Name || (this.Name != null && this.Name.Equals(response.Name)));
         }
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() ^ 7;
+            int hash = 77;
+            hash = hash * 31 + (this.Name == null ? 0 : this.Name.GetHashCode());
+            return hash;
         }
 
     }
