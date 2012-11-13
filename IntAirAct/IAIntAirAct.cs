@@ -87,7 +87,7 @@ namespace IntAirAct
 
             server.Start();
 
-            serviceDiscovery.publishService("_intairact._tcp.", port);
+            serviceDiscovery.PublishService("_intairact._tcp.", port);
             serviceDiscovery.SearchForServices("_intairact._tcp.");
 
             isRunning = true;

@@ -67,7 +67,7 @@ namespace ServiceDiscovery
         public void Stop()
         {
             logger.TraceEvent(TraceEventType.Stop, 0);
-            stopPublishing();
+            StopPublishing();
             StopSearching();
         }
 
@@ -83,7 +83,7 @@ namespace ServiceDiscovery
                 type += ".";
             }
 
-            String key = this.keyForSearch(type, domain);
+            String key = this.KeyForSearch(type, domain);
 
             if (this.IsSearching)
             {
@@ -98,10 +98,10 @@ namespace ServiceDiscovery
 
             NetServiceBrowser netServiceBrowser = new NetServiceBrowser();
             netServiceBrowser.InvokeableObject = this.InvokeableObject;
-            netServiceBrowser.DidFindDomain += new NetServiceBrowser.DomainFound(netServiceBrowserDidFindDomain);
-            netServiceBrowser.DidRemoveDomain += new NetServiceBrowser.DomainRemoved(netServiceBrowserDidRemoveDomain);
-            netServiceBrowser.DidFindService += new NetServiceBrowser.ServiceFound(netServiceBrowserDidFindService);
-            netServiceBrowser.DidRemoveService += new NetServiceBrowser.ServiceRemoved(netServiceBrowserDidRemoveService);
+            netServiceBrowser.DidFindDomain += new NetServiceBrowser.DomainFound(NetServiceBrowserDidFindDomain);
+            netServiceBrowser.DidRemoveDomain += new NetServiceBrowser.DomainRemoved(NetServiceBrowserDidRemoveDomain);
+            netServiceBrowser.DidFindService += new NetServiceBrowser.ServiceFound(NetServiceBrowserDidFindService);
+            netServiceBrowser.DidRemoveService += new NetServiceBrowser.ServiceRemoved(NetServiceBrowserDidRemoveService);
 
             netServiceBrowsers[key] = netServiceBrowser;
             
@@ -130,7 +130,7 @@ namespace ServiceDiscovery
 
         public void StopSearchingForServices(String type, String domain)
         {
-            String key = this.keyForSearch(type, domain);
+            String key = this.KeyForSearch(type, domain);
 
             if (netServiceBrowsers.ContainsKey(key))
             {
@@ -141,29 +141,29 @@ namespace ServiceDiscovery
             this.IsSearching = (netServiceBrowsers.Count != 0);
         }
 
-        public bool publishService(String type, ushort port)
+        public bool PublishService(String type, ushort port)
         {
-            return this.publishService(type, port, "");
+            return this.PublishService(type, port, "");
         }
 
-        public bool publishService(String type, ushort port, String name)
+        public bool PublishService(String type, ushort port, String name)
         {
-            return this.publishService(type, port, name, "");
+            return this.PublishService(type, port, name, "");
         }
 
-        public bool publishService(String type, ushort port, String name, String domain)
+        public bool PublishService(String type, ushort port, String name, String domain)
         {
-            return this.publishService(type, port, name, domain, new Dictionary<string,string>());
+            return this.PublishService(type, port, name, domain, new Dictionary<string,string>());
         }
 
-        public bool publishService(String type, ushort port, String name, String domain, Dictionary<String, String> TXTRecord)
+        public bool PublishService(String type, ushort port, String name, String domain, Dictionary<String, String> TXTRecord)
         {
             if (!type.EndsWith("."))
             {
                 type += ".";
             }
 
-            String key = this.keyForPublish(type, domain, port);
+            String key = this.KeyForPublish(type, domain, port);
 
             if (this.IsPublishing)
             {
@@ -178,8 +178,8 @@ namespace ServiceDiscovery
 
             NetService netService = new NetService(domain, type, name, port);
 
-            netService.DidPublishService += new NetService.ServicePublished(netServiceDidPublish);
-            netService.DidNotPublishService += new NetService.ServiceNotPublished(netServiceDidNotPublish);
+            netService.DidPublishService += new NetService.ServicePublished(NetServiceDidPublish);
+            netService.DidNotPublishService += new NetService.ServiceNotPublished(NetServiceDidNotPublish);
 
             /* HARDCODE TXT RECORD */
             System.Collections.Hashtable dict = new System.Collections.Hashtable();
@@ -195,7 +195,7 @@ namespace ServiceDiscovery
             return true;
         }
 
-        void stopPublishing()
+        public void StopPublishing()
         {
             foreach (NetService netService in netServices.Values)
             {
@@ -206,14 +206,14 @@ namespace ServiceDiscovery
             this.IsPublishing = false;
         }
 
-        void stopPublishingService(String type, ushort port)
+        public void StopPublishingService(String type, ushort port)
         {
-            this.stopPublishingService(type, port, "");
+            this.StopPublishingService(type, port, "");
         }
 
-        void stopPublishingService(String type, ushort port, String domain)
+        public void StopPublishingService(String type, ushort port, String domain)
         {
-            String key = this.keyForPublish(type, domain, port);
+            String key = this.KeyForPublish(type, domain, port);
 
             if (netServices.ContainsKey(key))
             {
@@ -224,46 +224,46 @@ namespace ServiceDiscovery
             this.IsPublishing = (netServices.Count != 0);
         }
 
-        void netServiceBrowserDidFindDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
+        protected void NetServiceBrowserDidFindDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didFindDomain: {1}", aNetServiceBrowser, domainString));
         }
 
-        void netServiceBrowserDidRemoveDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
+        protected void NetServiceBrowserDidRemoveDomain(NetServiceBrowser aNetServiceBrowser, string domainString, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didRemoveDomain: {1}", aNetServiceBrowser, domainString));
         }
 
-        void netServiceBrowserDidFindService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
+        protected void NetServiceBrowserDidFindService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Information, 0, String.Format("{0}: didFindService: {1}", aNetServiceBrowser, netService));
-            netService.DidUpdateTXT += new NetService.ServiceTXTUpdated(netServiceDidUpdateTXTRecordData);
-            netService.DidResolveService += new NetService.ServiceResolved(netServiceDidResolveAddress);
-            netService.DidNotResolveService += new NetService.ServiceNotResolved(netServiceDidNotResolve);
+            netService.DidUpdateTXT += new NetService.ServiceTXTUpdated(NetServiceDidUpdateTXTRecordData);
+            netService.DidResolveService += new NetService.ServiceResolved(NetServiceDidResolveAddress);
+            netService.DidNotResolveService += new NetService.ServiceNotResolved(NetServiceDidNotResolve);
             netService.ResolveWithTimeout(10);
         }
 
-        void netServiceBrowserDidRemoveService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
+        protected void NetServiceBrowserDidRemoveService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didRemoveService: {1}", aNetServiceBrowser, netService));
         }
 
-        void netServiceDidPublish(NetService sender)
+        protected void NetServiceDidPublish(NetService sender)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didPublish", sender));
         }
 
-        void netServiceDidNotPublish(NetService sender, DNSServiceException exception)
+        protected void NetServiceDidNotPublish(NetService sender, DNSServiceException exception)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didNotPublish: {1}", sender, exception));
         }
 
-        void netServiceDidNotResolve(NetService sender, DNSServiceException exception)
+        protected void NetServiceDidNotResolve(NetService sender, DNSServiceException exception)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didNotResolve: {1}", sender, exception));
         }
 
-        void netServiceDidResolveAddress(NetService sender)
+        protected void NetServiceDidResolveAddress(NetService sender)
         {
             logger.TraceEvent(TraceEventType.Information, 0, String.Format("{0}: didResolveAddress", sender));
             SDService service = new SDService(sender.Name, sender.HostName, (ushort) sender.Port, sender.Type, null);
@@ -279,16 +279,9 @@ namespace ServiceDiscovery
             OnServiceFound(service, ownService);
         }
 
-        void netServiceDidUpdateTXTRecordData(NetService sender)
+        protected void NetServiceDidUpdateTXTRecordData(NetService sender)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didUpdateTXTRecordData", sender));
-        }
-
-        System.ComponentModel.ISynchronizeInvoke mInvokeableObject = null;
-        public System.ComponentModel.ISynchronizeInvoke InvokeableObject
-        {
-            get { return mInvokeableObject; }
-            set { mInvokeableObject = value; }
         }
 
         protected virtual void OnServiceFound(SDService service, bool ownService)
@@ -315,15 +308,21 @@ namespace ServiceDiscovery
             }
         }
 
-        private String keyForSearch(String type, String domain)
+        private String KeyForSearch(String type, String domain)
         {
             return String.Format("{0}{1}", type, domain);
         }
 
-        private String keyForPublish(String type, String domain, ushort port)
+        private String KeyForPublish(String type, String domain, ushort port)
         {
             return String.Format("{0}{1}:{2}", type, domain, port);
         }
 
+        System.ComponentModel.ISynchronizeInvoke mInvokeableObject = null;
+        public System.ComponentModel.ISynchronizeInvoke InvokeableObject
+        {
+            get { return mInvokeableObject; }
+            set { mInvokeableObject = value; }
+        }
     }
 }
