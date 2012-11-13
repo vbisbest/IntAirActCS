@@ -265,7 +265,7 @@ namespace ServiceDiscovery
 
         void netServiceDidResolveAddress(NetService sender)
         {
-            logger.TraceEvent(TraceEventType.Information, 0, String.Format("{0}: didResolveAddress", sender));
+            logger.TraceEvent(TraceEventType.Information, 0, String.Format("{0}: didResolveAddress: {1}", sender));
             SDService service = new SDService(sender.Name, sender.HostName, (ushort) sender.Port, sender.Type, null);
             bool ownService = false;
             foreach (NetService netService in this.netServices.Values)
