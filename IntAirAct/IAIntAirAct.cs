@@ -31,7 +31,7 @@ namespace IntAirAct
         {
             this.server = server;
             this.serviceDiscovery = serviceDiscovery;
-            isRunning = false;
+            this.isRunning = false;
             port = 0;
 
             this.Setup();
