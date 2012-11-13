@@ -8,7 +8,8 @@ using ServiceDiscovery;
 
 namespace IntAirAct
 {
-    public delegate void DeviceUpdateEventHandler(object sender, EventArgs e);
+    public delegate void DeviceFoundHandler(IADevice device, bool ownDevice);
+    public delegate void DeviceLostHandler(IADevice device);
 
     public class IAIntAirAct : IDisposable
     {
@@ -16,6 +17,8 @@ namespace IntAirAct
         public List<IADevice> devices { get; private set; }
         public bool isRunning { get; private set; }
         public IADevice ownDevice { get; private set; }
+        public event DeviceFoundHandler DeviceFound;
+        public event DeviceLostHandler DeviceLost;
 
         public ushort port
         {
@@ -163,22 +166,44 @@ namespace IntAirAct
         {
             if (ownService)
             {
-                this.ownDevice = new IADevice(service.Name, service.Hostname, service.Port, this.SupportedRoutes);
+                IADevice device = new IADevice(service.Name, service.Hostname, service.Port, this.SupportedRoutes);
+                this.ownDevice = device;
+                OnDeviceFound(device, true);
             }
             else
             {
-                this.devices.Add(new IADevice(service.Name, service.Hostname, service.Port, null));
+                IADevice device = new IADevice(service.Name, service.Hostname, service.Port, null);
+                this.devices.Add(device);
+                OnDeviceFound(device, false);
             }
         }
 
         private void OnServiceLost(SDService service)
         {
-            this.devices.Remove(new IADevice(service.Name, service.Hostname, service.Port, null));
+            IADevice device = new IADevice(service.Name, service.Hostname, service.Port, null);
+            this.devices.Remove(device);
+            OnDeviceLost(device);
         }
 
         private void OnServiceDiscoveryError(EventArgs eventArg)
         {
+            Console.WriteLine(String.Format("An error ocurred: {0}", eventArg));
+        }
 
+        protected virtual void OnDeviceFound(IADevice device, bool ownDevice)
+        {
+            if (DeviceFound != null)
+            {
+                DeviceFound(device, ownDevice);
+            }
+        }
+
+        protected virtual void OnDeviceLost(IADevice device)
+        {
+            if (DeviceLost != null)
+            {
+                DeviceLost(device);
+            }
         }
     }
 }
