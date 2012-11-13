@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using RestSharp;
 using TinyIoC;
+using ServiceDiscovery;
 
 namespace IntAirAct
 {
@@ -44,6 +45,7 @@ namespace IntAirAct
         private bool isDisposed = false;
         private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
         private IAServer server;
+        private SDServiceDiscovery serviceDiscovery;
 
         public IAIntAirAct(IAServer server)
         {
@@ -73,9 +75,9 @@ namespace IntAirAct
             {
                 // Code to dispose the managed resources of the class
                 Stop();
-                if (zeroConf != null)
+                if (serviceDiscovery != null)
                 {
-                    zeroConf.Dispose();
+                    serviceDiscovery.Dispose();
                 }
             }
             // Code to dispose the un-managed resources of the class
@@ -97,27 +99,17 @@ namespace IntAirAct
 
             server.Start();
 
-            try
-            {
-                zeroConf.serviceUpdateEventHandler += new ServiceUpdateEventHandler(ServiceUpdate);
-                zeroConf.publishRegType = "_intairact._tcp.";
-                zeroConf.publishPort = port;
-                zeroConf.server = true;
-                zeroConf.Start();
-            }
-            catch (ZeroConfException e)
-            {
-                throw new IntAirActException(e.Message);
-            }
+            serviceDiscovery.publishService("_intairact._tcp.", port);
+            serviceDiscovery.SearchForServices("_intairact._tcp.");
 
             isRunning = true;
         }
 
         public void Stop()
         {
-            if (zeroConf != null)
+            if (serviceDiscovery != null)
             {
-                zeroConf.Stop();
+                serviceDiscovery.Stop();
             }
 
             if (server != null)
