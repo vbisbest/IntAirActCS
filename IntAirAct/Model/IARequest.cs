@@ -25,6 +25,25 @@ namespace IntAirAct
             return String.Format("IARequest[Route: {0}, Metadata: {1}, Parameters: {2}, Body: {3}]", Route, Metadata, Parameters, Body);
         }
 
+        public override bool Equals(Object obj)
+        {
+            if (this == obj)
+            {
+                return true;
+            }
+
+            if (obj == null || (obj as IARequest) == null)
+            {
+                return false;
+            }
+
+            IARequest request = (IARequest)obj;
+            return (this.Route == request.Route || (this.Route != null && this.Route.Equals(request.Route)))
+                && (this.Metadata == request.Metadata || (this.Metadata != null && this.Metadata.Equals(request.Metadata)))
+                && (this.Parameters == request.Parameters || (this.Parameters != null && this.Parameters.Equals(request.Parameters)))
+                && (this.Body == request.Body);
+        }
+
         public override bool Equals(System.Object obj)
         {
             if (obj == null)
@@ -48,7 +67,12 @@ namespace IntAirAct
 
         public override int GetHashCode()
         {
-            return Route.GetHashCode() ^ Metadata.GetHashCode() ^ Parameters.GetHashCode() ^ Body.GetHashCode();
+            int hash = 89;
+            hash = hash * 31 + (this.Route == null ? 0 : this.Route.GetHashCode());
+            hash = hash * 31 + (this.Metadata == null ? 0 : this.Metadata.GetHashCode());
+            hash = hash * 31 + (this.Parameters == null ? 0 : this.Parameters.GetHashCode());
+            hash = hash * 31 + (this.Body == null ? 0 : this.Body.GetHashCode());
+            return hash;
         }
     }
 }
