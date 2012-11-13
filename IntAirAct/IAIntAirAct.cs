@@ -13,8 +13,6 @@ namespace IntAirAct
 
     public class IAIntAirAct : IDisposable
     {
-        public HashSet<IARoute> SupportedRoutes { get; private set; }
-        public List<IADevice> devices { get; private set; }
         public bool isRunning { get; private set; }
         public IADevice ownDevice { get; private set; }
         public event DeviceFoundHandler DeviceFound;
@@ -24,6 +22,8 @@ namespace IntAirAct
         private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
         private IAServer server;
         private SDServiceDiscovery serviceDiscovery;
+        private List<IADevice> devices;
+        private HashSet<IARoute> supportedRoutes;
 
         #region Constructor, Deconstructor, Dispose
 
@@ -32,7 +32,7 @@ namespace IntAirAct
             this.server = server;
             this.serviceDiscovery = serviceDiscovery;
             devices = new List<IADevice>();
-            SupportedRoutes = new HashSet<IARoute>();
+            supportedRoutes = new HashSet<IARoute>();
             isRunning = false;
             port = 0;
 
@@ -127,6 +127,22 @@ namespace IntAirAct
             set
             {
                 this.server.Port = value;
+            }
+        }
+
+        public HashSet<IARoute> SupportedRoutes
+        {
+            get
+            {
+                return new HashSet<IARoute>(this.supportedRoutes);
+            }
+        }
+
+        public List<IADevice> Devices
+        {
+            get
+            {
+                return new List<IADevice>(this.devices);
             }
         }
 
