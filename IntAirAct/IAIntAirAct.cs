@@ -44,6 +44,7 @@ namespace IntAirAct
         {
             this.server = server;
             this.serviceDiscovery = serviceDiscovery;
+            devices = new List<IADevice>();
             SupportedRoutes = new HashSet<IARoute>();
             isRunning = false;
             port = 0;
