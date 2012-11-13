@@ -85,10 +85,6 @@
       <Project>{8A1CECE0-6F76-40A8-AEDC-B3D241D8A962}</Project>
       <Name>IntAirAct</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ZeroConf\ZeroConf.csproj">
-      <Project>{F585073E-EB3C-41DB-B8BE-2335029780D7}</Project>
-      <Name>ZeroConf</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
