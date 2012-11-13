@@ -11,7 +11,7 @@ namespace ServiceDiscovery
     public delegate void ServiceLostHandler(SDService sender);
     public delegate void ServiceDiscoveryErrorHandler(EventArgs e);
 
-    public class SDServiceDiscovery
+    public class SDServiceDiscovery : IDisposable
     {
         private static TraceSource logger = new TraceSource("ServiceDiscovery");
 
