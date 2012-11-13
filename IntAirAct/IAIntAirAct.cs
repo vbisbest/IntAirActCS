@@ -23,9 +23,6 @@ namespace IntAirAct
                 Service service = zeroConf.ownService;
                 return new IADevice(service.name, service.host, service.port);
             }
-            private set
-            {
-            }
         }
         public ushort port { get; set; }
         public string type { get; set; }
