@@ -159,7 +159,7 @@ namespace IntAirAct
 
         public void CallAction(IAAction action, IADevice device)
         {
-            RestClient client = new RestClient(String.Format("http://{0}:{1}", device.host, device.port));
+            RestClient client = new RestClient(String.Format("http://{0}:{1}", device.Host, device.Port));
             RestRequest request = new RestRequest("action/{action}", Method.PUT);
             request.AddUrlSegment("action", action.action);
             string json = "{'actions':" + JsonConvert.SerializeObject(action) + "}";

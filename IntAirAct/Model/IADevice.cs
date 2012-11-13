@@ -2,22 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ZeroConf;
 
 namespace IntAirAct
 {
-    public class IADevice : Service
+    public class IADevice
     {
+        public String Name { get; private set; }
+        public String Host { get; private set; }
+        public ushort Port { get; private set; }
         public HashSet<IARoute> SupportedRoutes { get; private set; }
 
-        public IADevice(string name, string host, ushort port) : base(name, host, port)
+        public IADevice(string name, string host, ushort port, HashSet<IARoute> supportedRoutes)
         {
+            this.Name = name;
+            this.Host = host;
+            this.Port = port;
             this.SupportedRoutes = new HashSet<IARoute>();
         }
 
         public override string ToString()
         {
-            return String.Format("IADevice[name: {0}, host: {1}, port: {2}, capabilities: {3}]", name, host, port, this.SupportedRoutes);
+            return String.Format("IADevice[Name: {0}, Host: {1}, Port: {2}, SupportedRoutes: {3}]", this.Name, this.Host, this.Port, this.SupportedRoutes);
         }
 
         public override bool Equals(System.Object obj)
@@ -33,7 +38,7 @@ namespace IntAirAct
                 return false;
             }
 
-            if (this.SupportedRoutes.Equals(p.SupportedRoutes) && base.Equals(p))
+            if (this.Name.Equals(p.Name))
             {
                 return true;
             }
@@ -43,7 +48,7 @@ namespace IntAirAct
 
         public override int GetHashCode()
         {
-            return SupportedRoutes.GetHashCode() ^ base.GetHashCode();
+            return this.Name.GetHashCode();
         }
     }
 }
