@@ -19,7 +19,6 @@ namespace IntAirAct
         public IADevice ownDevice { get; private set; }
         public event DeviceFoundHandler DeviceFound;
         public event DeviceLostHandler DeviceLost;
-        public string type { get; set; }
 
         private bool isDisposed = false;
         private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
