@@ -19,26 +19,14 @@ namespace IntAirAct
         public IADevice ownDevice { get; private set; }
         public event DeviceFoundHandler DeviceFound;
         public event DeviceLostHandler DeviceLost;
-
-        public ushort port
-        {
-            get
-            {
-                return this.server.Port;
-            }
-
-            set
-            {
-                this.server.Port = value;
-            }
-        }
-
         public string type { get; set; }
 
         private bool isDisposed = false;
         private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
         private IAServer server;
         private SDServiceDiscovery serviceDiscovery;
+
+        #region Constructor, Deconstructor, Dispose
 
         public IAIntAirAct(IAServer server, SDServiceDiscovery serviceDiscovery)
         {
@@ -78,6 +66,9 @@ namespace IntAirAct
             GC.SuppressFinalize(this);
         }
 
+        #endregion
+        #region Start, Stop, Setup
+
         public void Start()
         {
             if (isRunning)
@@ -107,6 +98,40 @@ namespace IntAirAct
 
             isRunning = false;
         }
+
+        private void Setup()
+        {
+            AddMappingForClass(typeof(IADevice), "devices");
+            AddMappingForClass(typeof(IAAction), "actions");
+            AddMappingForClass(typeof(IARoute), "capabilities");
+
+            serviceDiscovery.ServiceFound += new ServiceFoundHandler(this.OnServiceFound);
+            serviceDiscovery.ServiceLost += new ServiceLostHandler(this.OnServiceLost);
+            serviceDiscovery.ServiceDiscoveryError += new ServiceDiscoveryErrorHandler(this.OnServiceDiscoveryError);
+
+            this.Route(new IARoute("GET", "/routes"), delegate(IARequest request, IAResponse response)
+            {
+                response.RespondWith(this.SupportedRoutes, "routes");
+            });
+        }
+
+        #endregion
+        #region Properties
+
+        public ushort port
+        {
+            get
+            {
+                return this.server.Port;
+            }
+
+            set
+            {
+                this.server.Port = value;
+            }
+        }
+
+        #endregion
 
         public Object DeserializeObject(JObject token)
         {
@@ -147,21 +172,7 @@ namespace IntAirAct
             server.Route(route, action);
         }
 
-        private void Setup()
-        {
-            AddMappingForClass(typeof(IADevice), "devices");
-            AddMappingForClass(typeof(IAAction), "actions");
-            AddMappingForClass(typeof(IARoute), "capabilities");
-
-            serviceDiscovery.ServiceFound += new ServiceFoundHandler(this.OnServiceFound);
-            serviceDiscovery.ServiceLost += new ServiceLostHandler(this.OnServiceLost);
-            serviceDiscovery.ServiceDiscoveryError += new ServiceDiscoveryErrorHandler(this.OnServiceDiscoveryError);
-
-            this.Route(new IARoute("GET", "/routes"), delegate(IARequest request, IAResponse response)
-            {
-                response.RespondWith(this.SupportedRoutes, "routes");
-            });
-        }
+        #region Event Handling
 
         private void OnServiceFound(SDService service, bool ownService)
         {
@@ -206,5 +217,7 @@ namespace IntAirAct
                 DeviceLost(device);
             }
         }
+
+        #endregion
     }
 }
