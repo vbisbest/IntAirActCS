@@ -190,7 +190,7 @@ namespace ServiceDiscovery
 
             netService.Publish();
 
-            logger.TraceEvent(TraceEventType.Information, 0, String.Format("Search started for type {0} in domain {1}", type, domain));
+            logger.TraceEvent(TraceEventType.Information, 0, String.Format("Published service of type {0} in domain {1} on port {2}", type, domain, port));
 
             return true;
         }
