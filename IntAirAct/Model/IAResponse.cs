@@ -40,30 +40,31 @@ namespace IntAirAct
             return String.Format("IAResponse[StatusCode: {0}, Body: {1}, Metadata: {2}]", StatusCode, Body, Metadata);
         }
 
-        public override bool Equals(System.Object obj)
+        public override bool Equals(Object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            IAResponse p = obj as IAResponse;
-            if ((System.Object)p == null)
-            {
-                return false;
-            }
-
-            if (this.StatusCode.Equals(p.StatusCode) && this.Body.Equals(p.Body) && this.Metadata.Equals(p.Metadata))
+            if (this == obj)
             {
                 return true;
             }
 
-            return false;
+            if (obj == null || (obj as IAResponse) == null)
+            {
+                return false;
+            }
+
+            IAResponse response = (IAResponse)obj;
+            return (this.StatusCode == response.StatusCode)
+                && (this.Body == response.Body)
+                && (this.Metadata == response.Metadata || (this.Metadata != null && this.Metadata.Equals(response.Metadata)));
         }
 
         public override int GetHashCode()
         {
-            return StatusCode.GetHashCode() ^ Body.GetHashCode() ^ Metadata.GetHashCode();
+            int hash = 53;
+            hash = hash * 31 + (this.StatusCode == null ? 0 : this.StatusCode.GetHashCode());
+            hash = hash * 31 + (this.Body == null ? 0 : this.Body.GetHashCode());
+            hash = hash * 31 + (this.Metadata == null ? 0 : this.Metadata.GetHashCode());
+            return hash;
         }
     }
 }
