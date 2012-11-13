@@ -43,7 +43,9 @@ namespace IntAirAct
 
         public override int GetHashCode()
         {
-            return this.Name.GetHashCode();
+            int hash = 87;
+            hash = hash * 31 + (this.Name == null ? 0 : this.Name.GetHashCode());
+            return hash;
         }
     }
 }
