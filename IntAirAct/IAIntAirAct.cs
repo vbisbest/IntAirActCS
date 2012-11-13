@@ -13,8 +13,8 @@ namespace IntAirAct
 
     public class IAIntAirAct : IDisposable
     {
-        public bool isRunning { get; private set; }
-        public IADevice ownDevice { get; private set; }
+        public bool IsRunning { get; private set; }
+        public IADevice OwnDevice { get; private set; }
         public event DeviceFoundHandler DeviceFound;
         public event DeviceLostHandler DeviceLost;
 
@@ -31,7 +31,7 @@ namespace IntAirAct
         {
             this.server = server;
             this.serviceDiscovery = serviceDiscovery;
-            this.isRunning = false;
+            this.IsRunning = false;
             port = 0;
 
             this.Setup();
@@ -68,7 +68,7 @@ namespace IntAirAct
 
         public void Start()
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 return;
             }
@@ -78,7 +78,7 @@ namespace IntAirAct
             serviceDiscovery.PublishService("_intairact._tcp.", port);
             serviceDiscovery.SearchForServices("_intairact._tcp.");
 
-            isRunning = true;
+            IsRunning = true;
         }
 
         public void Stop()
@@ -93,7 +93,7 @@ namespace IntAirAct
                 server.Stop();
             }
 
-            isRunning = false;
+            IsRunning = false;
         }
 
         private void Setup()
@@ -192,7 +192,7 @@ namespace IntAirAct
             if (ownService)
             {
                 IADevice device = new IADevice(service.Name, service.Hostname, service.Port, this.SupportedRoutes);
-                this.ownDevice = device;
+                this.OwnDevice = device;
                 OnDeviceFound(device, true);
             }
             else
