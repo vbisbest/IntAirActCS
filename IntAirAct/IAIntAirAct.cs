@@ -100,7 +100,7 @@ namespace IntAirAct
             try
             {
                 zeroConf.serviceUpdateEventHandler += new ServiceUpdateEventHandler(ServiceUpdate);
-                zeroConf.publishRegType = "_intairact._tcp";
+                zeroConf.publishRegType = "_intairact._tcp.";
                 zeroConf.publishPort = port;
                 zeroConf.server = true;
                 zeroConf.Start();
