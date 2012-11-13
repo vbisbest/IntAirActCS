@@ -22,8 +22,8 @@ namespace IntAirAct
         private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
         private IAServer server;
         private SDServiceDiscovery serviceDiscovery;
-        private List<IADevice> devices;
-        private HashSet<IARoute> supportedRoutes;
+        private List<IADevice> devices = new List<IADevice>();
+        private HashSet<IARoute> supportedRoutes = new HashSet<IARoute>();
 
         #region Constructor, Deconstructor, Dispose
 
@@ -31,8 +31,6 @@ namespace IntAirAct
         {
             this.server = server;
             this.serviceDiscovery = serviceDiscovery;
-            devices = new List<IADevice>();
-            supportedRoutes = new HashSet<IARoute>();
             isRunning = false;
             port = 0;
 
