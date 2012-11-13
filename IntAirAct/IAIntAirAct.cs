@@ -17,14 +17,7 @@ namespace IntAirAct
         public List<IADevice> devices { get; private set; }
         public event ServiceUpdateEventHandler deviceUpdateEventHandler;
         public bool isRunning { get; private set; }
-        public IADevice ownDevice
-        {
-            get
-            {
-                Service service = zeroConf.ownService;
-                return new IADevice(service.name, service.host, service.port);
-            }
-        }
+        public IADevice ownDevice { get; private set; }
 
         public ushort port
         {
