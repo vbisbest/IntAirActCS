@@ -102,7 +102,7 @@ namespace IntAirAct
         {
             AddMappingForClass(typeof(IADevice), "devices");
             AddMappingForClass(typeof(IAAction), "actions");
-            AddMappingForClass(typeof(IARoute), "capabilities");
+            AddMappingForClass(typeof(IARoute), "routes");
 
             serviceDiscovery.ServiceFound += new ServiceFoundHandler(this.OnServiceFound);
             serviceDiscovery.ServiceLost += new ServiceLostHandler(this.OnServiceLost);
