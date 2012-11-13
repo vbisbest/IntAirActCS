@@ -37,11 +37,12 @@ namespace IntAirAct
         private IAServer server;
         private SDServiceDiscovery serviceDiscovery;
 
-        public IAIntAirAct(IAServer server)
+        public IAIntAirAct(IAServer server, SDServiceDiscovery serviceDiscovery)
         {
+            this.server = server;
+            this.serviceDiscovery = serviceDiscovery;
             SupportedRoutes = new HashSet<IARoute>();
             isRunning = false;
-            this.server = server;
             port = 0;
 
             AddMappingForClass(typeof(IADevice), "devices");

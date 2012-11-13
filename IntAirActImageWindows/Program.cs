@@ -27,7 +27,7 @@ namespace IntAirActImageWindows
             adapter.App = app;
             // register the server adapter for the module serving the routes
             container.Register<NancyServerAdapter>(adapter);
-            IAIntAirAct ia = new IAIntAirAct(adapter);
+            IAIntAirAct ia = new IAIntAirAct(adapter, new ServiceDiscovery.SDServiceDiscovery());
 
             ia.AddMappingForClass(typeof(Image), "images");
             ia.Start();
