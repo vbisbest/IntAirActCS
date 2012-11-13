@@ -161,12 +161,19 @@ namespace IntAirAct
 
         private void OnServiceFound(SDService service, bool ownService)
         {
-
+            if (ownService)
+            {
+                this.ownDevice = new IADevice(service.Name, service.Hostname, service.Port, this.SupportedRoutes);
+            }
+            else
+            {
+                this.devices.Add(new IADevice(service.Name, service.Hostname, service.Port, null));
+            }
         }
 
         private void OnServiceLost(SDService service)
         {
-
+            this.devices.Remove(new IADevice(service.Name, service.Hostname, service.Port, null));
         }
 
         private void OnServiceDiscoveryError(EventArgs eventArg)
