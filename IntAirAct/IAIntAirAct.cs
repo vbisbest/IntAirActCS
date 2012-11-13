@@ -15,7 +15,6 @@ namespace IntAirAct
     {
         public HashSet<IARoute> SupportedRoutes { get; private set; }
         public List<IADevice> devices { get; private set; }
-        public event ServiceUpdateEventHandler deviceUpdateEventHandler;
         public bool isRunning { get; private set; }
         public IADevice ownDevice { get; private set; }
 
@@ -111,28 +110,6 @@ namespace IntAirAct
             }
 
             isRunning = false;
-        }
-
-        private void ServiceUpdate(object sender, EventArgs e)
-        {
-            List<IADevice> list = new List<IADevice>();
-
-            // synchronize this.devices with zeroConf.devices
-            foreach (Service service in zeroConf.services)
-            {
-                IADevice d = new IADevice(service.name, service.host, service.port);
-                list.Add(d);
-            }
-
-            devices = list;
-
-            NotifyDeviceUpdate();
-        }
-
-        private void NotifyDeviceUpdate()
-        {
-            if (deviceUpdateEventHandler != null)
-                deviceUpdateEventHandler(this, EventArgs.Empty);
         }
 
         public Object DeserializeObject(JObject token)
