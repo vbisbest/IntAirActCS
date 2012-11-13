@@ -25,25 +25,20 @@ namespace IntAirAct
             return String.Format("IADevice[Name: {0}, Host: {1}, Port: {2}, SupportedRoutes: {3}]", this.Name, this.Host, this.Port, this.SupportedRoutes);
         }
 
-        public override bool Equals(System.Object obj)
+        public override bool Equals(Object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            IADevice p = obj as IADevice;
-            if ((System.Object)p == null)
-            {
-                return false;
-            }
-
-            if (this.Name.Equals(p.Name))
+            if (this == obj)
             {
                 return true;
             }
 
-            return false;
+            if (obj == null || (obj as IADevice) == null)
+            {
+                return false;
+            }
+
+            IADevice device = (IADevice) obj;
+            return this.Name == device.Name || (this.Name != null && this.Name.Equals(device.Name));
         }
 
         public override int GetHashCode()
