@@ -61,7 +61,7 @@ namespace IntAirAct
         public override int GetHashCode()
         {
             int hash = 53;
-            hash = hash * 31 + (this.StatusCode == null ? 0 : this.StatusCode.GetHashCode());
+            hash = hash * 31 + this.StatusCode.GetHashCode();
             hash = hash * 31 + (this.Body == null ? 0 : this.Body.GetHashCode());
             hash = hash * 31 + (this.Metadata == null ? 0 : this.Metadata.GetHashCode());
             return hash;
