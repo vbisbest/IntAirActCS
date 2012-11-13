@@ -7,12 +7,19 @@ using ZeroconfService;
 
 namespace ServiceDiscovery
 {
+    public delegate void ServiceFoundHandler(SDService service, bool ownService);
+    public delegate void ServiceLostHandler(SDService sender);
+    public delegate void ServiceDiscoveryErrorHandler(EventArgs e);
+
     public class SDServiceDiscovery
     {
         private static TraceSource logger = new TraceSource("ServiceDiscovery");
 
         public bool IsSearching { get; private set; }
         public bool IsPublishing { get; private set; }
+        public event ServiceFoundHandler ServiceFound;
+        public event ServiceLostHandler ServiceLost;
+        public event ServiceDiscoveryErrorHandler ServiceDiscoveryError;
 
         private Dictionary<String, NetServiceBrowser> netServiceBrowsers;
         private Dictionary<String, NetService> netServices;
@@ -269,7 +276,7 @@ namespace ServiceDiscovery
                     break;
                 }
             }
-            //TODO: Send out Notification of resolved Service
+            OnServiceFound(service, ownService);
         }
 
         void netServiceDidUpdateTXTRecordData(NetService sender)
@@ -282,6 +289,30 @@ namespace ServiceDiscovery
         {
             get { return mInvokeableObject; }
             set { mInvokeableObject = value; }
+        }
+
+        protected virtual void OnServiceFound(SDService service, bool ownService)
+        {
+            if (ServiceFound != null)
+            {
+                ServiceFound(service, ownService);
+            }
+        }
+
+        protected virtual void OnServiceLost(SDService service)
+        {
+            if (ServiceLost != null)
+            {
+                ServiceLost(service);
+            }
+        }
+
+        protected virtual void OnServiceDiscoveryError(EventArgs eventArgs)
+        {
+            if (ServiceDiscoveryError != null)
+            {
+                ServiceDiscoveryError(eventArgs);
+            }
         }
 
         private String keyForSearch(String type, String domain)
