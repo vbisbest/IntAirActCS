@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using ZeroConf;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using RestSharp;
@@ -33,7 +32,6 @@ namespace IntAirAct
 
         public string type { get; set; }
 
-        private ZCZeroConf zeroConf = new ZCZeroConf();
         private bool isDisposed = false;
         private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
         private IAServer server;
