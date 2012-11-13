@@ -21,28 +21,29 @@ namespace IntAirAct
             return String.Format("IARoute[Action: {0}, Resource: {1}]", Action, Resource);
         }
 
-        public override bool Equals(System.Object obj)
+        public override bool Equals(Object obj)
         {
-            if (obj == null)
+            if (this == obj)
             {
-                return false;
-            }
-
-            IARoute p = obj as IARoute;
-            if ((System.Object)p == null)
-            {
-                return false;
-            }
-
-            if (this.Action.Equals(p.Action) && this.Resource.Equals(p.Resource)) {
                 return true;
             }
 
-            return false;
+            if (obj == null || (obj as IARoute) == null)
+            {
+                return false;
+            }
+
+            IARoute route = (IARoute)obj;
+            return (this.Action == route.Action || (this.Action != null && this.Action.Equals(route.Action))) &&
+                (this.Resource == route.Resource || (this.Resource != null && this.Resource.Equals(route.Resource)));
         }
 
-        public override int GetHashCode () {
-            return Action.GetHashCode() ^ Resource.GetHashCode();
+        public override int GetHashCode()
+        {
+            int hash = 49;
+            hash = hash * 31 + (this.Action == null ? 0 : this.Action.GetHashCode());
+            hash = hash * 31 + (this.Resource == null ? 0 : this.Resource.GetHashCode());
+            return hash;
         }
     }
 }
