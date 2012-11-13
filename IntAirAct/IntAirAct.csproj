@@ -92,6 +92,9 @@
     <ProjectReference Include="..\ZeroConf\ZeroConf.csproj">
       <Project>{F585073E-EB3C-41DB-B8BE-2335029780D7}</Project>
       <Name>ZeroConf</Name>
+    <ProjectReference Include="..\ServiceDiscovery\ServiceDiscovery.csproj">
+      <Project>{CD87E926-3CD6-4878-8EDE-9EB6600C75DF}</Project>
+      <Name>ServiceDiscovery</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
