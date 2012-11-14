@@ -28,7 +28,8 @@ namespace IntAirActImageWindows
             // register the server adapter for the module serving the routes
             container.Register<NancyServerAdapter>(adapter);
             IAIntAirAct ia = new IAIntAirAct(adapter, new ServiceDiscovery.SDServiceDiscovery());
-
+            container.Register<IAIntAirAct>(ia);
+            ia.SupportedRoutes.Add(new IARoute("PUT", "/action/displayImage"));
             ia.AddMappingForClass(typeof(Image), "images");
             ia.Start();
             
