@@ -18,8 +18,8 @@ namespace IntAirAct
                 Action<IARequest, IAResponse> action = kvp.Value;
                 RouteBuilder rb = new RouteBuilder(route.Action, this);
                 rb[route.Resource] = x =>
-                {
-                    IARequest iaRequest = new IARequest(route, null, null, null);
+                {   
+                    IARequest iaRequest = new IARequest(route, null, null, Request.BodyAsByte());
                     IAResponse iaResponse = new IAResponse();
                     action(iaRequest, iaResponse);
                     Response response = new Response();
