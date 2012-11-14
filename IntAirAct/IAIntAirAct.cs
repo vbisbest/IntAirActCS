@@ -139,40 +139,11 @@ namespace IntAirAct
         }
 
         #endregion
+        #region Methods
 
-        public Object DeserializeObject(JObject token)
+        public IEnumerable<IADevice> DevicesSupportingRoute(IARoute route)
         {
-            foreach (KeyValuePair<string, JToken> keyvaluepair in token)
-            {
-                Type t;
-                if (mappings.TryGetValue(keyvaluepair.Key, out t))
-                {
-                    JsonSerializer ser = new JsonSerializer();
-                    using (JTokenReader jsonReader = new JTokenReader(keyvaluepair.Value))
-                    {
-                        return ser.Deserialize(jsonReader, t);
-                    }
-                }
-            }
-            return null;
-        }
-
-        public void AddMappingForClass(Type type, string rootKeypath)
-        {
-            mappings.Add(rootKeypath, type);
-        }
-
-        public void CallAction(IAAction action, IADevice device)
-        {
-            RestClient client = new RestClient(String.Format("http://{0}:{1}", device.Host, device.Port));
-            RestRequest request = new RestRequest("action/{action}", Method.PUT);
-            request.AddUrlSegment("action", action.action);
-            string json = "{\"actions\":" + JsonConvert.SerializeObject(action) + "}";
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
-            client.ExecuteAsync(request, response =>
-            {
-                Console.WriteLine("CallAction response: " + response.Content);
-            });
+            return this.Devices.FindAll(device => device.SupportedRoutes.Contains(route));
         }
 
         public void Route(IARoute route, Action<IARequest, IAResponse> action)
@@ -181,6 +152,7 @@ namespace IntAirAct
             server.Route(route, action);
         }
 
+        #endregion
         #region Event Handling
 
         private void OnServiceFound(SDService service, bool ownService)
@@ -238,6 +210,47 @@ namespace IntAirAct
             {
                 DeviceLost(device);
             }
+        }
+
+        #endregion
+        #region
+
+        [Obsolete("This method is obsolete")]
+        public Object DeserializeObject(JObject token)
+        {
+            foreach (KeyValuePair<string, JToken> keyvaluepair in token)
+            {
+                Type t;
+                if (mappings.TryGetValue(keyvaluepair.Key, out t))
+                {
+                    JsonSerializer ser = new JsonSerializer();
+                    using (JTokenReader jsonReader = new JTokenReader(keyvaluepair.Value))
+                    {
+                        return ser.Deserialize(jsonReader, t);
+                    }
+                }
+            }
+            return null;
+        }
+
+        [Obsolete("This method is obsolete")]
+        public void AddMappingForClass(Type type, string rootKeypath)
+        {
+            mappings.Add(rootKeypath, type);
+        }
+
+        [Obsolete("This method is obsolete")]
+        public void CallAction(IAAction action, IADevice device)
+        {
+            RestClient client = new RestClient(String.Format("http://{0}:{1}", device.Host, device.Port));
+            RestRequest request = new RestRequest("action/{action}", Method.PUT);
+            request.AddUrlSegment("action", action.action);
+            string json = "{\"actions\":" + JsonConvert.SerializeObject(action) + "}";
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            client.ExecuteAsync(request, response =>
+            {
+                Console.WriteLine("CallAction response: " + response.Content);
+            });
         }
 
         #endregion
