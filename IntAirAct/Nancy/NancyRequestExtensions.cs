@@ -8,7 +8,7 @@ using System.IO;
 
 namespace IntAirAct
 {
-    public static class RequestAsString
+    public static class NancyRequestExtensions
     {
         public static string BodyAsString(this Request request)
         {

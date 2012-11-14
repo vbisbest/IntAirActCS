@@ -81,7 +81,7 @@
     <Compile Include="Nancy\NancyServerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nancy\NancyRebuildableCache.cs" />
-    <Compile Include="RequestAsString.cs" />
+    <Compile Include="Nancy\NancyRequestExtensions.cs" />
     <Compile Include="ResponseExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
