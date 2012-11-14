@@ -34,7 +34,7 @@ namespace IntAirAct
             this.serviceDiscovery = serviceDiscovery;
             this.IsRunning = false;
             this.SupportedRoutes = new HashSet<IARoute>();
-            port = 0;
+            Port = 0;
 
             this.Setup();
         }
@@ -77,7 +77,7 @@ namespace IntAirAct
 
             server.Start();
 
-            serviceDiscovery.PublishService("_intairact._tcp.", port);
+            serviceDiscovery.PublishService("_intairact._tcp.", Port);
             serviceDiscovery.SearchForServices("_intairact._tcp.");
 
             IsRunning = true;
@@ -117,7 +117,7 @@ namespace IntAirAct
         #endregion
         #region Properties
 
-        public ushort port
+        public ushort Port
         {
             get
             {
