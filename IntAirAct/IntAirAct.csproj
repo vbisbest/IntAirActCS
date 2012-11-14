@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="IAServer.cs" />
     <Compile Include="Model\IAAction.cs" />
+    <Compile Include="Model\RequestExtensions\IARequestExtensions.cs" />
     <Compile Include="Nancy\NancyBootstrapper.cs" />
     <Compile Include="IntAirActException.cs" />
     <Compile Include="Model\IADevice.cs" />
