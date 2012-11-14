@@ -2,14 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace IntAirAct
 {
     public class IADevice
     {
+        [JsonProperty("name")]
         public String Name { get; private set; }
+
+        [JsonProperty("host")]
         public String Host { get; private set; }
+
+        [JsonProperty("port")]
         public ushort Port { get; private set; }
+
+        [JsonProperty("supportedRoutes")]
         public HashSet<IARoute> SupportedRoutes { get; private set; }
 
         public IADevice(string name, string host, ushort port, HashSet<IARoute> supportedRoutes)

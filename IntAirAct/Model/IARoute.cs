@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace IntAirAct
 {
     public class IARoute
     {
+        [JsonProperty("action")]
         public String Action { get; private set; }
+
+        [JsonProperty("resource")]
         public String Resource { get; private set; }
 
         public IARoute(string action, string resource)
