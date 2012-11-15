@@ -6,6 +6,7 @@ using RestSharp;
 using TinyIoC;
 using ServiceDiscovery;
 using System.Net;
+using System.ComponentModel;
 
 namespace IntAirAct
 {
@@ -27,6 +28,21 @@ namespace IntAirAct
         private List<IADevice> devices = new List<IADevice>();
 
         #region Constructor, Deconstructor
+
+        public static IAIntAirAct Instance(ISynchronizeInvoke invokableObject)
+        {
+            // don't mess with the order here, TinyIoC is very picky about it
+            TinyIoCContainer container = TinyIoCContainer.Current;
+            NancyServerAdapter adapter = new NancyServerAdapter();
+            Owin.AppDelegate app = Gate.Adapters.Nancy.NancyAdapter.App();
+            adapter.App = app;
+            // register the server adapter for the module serving the routes
+            container.Register<NancyServerAdapter>(adapter);
+            SDServiceDiscovery serviceDiscovery = new SDServiceDiscovery();
+            serviceDiscovery.InvokeableObject = invokableObject;
+
+            return new IAIntAirAct(adapter, serviceDiscovery);
+        }
 
         public IAIntAirAct(IAServer server, SDServiceDiscovery serviceDiscovery)
         {
