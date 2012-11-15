@@ -22,21 +22,11 @@ namespace IntAirActImageWindows
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Form1 form = new Form1();
-            
-            // don't mess with the order here, TinyIoC is very picky about it
-            TinyIoCContainer container = TinyIoCContainer.Current;
-            NancyServerAdapter adapter = new NancyServerAdapter();
-            Owin.AppDelegate app = Gate.Adapters.Nancy.NancyAdapter.App();
-            adapter.App = app;
-            // register the server adapter for the module serving the routes
-            container.Register<NancyServerAdapter>(adapter);
-            SDServiceDiscovery serviceDiscovery = new SDServiceDiscovery();
-            serviceDiscovery.InvokeableObject = form;
 
-            IAIntAirAct ia = new IAIntAirAct(adapter, serviceDiscovery);
+            IAIntAirAct ia = IAIntAirAct.Instance(form);
            
             // necessary for old module and action handling
-            container.Register<IAIntAirAct>(ia);
+            TinyIoCContainer.Current.Register<IAIntAirAct>(ia);
             ia.SupportedRoutes.Add(new IARoute("PUT", "/action/displayImage"));
             ia.AddMappingForClass(typeof(Image), "images");
             // end
