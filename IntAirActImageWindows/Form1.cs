@@ -14,7 +14,11 @@ namespace IntAirActImageWindows
         public Form1()
         {
             InitializeComponent();
-            TinyIoC.TinyIoCContainer.Current.Register<PictureBox>(this.pictureBox1);
+        }
+
+        public void LoadImageFromURL(String url)
+        {
+            this.pictureBox1.LoadAsync(url);
         }
     }
 }
