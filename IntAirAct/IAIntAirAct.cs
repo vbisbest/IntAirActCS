@@ -167,10 +167,12 @@ namespace IntAirAct
             RestClient client = new RestClient(String.Format("http://{0}:{1}", device.Host, device.Port));
             RestRequest request = new RestRequest("action/{action}", Method.PUT);
             request.AddUrlSegment("action", action.action);
-            string json = "{'actions':" + JsonConvert.SerializeObject(action) + "}";
-            Console.WriteLine("Sending an action: " + json);
-            request.AddBody(json);
-            client.Execute(request);
+            string json = "{\"actions\":" + JsonConvert.SerializeObject(action) + "}";
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            client.ExecuteAsync(request, response =>
+            {
+                Console.WriteLine("CallAction response: " + response.Content);
+            });
         }
 
         public void Route(IARoute route, Action<IARequest, IAResponse> action)
