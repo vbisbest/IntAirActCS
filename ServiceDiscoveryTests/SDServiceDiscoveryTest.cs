@@ -304,5 +304,50 @@ namespace ServiceDiscoveryTests
         {
             this.Publish("_test._tcp", "_test._tcp.");
         }
+
+        private void Search(string startType, string stopType)
+        {
+            this.serviceDiscovery.SearchForServices(startType);
+            Assert.IsTrue(this.serviceDiscovery.IsSearching);
+
+            this.serviceDiscovery.StopSearchingForServices(stopType);
+            Assert.IsFalse(this.serviceDiscovery.IsSearching);
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void SearchWithDotAndStopWithoutTest()
+        {
+            this.Search("_test._tcp.", "_test._tcp");
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void SearchWithoutDotAndStopWithoutTest()
+        {
+            this.Search("_test._tcp", "_test._tcp");
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void SearchWithDotAndStopWithTest()
+        {
+            this.Search("_test._tcp.", "_test._tcp.");
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void SearchWithoutDotAndStopWithTest()
+        {
+            this.Search("_test._tcp", "_test._tcp.");
+        }
     }
 }
