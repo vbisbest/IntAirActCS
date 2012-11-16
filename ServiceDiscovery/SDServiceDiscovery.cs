@@ -250,6 +250,8 @@ namespace ServiceDiscovery
         protected void NetServiceBrowserDidRemoveService(NetServiceBrowser aNetServiceBrowser, NetService netService, bool moreComing)
         {
             logger.TraceEvent(TraceEventType.Verbose, 0, String.Format("{0}: didRemoveService: {1}", aNetServiceBrowser, netService));
+            SDService service = new SDService(netService.Name, netService.HostName, (ushort)netService.Port, netService.Type, null);
+            OnServiceLost(service);
         }
 
         protected void NetServiceDidPublish(NetService sender)
