@@ -217,6 +217,11 @@ namespace ServiceDiscovery
 
         public void StopPublishingService(String type, ushort port, String domain)
         {
+            if (!type.EndsWith("."))
+            {
+                type += ".";
+            }
+
             String key = this.KeyForPublish(type, domain, port);
 
             if (netServices.ContainsKey(key))
