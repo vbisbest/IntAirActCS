@@ -42,17 +42,17 @@ namespace ServiceDiscovery
         public bool IsPublishing { get; private set; }
 
         /// <summary>
-        /// 
+        /// The event that is fired when a service is found.
         /// </summary>
         public event ServiceFoundHandler ServiceFound;
 
         /// <summary>
-        /// 
+        /// The event that is fired when a service is lost.
         /// </summary>
         public event ServiceLostHandler ServiceLost;
 
         /// <summary>
-        /// 
+        /// The event that is fired when an error occurs.
         /// </summary>
         public event ServiceDiscoveryErrorHandler ServiceDiscoveryError;
 
