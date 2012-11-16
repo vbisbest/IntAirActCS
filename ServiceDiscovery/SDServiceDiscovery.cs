@@ -97,7 +97,6 @@ namespace ServiceDiscovery
             this.IsSearching = true;
 
             NetServiceBrowser netServiceBrowser = new NetServiceBrowser();
-            netServiceBrowser.InvokeableObject = this.InvokeableObject;
             netServiceBrowser.DidFindDomain += new NetServiceBrowser.DomainFound(NetServiceBrowserDidFindDomain);
             netServiceBrowser.DidRemoveDomain += new NetServiceBrowser.DomainRemoved(NetServiceBrowserDidRemoveDomain);
             netServiceBrowser.DidFindService += new NetServiceBrowser.ServiceFound(NetServiceBrowserDidFindService);
@@ -316,13 +315,6 @@ namespace ServiceDiscovery
         private String KeyForPublish(String type, String domain, ushort port)
         {
             return String.Format("{0}{1}:{2}", type, domain, port);
-        }
-
-        System.ComponentModel.ISynchronizeInvoke mInvokeableObject = null;
-        public System.ComponentModel.ISynchronizeInvoke InvokeableObject
-        {
-            get { return mInvokeableObject; }
-            set { mInvokeableObject = value; }
         }
     }
 }
