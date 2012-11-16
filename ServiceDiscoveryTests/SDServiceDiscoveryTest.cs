@@ -2,10 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace ServiceDiscoveryTests
 {
-    
     
     /// <summary>
     ///This is a test class for SDServiceDiscoveryTest and is intended
@@ -94,7 +94,10 @@ namespace ServiceDiscoveryTests
 
         private void PublishWithName(string name)
         {
+            TimeSpan waitTime = new TimeSpan(0, 0, 10);
+            DateTime dateTimeWhenToStopWaiting;
             bool found = false;
+            AutoResetEvent are = new AutoResetEvent(false);
 
             this.serviceDiscovery.ServiceFound += delegate(SDService service , bool ownService)
             {
@@ -102,6 +105,7 @@ namespace ServiceDiscoveryTests
                 if (ownService)
                 {
                     found = true;
+                    are.Set();
                 }
             };
 
@@ -113,8 +117,13 @@ namespace ServiceDiscoveryTests
 
             Assert.IsTrue(this.serviceDiscovery.IsPublishing);
 
-            //wait
-            System.Threading.Thread.Sleep(60000);
+            dateTimeWhenToStopWaiting = DateTime.Now.Add(waitTime);
+
+            while (!found && DateTime.Now < dateTimeWhenToStopWaiting)
+            {
+                long ticksToWait = dateTimeWhenToStopWaiting.Subtract(DateTime.Now).Ticks;
+                are.WaitOne(new TimeSpan(ticksToWait));
+            }
 
             this.serviceDiscovery.StopSearchingForServices(SERVICE_TYPE);
 
