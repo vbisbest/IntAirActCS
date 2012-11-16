@@ -84,15 +84,6 @@ namespace ServiceDiscoveryTests
             this.serviceDiscovery.Stop();
         }
 
-        /// <summary>
-        ///A test for SDServiceDiscovery Constructor
-        ///</summary>
-        [TestMethod()]
-        public void PublishAndDiscoveryTest()
-        {
-            this.PublishWithName("");
-        }
-
         private void PublishWithName(string name)
         {
             DateTime dateTimeWhenToStopWaiting;
@@ -134,6 +125,83 @@ namespace ServiceDiscoveryTests
             Assert.IsFalse(this.serviceDiscovery.IsPublishing);
 
             if (!found)
+            {
+                Assert.Fail();
+            }
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PublishAndDiscoveryTest()
+        {
+            this.PublishWithName("");
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PublishDiscoveryAndRemovalTest()
+        {
+            DateTime dateTimeWhenToStopWaiting;
+            bool found = false;
+            AutoResetEvent are = new AutoResetEvent(false);
+            SDService foundService = null;
+
+            this.serviceDiscovery.ServiceFound += delegate(SDService service, bool ownService)
+            {
+                if (ownService)
+                {
+                    foundService = service;
+                    found = true;
+                    are.Set();
+                }
+            };
+
+            this.serviceDiscovery.ServiceLost += delegate(SDService service)
+            {
+                if (service.Equals(foundService))
+                {
+                    found = false;
+                    are.Set();
+                }
+            };
+
+            this.serviceDiscovery.SearchForServices(SERVICE_TYPE);
+            this.serviceDiscovery.PublishService(SERVICE_TYPE, SERVICE_PORT);
+
+            dateTimeWhenToStopWaiting = DateTime.Now.Add(WAIT_TIME);
+
+            while (!found && DateTime.Now < dateTimeWhenToStopWaiting)
+            {
+                long ticksToWait = dateTimeWhenToStopWaiting.Subtract(DateTime.Now).Ticks;
+                are.WaitOne(new TimeSpan(ticksToWait));
+            }
+
+            are.Reset();
+
+            if (!found)
+            {
+                this.serviceDiscovery.StopSearchingForServices(SERVICE_TYPE);
+                this.serviceDiscovery.StopPublishingService(SERVICE_TYPE, SERVICE_PORT);
+                Assert.Fail();
+            }
+
+            this.serviceDiscovery.StopPublishing();
+
+            dateTimeWhenToStopWaiting = DateTime.Now.Add(WAIT_TIME);
+            while (found && DateTime.Now < dateTimeWhenToStopWaiting)
+            {
+                long ticksToWait = dateTimeWhenToStopWaiting.Subtract(DateTime.Now).Ticks;
+                are.WaitOne(new TimeSpan(ticksToWait));
+            }
+
+            this.serviceDiscovery.StopSearchingForServices(SERVICE_TYPE);
+            this.serviceDiscovery.StopPublishingService(SERVICE_TYPE, SERVICE_PORT);
+
+            if (found)
             {
                 Assert.Fail();
             }
