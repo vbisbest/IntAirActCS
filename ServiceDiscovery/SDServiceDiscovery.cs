@@ -178,6 +178,7 @@ namespace ServiceDiscovery
         /// <summary>
         /// Stop searching for services of the specified type in the default domain.
         /// </summary>
+        /// <param name="type">Type of the search to stop.</param>
         public void StopSearchingForServices(String type)
         {
             this.StopSearchingForServices(type, "");
@@ -186,6 +187,8 @@ namespace ServiceDiscovery
         /// <summary>
         /// Stop searching for services of the specified type in the specified domain.
         /// </summary>
+        /// <param name="type">Type of the search to stop.</param>
+        /// <param name="type">Domain name in which to stop the search.</param>
         public void StopSearchingForServices(String type, String domain)
         {
             if (!type.EndsWith("."))
@@ -207,6 +210,8 @@ namespace ServiceDiscovery
         /// <summary>
         /// Publish a service using the default name in the default domain.
         /// </summary>
+        /// <param name="type">Type of the service to publish.</param>
+        /// <param name="port">Port of the service to publish.</param>
         public bool PublishService(String type, ushort port)
         {
             return this.PublishService(type, port, "");
@@ -215,6 +220,9 @@ namespace ServiceDiscovery
         /// <summary>
         /// Publish a service in the default domain.
         /// </summary>
+        /// <param name="type">Type of the service to publish.</param>
+        /// <param name="port">Port of the service to publish.</param>
+        /// <param name="name">Name of the service to publish.</param>
         public bool PublishService(String type, ushort port, String name)
         {
             return this.PublishService(type, port, name, "");
@@ -223,6 +231,10 @@ namespace ServiceDiscovery
         /// <summary>
         /// Publish a service.
         /// </summary>
+        /// <param name="type">Type of the service to publish.</param>
+        /// <param name="port">Port of the service to publish.</param>
+        /// <param name="name">Name of the service to publish.</param>
+        /// <param name="domain">Domain in which to publish the service.</param>
         public bool PublishService(String type, ushort port, String name, String domain)
         {
             return this.PublishService(type, port, name, domain, new Dictionary<string,string>());
@@ -231,6 +243,11 @@ namespace ServiceDiscovery
         /// <summary>
         /// Publish a service.
         /// </summary>
+        /// <param name="type">Type of the service to publish.</param>
+        /// <param name="port">Port of the service to publish.</param>
+        /// <param name="name">Name of the service to publish.</param>
+        /// <param name="domain">Domain in which to publish the service.</param>
+        /// <param name="TXTRecord">TXT record of the service to publish.</param>
         public bool PublishService(String type, ushort port, String name, String domain, Dictionary<String, String> TXTRecord)
         {
             if (!type.EndsWith("."))
@@ -289,6 +306,8 @@ namespace ServiceDiscovery
         /// <summary>
         /// Stop publishing the service using the default name in the default domain.
         /// </summary>
+        /// <param name="type">Type of the service to stop publishing.</param>
+        /// <param name="port">Port of the service to stop publishing.</param>
         public void StopPublishingService(String type, ushort port)
         {
             this.StopPublishingService(type, port, "");
@@ -297,6 +316,9 @@ namespace ServiceDiscovery
         /// <summary>
         /// Stop publishing the service in the default domain.
         /// </summary>
+        /// <param name="type">Type of the service to stop publishing.</param>
+        /// <param name="port">Port of the service to stop publishing.</param>
+        /// <param name="domain">Domain name of the service to stop publishing.</param>
         public void StopPublishingService(String type, ushort port, String domain)
         {
             if (!type.EndsWith("."))
