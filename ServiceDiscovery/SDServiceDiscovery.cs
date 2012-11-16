@@ -304,7 +304,7 @@ namespace ServiceDiscovery
         }
 
         /// <summary>
-        /// Stop publishing the service using the default name in the default domain.
+        /// Stop publishing the service in the default domain.
         /// </summary>
         /// <param name="type">Type of the service to stop publishing.</param>
         /// <param name="port">Port of the service to stop publishing.</param>
@@ -314,7 +314,7 @@ namespace ServiceDiscovery
         }
 
         /// <summary>
-        /// Stop publishing the service in the default domain.
+        /// Stop publishing a service.
         /// </summary>
         /// <param name="type">Type of the service to stop publishing.</param>
         /// <param name="port">Port of the service to stop publishing.</param>
