@@ -120,6 +120,38 @@ namespace ServiceDiscoveryTests
         ///A test for Equals
         ///</summary>
         [TestMethod()]
+        public void EqualsWithNullTest()
+        {
+            string name = "name";
+            string hostname = "hostname";
+            ushort port = 8080;
+            string type = "type";
+            Dictionary<string, string> TXTRecord = new Dictionary<string, string>() { { "key", "value" } };
+            SDService service = new SDService(name, hostname, port, type, TXTRecord);
+            Assert.IsFalse(service.Equals(null));
+        }
+
+        /// <summary>
+        ///A test for Equals
+        ///</summary>
+        [TestMethod()]
+        public void EqualsWithNameNullTest()
+        {
+            string name = "name";
+            string hostname = "hostname";
+            ushort port = 8080;
+            string type = "type";
+            Dictionary<string, string> TXTRecord = new Dictionary<string, string>() { { "key", "value" } };
+            SDService service = new SDService(null, hostname, port, type, TXTRecord);
+            SDService other = new SDService(name, hostname, port, type, TXTRecord);
+            Assert.IsFalse(service.Equals(other));
+            Assert.IsFalse(service.GetHashCode() == other.GetHashCode());
+        }
+
+        /// <summary>
+        ///A test for Equals
+        ///</summary>
+        [TestMethod()]
         public void EqualsFailsTest()
         {
             string name = "name";
@@ -151,6 +183,21 @@ namespace ServiceDiscoveryTests
             string other = "name";
             Assert.IsFalse(service.Equals(other));
             Assert.IsFalse(service.GetHashCode() == other.GetHashCode());
+        }
+
+        /// <summary>
+        ///A test for Equals
+        ///</summary>
+        [TestMethod()]
+        public void ToStringTest()
+        {
+            string name = "name";
+            string hostname = "hostname";
+            ushort port = 8080;
+            string type = "type";
+            Dictionary<string, string> TXTRecord = new Dictionary<string, string>() { { "key", "value" } };
+            SDService service = new SDService(name, hostname, port, type, TXTRecord);
+            Assert.IsNotNull(service.ToString());
         }
     }
 }
