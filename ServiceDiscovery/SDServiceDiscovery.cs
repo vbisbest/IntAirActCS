@@ -112,7 +112,18 @@ namespace ServiceDiscovery
         /// <summary>
         /// Search for services of the specified type in the default domain.
         /// </summary>
-        /// <param name="type">Type of the services to search for.</param>
+        /// <param name="type">
+        /// Type of the services to search for.
+        /// <para>
+        /// `type` must contain both the service type and transport layer information. To
+        /// ensure that the mDNS responder searches for services, as opposed to hosts,
+        /// prefix both the service name and transport layer name with an underscore
+        /// character ("_"). For example, to search for an HTTP service on TCP, you would
+        /// use the type string `@"_http._tcp."`. Note that the period character at the end
+        /// of the string, which indicates that the domain name is an absolute name, is
+        /// required. It will be automatically set if it does not exists.
+        /// </para>
+        /// </param>
         public bool SearchForServices(String type)
         {
             return SearchForServices(type, "");
@@ -121,7 +132,18 @@ namespace ServiceDiscovery
         /// <summary>
         /// Search for services of the specified type in the specified domain.
         /// </summary>
-        /// <param name="type">Type of the services to search for.</param>
+        /// <param name="type">
+        /// Type of the services to search for.
+        /// <para>
+        /// `type` must contain both the service type and transport layer information. To
+        /// ensure that the mDNS responder searches for services, as opposed to hosts,
+        /// prefix both the service name and transport layer name with an underscore
+        /// character ("_"). For example, to search for an HTTP service on TCP, you would
+        /// use the type string `@"_http._tcp."`. Note that the period character at the end
+        /// of the string, which indicates that the domain name is an absolute name, is
+        /// required. It will be automatically set if it does not exists.
+        /// </para>
+        /// </param>
         /// <param name="domain">Domain name in which to perform the search.</param>
         public bool SearchForServices(String type, String domain)
         {
@@ -210,7 +232,18 @@ namespace ServiceDiscovery
         /// <summary>
         /// Publish a service using the default name in the default domain.
         /// </summary>
-        /// <param name="type">Type of the service to publish.</param>
+        /// <param name="type">
+        /// Type of the service to publish.
+        /// <para>
+        /// `type` must contain both the service type and transport layer information. To
+        /// ensure that the mDNS responder searches for services, as opposed to hosts,
+        /// prefix both the service name and transport layer name with an underscore
+        /// character ("_"). For example, to publish an HTTP service on TCP, you would
+        /// use the type string `@"_http._tcp."`. Note that the period character at the end
+        /// of the string, which indicates that the domain name is an absolute name, is
+        /// required. It will be automatically set if it does not exists.
+        /// </para>
+        /// </param>
         /// <param name="port">Port of the service to publish.</param>
         public bool PublishService(String type, ushort port)
         {
@@ -231,7 +264,18 @@ namespace ServiceDiscovery
         /// <summary>
         /// Publish a service.
         /// </summary>
-        /// <param name="type">Type of the service to publish.</param>
+        /// <param name="type">
+        /// Type of the service to publish.
+        /// <para>
+        /// `type` must contain both the service type and transport layer information. To
+        /// ensure that the mDNS responder searches for services, as opposed to hosts,
+        /// prefix both the service name and transport layer name with an underscore
+        /// character ("_"). For example, to publish an HTTP service on TCP, you would
+        /// use the type string `@"_http._tcp."`. Note that the period character at the end
+        /// of the string, which indicates that the domain name is an absolute name, is
+        /// required. It will be automatically set if it does not exists.
+        /// </para>
+        /// </param>
         /// <param name="port">Port of the service to publish.</param>
         /// <param name="name">Name of the service to publish.</param>
         /// <param name="domain">Domain in which to publish the service.</param>
@@ -243,7 +287,18 @@ namespace ServiceDiscovery
         /// <summary>
         /// Publish a service.
         /// </summary>
-        /// <param name="type">Type of the service to publish.</param>
+        /// <param name="type">
+        /// Type of the service to publish.
+        /// <para>
+        /// `type` must contain both the service type and transport layer information. To
+        /// ensure that the mDNS responder searches for services, as opposed to hosts,
+        /// prefix both the service name and transport layer name with an underscore
+        /// character ("_"). For example, to publish an HTTP service on TCP, you would
+        /// use the type string `@"_http._tcp."`. Note that the period character at the end
+        /// of the string, which indicates that the domain name is an absolute name, is
+        /// required. It will be automatically set if it does not exists.
+        /// </para>
+        /// </param>
         /// <param name="port">Port of the service to publish.</param>
         /// <param name="name">Name of the service to publish.</param>
         /// <param name="domain">Domain in which to publish the service.</param>
