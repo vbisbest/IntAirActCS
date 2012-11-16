@@ -143,6 +143,15 @@ namespace ServiceDiscoveryTests
         ///A test for SDServiceDiscovery Constructor
         ///</summary>
         [TestMethod()]
+        public void PublishingWithAWeirdNameTest()
+        {
+            this.PublishWithName(" #$%&\\,.<>/^|_[]{}()ď§χβґм₣£Ĵო1đÒŖ@ŤßỊ§ţЯ");
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
         public void PublishDiscoveryAndRemovalTest()
         {
             DateTime dateTimeWhenToStopWaiting;
@@ -205,6 +214,95 @@ namespace ServiceDiscoveryTests
             {
                 Assert.Fail();
             }
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void SearchingTwiceShouldFailTest()
+        {
+            Assert.IsTrue(this.serviceDiscovery.SearchForServices(SERVICE_TYPE));
+            Assert.IsFalse(this.serviceDiscovery.SearchForServices(SERVICE_TYPE));
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PublishingTwiceShouldFailTest()
+        {
+            Assert.IsTrue(this.serviceDiscovery.PublishService(SERVICE_TYPE, SERVICE_PORT));
+            Assert.IsFalse(this.serviceDiscovery.PublishService(SERVICE_TYPE, SERVICE_PORT));
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void SearchingTwiceWithAStopInbetweenShouldWorkTest()
+        {
+            Assert.IsTrue(this.serviceDiscovery.SearchForServices(SERVICE_TYPE));
+            Assert.IsFalse(this.serviceDiscovery.SearchForServices(SERVICE_TYPE));
+            this.serviceDiscovery.StopSearching();
+            Assert.IsTrue(this.serviceDiscovery.SearchForServices(SERVICE_TYPE));
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PublishingTwiceWithAStopInbetweenShouldWorkTest()
+        {
+            Assert.IsTrue(this.serviceDiscovery.PublishService(SERVICE_TYPE, SERVICE_PORT));
+            Assert.IsFalse(this.serviceDiscovery.PublishService(SERVICE_TYPE, SERVICE_PORT));
+            this.serviceDiscovery.StopPublishing();
+            Assert.IsTrue(this.serviceDiscovery.PublishService(SERVICE_TYPE, SERVICE_PORT));
+        }
+
+        private void Publish(string startType, string stopType)
+        {
+            this.serviceDiscovery.PublishService(startType, SERVICE_PORT);
+            Assert.IsTrue(this.serviceDiscovery.IsPublishing);
+
+            this.serviceDiscovery.StopPublishingService(stopType, SERVICE_PORT);
+            Assert.IsFalse(this.serviceDiscovery.IsPublishing);
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PublishWithDotAndStopWithoutTest()
+        {
+            this.Publish("_test._tcp.", "_test._tcp");
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PublishWithoutDotAndStopWithoutTest()
+        {
+            this.Publish("_test._tcp", "_test._tcp");
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PublishWithDotAndStopWithTest()
+        {
+            this.Publish("_test._tcp.", "_test._tcp.");
+        }
+
+        /// <summary>
+        ///A test for SDServiceDiscovery Constructor
+        ///</summary>
+        [TestMethod()]
+        public void PublishWithoutDotAndStopWithTest()
+        {
+            this.Publish("_test._tcp", "_test._tcp.");
         }
     }
 }
