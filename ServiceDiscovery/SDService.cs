@@ -5,14 +5,46 @@ using System.Text;
 
 namespace ServiceDiscovery
 {
+
+    /// <summary>
+    /// Represents a service found on the network.
+    /// </summary>
     public class SDService
     {
+        /// <summary>
+        /// The name of the service.
+        /// </summary>
         public String Name { get; private set; }
+
+        /// <summary>
+        /// The hostname of the service.
+        /// </summary>
         public String Hostname { get; private set; }
+
+        /// <summary>
+        /// The port of the service.
+        /// </summary>
         public ushort Port { get; private set; }
+
+        /// <summary>
+        /// The type of the service.
+        /// </summary>
         public String Type { get; private set; }
+
+        /// <summary>
+        /// The TXT record of the service.
+        /// </summary>
         public Dictionary<String, String> TXTRecord { get; private set; }
 
+        /// <summary>
+        /// Construct a new service.
+        /// </summary>
+        /// <param name="name">The name of the service.</param>
+        /// <param name="hostname">The hostname of the service.</param>
+        /// <param name="port">The name of the service.</param>
+        /// <param name="type">The type of the service.</param>
+        /// <param name="TXTRecord">The TXT record of the service.</param>
+        /// <returns>The new service.</returns>
         public SDService(String name, String hostname, ushort port, String type, Dictionary<String, String> TXTRecord)
         {
             this.Name = name;
