@@ -18,6 +18,7 @@ namespace ServiceDiscoveryTests
 
         const string SERVICE_TYPE = "_test._tcp.";
         const ushort SERVICE_PORT = 80;
+        TimeSpan WAIT_TIME = new TimeSpan(0, 0, 5);
 
         private TestContext testContextInstance;
         private SDServiceDiscovery serviceDiscovery;
@@ -94,7 +95,6 @@ namespace ServiceDiscoveryTests
 
         private void PublishWithName(string name)
         {
-            TimeSpan waitTime = new TimeSpan(0, 0, 10);
             DateTime dateTimeWhenToStopWaiting;
             bool found = false;
             AutoResetEvent are = new AutoResetEvent(false);
@@ -117,7 +117,7 @@ namespace ServiceDiscoveryTests
 
             Assert.IsTrue(this.serviceDiscovery.IsPublishing);
 
-            dateTimeWhenToStopWaiting = DateTime.Now.Add(waitTime);
+            dateTimeWhenToStopWaiting = DateTime.Now.Add(WAIT_TIME);
 
             while (!found && DateTime.Now < dateTimeWhenToStopWaiting)
             {
