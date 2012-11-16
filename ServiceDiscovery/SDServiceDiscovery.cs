@@ -7,18 +7,53 @@ using ZeroconfService;
 
 namespace ServiceDiscovery
 {
+    /// <summary>
+    /// The delegate type for when a service is found.
+    /// </summary>
     public delegate void ServiceFoundHandler(SDService service, bool ownService);
+
+    /// <summary>
+    /// The delegate type for when a service is lost.
+    /// </summary>
     public delegate void ServiceLostHandler(SDService sender);
+
+    /// <summary>
+    /// The delegate type for when an error occurs.
+    /// </summary>
     public delegate void ServiceDiscoveryErrorHandler(EventArgs e);
 
+    /// <summary>
+    /// Provides methods to publish and search for services on the network.
+    /// 
+    /// Use the events to be informed about found/lost services and errors.
+    /// </summary>
     public class SDServiceDiscovery : IDisposable
     {
         private static TraceSource logger = new TraceSource("ServiceDiscovery");
 
+        /// <summary>
+        /// Indicates wheter at least one search is currently running.
+        /// </summary>
         public bool IsSearching { get; private set; }
+
+        /// <summary>
+        /// Indicates whether at least one service is currently being published.
+        /// </summary>
         public bool IsPublishing { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public event ServiceFoundHandler ServiceFound;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public event ServiceLostHandler ServiceLost;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public event ServiceDiscoveryErrorHandler ServiceDiscoveryError;
 
         private Dictionary<String, NetServiceBrowser> netServiceBrowsers;
@@ -63,7 +98,10 @@ namespace ServiceDiscovery
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-            
+
+        /// <summary>
+        /// Stops publishing and searching.
+        /// </summary>
         public void Stop()
         {
             logger.TraceEvent(TraceEventType.Stop, 0);
@@ -71,11 +109,20 @@ namespace ServiceDiscovery
             StopSearching();
         }
 
+        /// <summary>
+        /// Search for services of the specified type in the default domain.
+        /// </summary>
+        /// <param name="type">Type of the services to search for.</param>
         public bool SearchForServices(String type)
         {
             return SearchForServices(type, "");
         }
 
+        /// <summary>
+        /// Search for services of the specified type in the specified domain.
+        /// </summary>
+        /// <param name="type">Type of the services to search for.</param>
+        /// <param name="domain">Domain name in which to perform the search.</param>
         public bool SearchForServices(String type, String domain)
         {
             if (!type.EndsWith("."))
@@ -114,6 +161,9 @@ namespace ServiceDiscovery
             return true;
         }
 
+        /// <summary>
+        /// Stops all searches for services.
+        /// </summary>
         public void StopSearching()
         {
             foreach (NetServiceBrowser netServiceBrowser in netServiceBrowsers.Values)
@@ -125,11 +175,17 @@ namespace ServiceDiscovery
             this.IsSearching = false;
         }
 
+        /// <summary>
+        /// Stop searching for services of the specified type in the default domain.
+        /// </summary>
         public void StopSearchingForServices(String type)
         {
             this.StopSearchingForServices(type, "");
         }
 
+        /// <summary>
+        /// Stop searching for services of the specified type in the specified domain.
+        /// </summary>
         public void StopSearchingForServices(String type, String domain)
         {
             if (!type.EndsWith("."))
@@ -148,21 +204,33 @@ namespace ServiceDiscovery
             this.IsSearching = (netServiceBrowsers.Count != 0);
         }
 
+        /// <summary>
+        /// Publish a service using the default name in the default domain.
+        /// </summary>
         public bool PublishService(String type, ushort port)
         {
             return this.PublishService(type, port, "");
         }
 
+        /// <summary>
+        /// Publish a service in the default domain.
+        /// </summary>
         public bool PublishService(String type, ushort port, String name)
         {
             return this.PublishService(type, port, name, "");
         }
 
+        /// <summary>
+        /// Publish a service.
+        /// </summary>
         public bool PublishService(String type, ushort port, String name, String domain)
         {
             return this.PublishService(type, port, name, domain, new Dictionary<string,string>());
         }
 
+        /// <summary>
+        /// Publish a service.
+        /// </summary>
         public bool PublishService(String type, ushort port, String name, String domain, Dictionary<String, String> TXTRecord)
         {
             if (!type.EndsWith("."))
@@ -204,6 +272,9 @@ namespace ServiceDiscovery
             return true;
         }
 
+        /// <summary>
+        /// Stop publishing all services.
+        /// </summary>
         public void StopPublishing()
         {
             foreach (NetService netService in netServices.Values)
@@ -215,11 +286,17 @@ namespace ServiceDiscovery
             this.IsPublishing = false;
         }
 
+        /// <summary>
+        /// Stop publishing the service using the default name in the default domain.
+        /// </summary>
         public void StopPublishingService(String type, ushort port)
         {
             this.StopPublishingService(type, port, "");
         }
 
+        /// <summary>
+        /// Stop publishing the service in the default domain.
+        /// </summary>
         public void StopPublishingService(String type, ushort port, String domain)
         {
             if (!type.EndsWith("."))
