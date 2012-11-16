@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SDServiceDiscoveryTest.cs" />
     <Compile Include="SDServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +63,9 @@
       <Project>{CD87E926-3CD6-4878-8EDE-9EB6600C75DF}</Project>
       <Name>ServiceDiscovery</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
