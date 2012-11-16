@@ -97,6 +97,9 @@ namespace ServiceDiscovery
             this.IsSearching = true;
 
             NetServiceBrowser netServiceBrowser = new NetServiceBrowser();
+            netServiceBrowser.AllowApplicationForms = false;
+            netServiceBrowser.AllowMultithreadedCallbacks = true;
+
             netServiceBrowser.DidFindDomain += new NetServiceBrowser.DomainFound(NetServiceBrowserDidFindDomain);
             netServiceBrowser.DidRemoveDomain += new NetServiceBrowser.DomainRemoved(NetServiceBrowserDidRemoveDomain);
             netServiceBrowser.DidFindService += new NetServiceBrowser.ServiceFound(NetServiceBrowserDidFindService);
@@ -176,6 +179,8 @@ namespace ServiceDiscovery
             this.IsPublishing = true;
 
             NetService netService = new NetService(domain, type, name, port);
+            netService.AllowApplicationForms = false;
+            netService.AllowMultithreadedCallbacks = true;
 
             netService.DidPublishService += new NetService.ServicePublished(NetServiceDidPublish);
             netService.DidNotPublishService += new NetService.ServiceNotPublished(NetServiceDidNotPublish);
