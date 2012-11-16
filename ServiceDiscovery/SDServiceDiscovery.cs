@@ -132,6 +132,11 @@ namespace ServiceDiscovery
 
         public void StopSearchingForServices(String type, String domain)
         {
+            if (!type.EndsWith("."))
+            {
+                type += ".";
+            }
+
             String key = this.KeyForSearch(type, domain);
 
             if (netServiceBrowsers.ContainsKey(key))
