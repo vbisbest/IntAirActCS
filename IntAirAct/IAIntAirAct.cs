@@ -39,7 +39,6 @@ namespace IntAirAct
             // register the server adapter for the module serving the routes
             container.Register<NancyServerAdapter>(adapter);
             SDServiceDiscovery serviceDiscovery = new SDServiceDiscovery();
-            serviceDiscovery.InvokeableObject = invokableObject;
 
             return new IAIntAirAct(adapter, serviceDiscovery);
         }

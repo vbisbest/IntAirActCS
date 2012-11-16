@@ -27,7 +27,6 @@ namespace Publisher
             try
             {
                 serviceDiscovery = new SDServiceDiscovery();
-                serviceDiscovery.InvokeableObject = form1;
                 serviceDiscovery.SearchForServices("_intairact._tcp.");
                 Application.Run(form1);
                 serviceDiscovery.Stop();
