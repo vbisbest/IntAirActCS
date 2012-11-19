@@ -26,8 +26,16 @@ namespace IntAirAct
 
         public dynamic BodyAs<T>()
         {
-            object data = JsonConvert.DeserializeObject(BodyAsString());
-            return Deserialize<T>(data);
+            Type type = typeof(T);
+            if (type.IsAssignableFrom(typeof(string)))
+            {
+                return BodyAsString();
+            }
+            else
+            {
+                object data = JsonConvert.DeserializeObject(BodyAsString());
+                return Deserialize<T>(data);
+            }
         }
 
         private dynamic Deserialize<T>(object data)
