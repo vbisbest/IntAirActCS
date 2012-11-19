@@ -18,9 +18,9 @@ namespace IntAirAct
         public ushort Port { get; private set; }
 
         [JsonProperty("supportedRoutes")]
-        public List<IARoute> SupportedRoutes { get; private set; }
+        public HashSet<IARoute> SupportedRoutes { get; private set; }
 
-        public IADevice(string name, string host, ushort port, List<IARoute> supportedRoutes)
+        public IADevice(string name, string host, ushort port, HashSet<IARoute> supportedRoutes)
         {
             this.Name = name;
             this.Host = host;

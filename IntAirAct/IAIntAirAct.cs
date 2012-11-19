@@ -16,7 +16,7 @@ namespace IntAirAct
     {
         public bool IsRunning { get; private set; }
         public IADevice OwnDevice { get; private set; }
-        public List<IARoute> SupportedRoutes { get; set; }
+        public HashSet<IARoute> SupportedRoutes { get; set; }
         public event DeviceFoundHandler DeviceFound;
         public event DeviceLostHandler DeviceLost;
 
@@ -49,7 +49,7 @@ namespace IntAirAct
             this.client = client;
             this.serviceDiscovery = new SDServiceDiscovery();
             this.IsRunning = false;
-            this.SupportedRoutes = new List<IARoute>();
+            this.SupportedRoutes = new HashSet<IARoute>();
             Port = 0;
 
             this.Setup();
@@ -194,7 +194,7 @@ namespace IntAirAct
                     if (response.StatusCode == 200)
                     {
                         List<IARoute> supportedRoutes = response.BodyAs<IARoute>();
-                        IADevice dev = new IADevice(service.Name, service.Hostname, service.Port, supportedRoutes);
+                        IADevice dev = new IADevice(service.Name, service.Hostname, service.Port, new HashSet<IARoute>(supportedRoutes));
                         this.devices.Add(device);
                         OnDeviceFound(device, false);
                     }
