@@ -7,12 +7,18 @@ using Newtonsoft.Json.Linq;
 
 namespace IntAirAct
 {
-    public class IADeSerializable
+    public class IADeSerialization
     {
         public byte[] Body { get; set; }
         public string ContentType { get; set; }
 
-        public IADeSerializable(byte[] body)
+        public IADeSerialization()
+        {
+            this.Body = new byte[0];
+            this.ContentType = "plain/text";
+        }
+
+        public IADeSerialization(byte[] body)
         {
             this.Body = body;
             this.ContentType = "plain/text";
@@ -48,7 +54,11 @@ namespace IntAirAct
 
         public void SetBodyWith(Object data)
         {
-            if (data.GetType() == typeof(string))
+            if (data == null)
+            {
+                return;
+            }
+            else if (data.GetType() == typeof(string))
             {
                 SetBodyWithString((string)data);
             }

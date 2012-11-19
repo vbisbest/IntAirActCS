@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IntAirAct
 {
-    public class IARequest : IADeSerializable
+    public class IARequest : IADeSerialization
     {
         public IARoute Route { get; set; }
         public Dictionary<String, String> Metadata { get; set; }

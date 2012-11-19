@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace IntAirAct
 {
-    public class IAResponse : IADeSerializable
+    public class IAResponse : IADeSerialization
     {
         public int StatusCode { get; set; }
         public Dictionary<String, String> Metadata { get; set; }
