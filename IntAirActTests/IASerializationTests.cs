@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntAirAct;
+using System.Collections.Generic;
 
 namespace IntAirActTests
 {
@@ -56,9 +57,121 @@ namespace IntAirActTests
         #endregion
 
         [TestMethod()]
-        public void Test()
+        public void ConstructorTest()
         {
-            
+            byte[] body = new byte[] { 0, 1 };
+            IADeSerialization deSerialization = new IADeSerialization(body);
+            Assert.AreEqual(body, deSerialization.Body);
+        }
+
+        [TestMethod()]
+        public void SetBodyWithStringTest()
+        {
+            string body = "example string";
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWithString(body);
+            Assert.AreEqual(body, deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithAStringTest()
+        {
+            string body = "example string";
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(body);
+            Assert.AreEqual(body, deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithAnArrayOfStringTest()
+        {
+            string[] body = new string[] { "example string" };
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(body);
+            Assert.AreEqual("[\"example string\"]", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithANumberTest()
+        {
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(50);
+            Assert.AreEqual("50", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithAnArrayOfNumbersTest()
+        {
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(new int[] { 50 });
+            Assert.AreEqual("[50]", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithADictionaryTest()
+        {
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(new Dictionary<string, string>() { {"key", "value"} });
+            Assert.AreEqual("{\"key\":\"value\"}", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithADictionaryUsingNumberKeysTest()
+        {
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(new Dictionary<int, string>() { { 50, "value" } });
+            Assert.AreEqual("{\"50\":\"value\"}", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithAnIAModelWithIntPropertyTest()
+        {
+            IAModelWithIntProperty model = new IAModelWithIntProperty();
+            model.Number = 50;
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(model);
+            Assert.AreEqual("{\"Number\":50}", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithAnIAModelWithFloatPropertyTest()
+        {
+            IAModelWithFloatProperty model = new IAModelWithFloatProperty();
+            model.Number = 5.434f;
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(model);
+            Assert.AreEqual("{\"Number\":5.434}", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithAnIAModelInheritanceTest()
+        {
+            IAModelInheritance model = new IAModelInheritance();
+            model.Number = 50;
+            model.NumberTwo = 60;
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(model);
+            Assert.AreEqual("{\"NumberTwo\":60,\"Number\":50}", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithAnIAModelReferenceTest()
+        {
+            IAModelWithIntProperty intprop = new IAModelWithIntProperty();
+            intprop.Number = 50;
+            IAModelReference model = new IAModelReference();
+            model.Number = intprop;
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(model);
+            Assert.AreEqual("{\"Number\":{\"Number\":50}}", deSerialization.BodyAsString());
+        }
+
+        [TestMethod()]
+        public void SetBodyWithWithNullTest()
+        {
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(null);
+            Assert.AreEqual("", deSerialization.BodyAsString());
         }
     }
 }
