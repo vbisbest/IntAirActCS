@@ -74,6 +74,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IASerializationTests.cs" />
+    <Compile Include="IADeserializationTests.cs" />
     <Compile Include="IARouteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
