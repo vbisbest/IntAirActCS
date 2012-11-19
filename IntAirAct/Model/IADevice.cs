@@ -18,14 +18,14 @@ namespace IntAirAct
         public ushort Port { get; private set; }
 
         [JsonProperty("supportedRoutes")]
-        public HashSet<IARoute> SupportedRoutes { get; private set; }
+        public List<IARoute> SupportedRoutes { get; private set; }
 
-        public IADevice(string name, string host, ushort port, HashSet<IARoute> supportedRoutes)
+        public IADevice(string name, string host, ushort port, List<IARoute> supportedRoutes)
         {
             this.Name = name;
             this.Host = host;
             this.Port = port;
-            this.SupportedRoutes = new HashSet<IARoute>();
+            this.SupportedRoutes = supportedRoutes;
         }
 
         public override string ToString()

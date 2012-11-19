@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using RestSharp;
 using TinyIoC;
 using ServiceDiscovery;
 using System.Net;
@@ -17,19 +16,20 @@ namespace IntAirAct
     {
         public bool IsRunning { get; private set; }
         public IADevice OwnDevice { get; private set; }
-        public HashSet<IARoute> SupportedRoutes { get; set; }
+        public List<IARoute> SupportedRoutes { get; set; }
         public event DeviceFoundHandler DeviceFound;
         public event DeviceLostHandler DeviceLost;
 
         private bool isDisposed = false;
         private Dictionary<string, Type> mappings = new Dictionary<string, Type>();
         private IAServer server;
+        private IAClient client;
         private SDServiceDiscovery serviceDiscovery;
         private List<IADevice> devices = new List<IADevice>();
 
         #region Constructor, Deconstructor
 
-        public static IAIntAirAct Instance(ISynchronizeInvoke invokableObject)
+        public static IAIntAirAct New()
         {
             // don't mess with the order here, TinyIoC is very picky about it
             TinyIoCContainer container = TinyIoCContainer.Current;
@@ -38,17 +38,18 @@ namespace IntAirAct
             adapter.App = app;
             // register the server adapter for the module serving the routes
             container.Register<NancyServerAdapter>(adapter);
-            SDServiceDiscovery serviceDiscovery = new SDServiceDiscovery();
+            IAClient client = new RestSharpClient();
 
-            return new IAIntAirAct(adapter, serviceDiscovery);
+            return new IAIntAirAct(adapter, client);
         }
 
-        public IAIntAirAct(IAServer server, SDServiceDiscovery serviceDiscovery)
+        public IAIntAirAct(IAServer server, IAClient client)
         {
             this.server = server;
-            this.serviceDiscovery = serviceDiscovery;
+            this.client = client;
+            this.serviceDiscovery = new SDServiceDiscovery();
             this.IsRunning = false;
-            this.SupportedRoutes = new HashSet<IARoute>();
+            this.SupportedRoutes = new List<IARoute>();
             Port = 0;
 
             this.Setup();
@@ -115,17 +116,13 @@ namespace IntAirAct
 
         private void Setup()
         {
-            AddMappingForClass(typeof(IADevice), "devices");
-            AddMappingForClass(typeof(IAAction), "actions");
-            AddMappingForClass(typeof(IARoute), "routes");
-
             serviceDiscovery.ServiceFound += new ServiceFoundHandler(this.OnServiceFound);
             serviceDiscovery.ServiceLost += new ServiceLostHandler(this.OnServiceLost);
             serviceDiscovery.ServiceDiscoveryError += new ServiceDiscoveryErrorHandler(this.OnServiceDiscoveryError);
 
             this.Route(new IARoute("GET", "/routes"), delegate(IARequest request, IAResponse response)
             {
-                response.RespondWith(this.SupportedRoutes, "routes");
+                response.SetBodyWith(this.SupportedRoutes);
             });
         }
 
@@ -167,6 +164,16 @@ namespace IntAirAct
             server.Route(route, action);
         }
 
+        public void SendRequest(IARequest request, IADevice device)
+        {
+            this.client.SendRequest(request, device);
+        }
+
+        public void SendRequest(IARequest request, IADevice device, Action<IAResponse> action)
+        {
+            this.client.SendRequest(request, device, action);
+        }
+
         #endregion
         #region Event Handling
 
@@ -180,20 +187,20 @@ namespace IntAirAct
             }
             else
             {
-                RestClient client = new RestClient(String.Format("http://{0}:{1}", service.Hostname, service.Port));
-                RestRequest request = new RestRequest("/routes", Method.GET);
-                client.ExecuteAsync(request, response =>
+                IADevice device = new IADevice(service.Name, service.Hostname, service.Port, null);
+                IARequest request = new IARequest(IARoute.Get("/routes"));
+                SendRequest(request, device, delegate(IAResponse response)
                 {
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    if (response.StatusCode == 200)
                     {
-                        Console.WriteLine(response.Content);
-                        IADevice device = new IADevice(service.Name, service.Hostname, service.Port, null);
+                        List<IARoute> supportedRoutes = response.BodyAs<IARoute>();
+                        IADevice dev = new IADevice(service.Name, service.Hostname, service.Port, supportedRoutes);
                         this.devices.Add(device);
                         OnDeviceFound(device, false);
                     }
                     else
                     {
-                        Console.WriteLine(String.Format("An error ocurred trying to request routes from {0}", client.BaseUrl));
+                        Console.WriteLine(String.Format("An error ocurred trying to request routes from {0}", device));
                     }
                 });
             }
@@ -225,47 +232,6 @@ namespace IntAirAct
             {
                 DeviceLost(device);
             }
-        }
-
-        #endregion
-        #region
-
-        [Obsolete("This method is obsolete")]
-        public Object DeserializeObject(JObject token)
-        {
-            foreach (KeyValuePair<string, JToken> keyvaluepair in token)
-            {
-                Type t;
-                if (mappings.TryGetValue(keyvaluepair.Key, out t))
-                {
-                    JsonSerializer ser = new JsonSerializer();
-                    using (JTokenReader jsonReader = new JTokenReader(keyvaluepair.Value))
-                    {
-                        return ser.Deserialize(jsonReader, t);
-                    }
-                }
-            }
-            return null;
-        }
-
-        [Obsolete("This method is obsolete")]
-        public void AddMappingForClass(Type type, string rootKeypath)
-        {
-            mappings.Add(rootKeypath, type);
-        }
-
-        [Obsolete("This method is obsolete")]
-        public void CallAction(IAAction action, IADevice device)
-        {
-            RestClient client = new RestClient(String.Format("http://{0}:{1}", device.Host, device.Port));
-            RestRequest request = new RestRequest("action/{action}", Method.PUT);
-            request.AddUrlSegment("action", action.action);
-            string json = "{\"actions\":" + JsonConvert.SerializeObject(action) + "}";
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
-            client.ExecuteAsync(request, response =>
-            {
-                Console.WriteLine("CallAction response: " + response.Content);
-            });
         }
 
         #endregion

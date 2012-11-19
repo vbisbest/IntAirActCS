@@ -23,20 +23,17 @@ namespace IntAirActImageWindows
             Application.SetCompatibleTextRenderingDefault(false);
             Form1 form = new Form1();
 
-            IAIntAirAct ia = IAIntAirAct.Instance(form);
-           
-            // necessary for old module and action handling
-            TinyIoCContainer.Current.Register<IAIntAirAct>(ia);
-            ia.SupportedRoutes.Add(new IARoute("PUT", "/action/displayImage"));
-            ia.AddMappingForClass(typeof(Image), "images");
-            // end
+            IAIntAirAct ia = IAIntAirAct.New();
 
-            ia.Route(new IARoute("PUT", "/views/image"), delegate(IARequest req, IAResponse res)
+            ia.Route(new IARoute("PUT", "/image"), delegate(IARequest req, IAResponse res)
             {
                 logger.TraceEvent(TraceEventType.Information, 0, "Received request on {0}", req.Route);
                 
                 String url = req.BodyAsString();
-                form.LoadImageFromURL(url);
+                form.BeginInvoke((Action) delegate ()
+                {
+                    form.LoadImageFromURL(url);
+                });
             });
             
             ia.Start();

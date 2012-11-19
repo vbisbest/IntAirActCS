@@ -5,19 +5,25 @@ using System.Text;
 
 namespace IntAirAct
 {
-    public class IARequest
+    public class IARequest : IADeSerializable
     {
-        public IARoute Route { get; private set; }
-        public Dictionary<String, String> Metadata { get; private set; }
-        public Dictionary<String, String> Parameters { get; private set; }
-        public byte[] Body { get; private set; }
+        public IARoute Route { get; set; }
+        public Dictionary<String, String> Metadata { get; set; }
+        public Dictionary<String, String> Parameters { get; set; }
+        public IADevice Origin { get; set; }
 
-        public IARequest(IARoute route, Dictionary<String, String> metadata, Dictionary<String, String> parameters, byte[] body)
+        public IARequest(IARoute route) : base(new byte[0])
+        {
+            this.Route = route;
+            this.Metadata = new Dictionary<string,string>();
+            this.Parameters = new Dictionary<string,string>();
+        }
+
+        public IARequest(IARoute route, Dictionary<String, String> metadata, Dictionary<String, String> parameters, IADevice origin, byte[] body) : base(body)
         {
             this.Route = route;
             this.Metadata = metadata;
             this.Parameters = parameters;
-            this.Body = body;
         }
 
         public override string ToString()
@@ -41,6 +47,7 @@ namespace IntAirAct
             return (this.Route == request.Route || (this.Route != null && this.Route.Equals(request.Route)))
                 && (this.Metadata == request.Metadata || (this.Metadata != null && this.Metadata.Equals(request.Metadata)))
                 && (this.Parameters == request.Parameters || (this.Parameters != null && this.Parameters.Equals(request.Parameters)))
+                && (this.Origin == request.Origin || (this.Origin != null && this.Origin.Equals(request.Origin)))
                 && (this.Body == request.Body);
         }
 
@@ -50,6 +57,7 @@ namespace IntAirAct
             hash = hash * 31 + (this.Route == null ? 0 : this.Route.GetHashCode());
             hash = hash * 31 + (this.Metadata == null ? 0 : this.Metadata.GetHashCode());
             hash = hash * 31 + (this.Parameters == null ? 0 : this.Parameters.GetHashCode());
+            hash = hash * 31 + (this.Origin == null ? 0 : this.Origin.GetHashCode());
             hash = hash * 31 + (this.Body == null ? 0 : this.Body.GetHashCode());
             return hash;
         }

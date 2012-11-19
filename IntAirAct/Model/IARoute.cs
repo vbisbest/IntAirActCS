@@ -8,6 +8,26 @@ namespace IntAirAct
 {
     public class IARoute
     {
+        public static IARoute Put(string resource)
+        {
+            return new IARoute("PUT", resource);
+        }
+
+        public static IARoute Post(string resource)
+        {
+            return new IARoute("POST", resource);
+        }
+
+        public static IARoute Get(string resource)
+        {
+            return new IARoute("GET", resource);
+        }
+
+        public static IARoute Delete(string resource)
+        {
+            return new IARoute("DELETE", resource);
+        }
+
         [JsonProperty("action")]
         public String Action { get; private set; }
 

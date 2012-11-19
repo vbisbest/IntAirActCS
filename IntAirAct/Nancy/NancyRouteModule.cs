@@ -19,7 +19,7 @@ namespace IntAirAct
                 RouteBuilder rb = new RouteBuilder(route.Action, this);
                 rb[route.Resource] = x =>
                 {   
-                    IARequest iaRequest = new IARequest(route, null, null, Request.BodyAsByte());
+                    IARequest iaRequest = new IARequest(route, null, null, null, Request.BodyAsByte());
                     IAResponse iaResponse = new IAResponse();
                     action(iaRequest, iaResponse);
                     Response response = new Response();
@@ -32,10 +32,8 @@ namespace IntAirAct
                     };
                     response.Headers = iaResponse.Metadata;
 
-                    if (iaResponse.Metadata.ContainsKey("Content-Type"))
-                    {
-                        response.ContentType = iaResponse.Metadata["Content-Type"];
-                    }
+                    response.ContentType = iaResponse.ContentType;
+
                     return response;
                 };
             }
