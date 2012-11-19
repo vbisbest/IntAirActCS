@@ -69,7 +69,6 @@
   <ItemGroup>
     <Compile Include="IAClient.cs" />
     <Compile Include="IAServer.cs" />
-    <Compile Include="Model\IAAction.cs" />
     <Compile Include="Model\IADeSerializable.cs" />
     <Compile Include="Nancy\NancyBootstrapper.cs" />
     <Compile Include="IntAirActException.cs" />
