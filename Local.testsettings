@@ -26,6 +26,7 @@
             <CodeCoverage xmlns="">
               <Regular>
                 <CodeCoverageItem binaryFile="ServiceDiscovery\bin\Debug\ServiceDiscovery.dll" pdbFile="ServiceDiscovery\bin\Debug\ServiceDiscovery.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="IntAirAct\bin\Debug\IntAirAct.dll" pdbFile="IntAirAct\bin\Debug\IntAirAct.pdb" instrumentInPlace="true" />
               </Regular>
             </CodeCoverage>
           </Configuration>
