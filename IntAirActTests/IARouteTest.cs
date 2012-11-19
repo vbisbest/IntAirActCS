@@ -5,7 +5,6 @@ using System;
 namespace IntAirActTests
 {
 
-
     /// <summary>
     ///This is a test class for IARouteTest and is intended
     ///to contain all IARouteTest Unit Tests
@@ -13,8 +12,6 @@ namespace IntAirActTests
     [TestClass()]
     public class IARouteTest
     {
-
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -63,10 +60,6 @@ namespace IntAirActTests
         //
         #endregion
 
-
-        /// <summary>
-        ///A test for IARoute Constructor
-        ///</summary>
         [TestMethod()]
         public void IARouteConstructorTest()
         {
@@ -81,46 +74,101 @@ namespace IntAirActTests
             Assert.AreEqual(resource, actualResource);
         }
 
-        /// <summary>
-        ///A test for Equals
-        ///</summary>
         [TestMethod()]
-        public void EqualsAgainstNullTest()
+        public void EqualsTest()
         {
-            string action = "GET";
-            string resource = "/tests";
-            IARoute target = new IARoute(action, resource);
-            object obj = null;
-            bool expected = false;
-            bool actual;
-            actual = target.Equals(obj);
-            Assert.AreEqual(expected, actual);
+            IARoute route = new IARoute("GET", "/example");
+            IARoute other = new IARoute("GET", "/example");
+            Assert.IsTrue(route.Equals(other));
+            Assert.AreEqual(route.GetHashCode(), other.GetHashCode());
         }
 
-        /// <summary>
-        ///A test for Equals
-        ///</summary>
         [TestMethod()]
-        public void EqualsTrueTest()
+        public void EqualsSelfTest()
         {
-            string action = "GET";
-            string resource = "/tests";
-            IARoute route1 = new IARoute(action, resource);
-            IARoute route2 = new IARoute(action, resource);
-            Assert.AreEqual(route1, route2);
+            IARoute route = new IARoute("GET", "/example");
+            IARoute other = route;
+            Assert.IsTrue(route.Equals(other));
+            Assert.AreEqual(route.GetHashCode(), other.GetHashCode());
         }
 
-        /// <summary>
-        ///A test for GetHashCode
-        ///</summary>
         [TestMethod()]
-        public void GetHashCodeTest()
+        public void EqualsNullTest()
         {
-            string action = "GET";
-            string resource = "/tests";
-            IARoute route1 = new IARoute(action, resource);
-            IARoute route2 = new IARoute(action, resource);
-            Assert.AreEqual(route1.GetHashCode(), route2.GetHashCode());
+            IARoute route = new IARoute("GET", "/example");
+            IARoute other = null;
+            Assert.IsFalse(route.Equals(other));
+        }
+
+        [TestMethod()]
+        public void EqualsDifferentActionTest()
+        {
+            IARoute route = new IARoute("GET", "/example");
+            IARoute other = new IARoute("PUT", "/example");
+            Assert.IsFalse(route.Equals(other));
+            Assert.AreNotEqual(route.GetHashCode(), other.GetHashCode());
+        }
+
+        [TestMethod()]
+        public void EqualsDifferentResourceTest()
+        {
+            IARoute route = new IARoute("GET", "/example");
+            IARoute other = new IARoute("GET", "/example2");
+            Assert.IsFalse(route.Equals(other));
+            Assert.AreNotEqual(route.GetHashCode(), other.GetHashCode());
+        }
+
+        [TestMethod()]
+        public void EqualsActionIsNullTest()
+        {
+            IARoute route = new IARoute(null, "/example");
+            IARoute other = new IARoute("GET", "/example2");
+            Assert.IsFalse(route.Equals(other));
+            Assert.AreNotEqual(route.GetHashCode(), other.GetHashCode());
+        }
+
+        [TestMethod()]
+        public void EqualsResourceIsNullTest()
+        {
+            IARoute route = new IARoute("GET", null);
+            IARoute other = new IARoute("GET", "/example");
+            Assert.IsFalse(route.Equals(other));
+            Assert.AreNotEqual(route.GetHashCode(), other.GetHashCode());
+        }
+
+        [TestMethod()]
+        public void GetConstructorTest()
+        {
+            IARoute route = IARoute.Get("");
+            Assert.AreEqual("GET", route.Action);
+        }
+
+        [TestMethod()]
+        public void PutConstructorTest()
+        {
+            IARoute route = IARoute.Put("");
+            Assert.AreEqual("PUT", route.Action);
+        }
+
+        [TestMethod()]
+        public void PostConstructorTest()
+        {
+            IARoute route = IARoute.Post("");
+            Assert.AreEqual("POST", route.Action);
+        }
+
+        [TestMethod()]
+        public void DeleteConstructorTest()
+        {
+            IARoute route = IARoute.Delete("");
+            Assert.AreEqual("DELETE", route.Action);
+        }
+
+        [TestMethod()]
+        public void ToStringTest()
+        {
+            IARoute route = new IARoute("", "");
+            Assert.IsNotNull(route.ToString());
         }
     }
 }

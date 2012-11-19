@@ -58,8 +58,8 @@ namespace IntAirAct
             }
 
             IARoute route = (IARoute)obj;
-            return (this.Action == route.Action || (this.Action != null && this.Action.Equals(route.Action)))
-                && (this.Resource == route.Resource || (this.Resource != null && this.Resource.Equals(route.Resource)));
+            return (this.Action != null && this.Action.Equals(route.Action))
+                && (this.Resource != null && this.Resource.Equals(route.Resource));
         }
 
         public override int GetHashCode()
