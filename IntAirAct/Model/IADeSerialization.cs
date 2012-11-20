@@ -15,13 +15,13 @@ namespace IntAirAct
         public IADeSerialization()
         {
             this.Body = new byte[0];
-            this.ContentType = "plain/text";
+            this.ContentType = "text/plain";
         }
 
-        public IADeSerialization(byte[] body)
+        public IADeSerialization(byte[] body, string contentType)
         {
             this.Body = body;
-            this.ContentType = "plain/text";
+            this.ContentType = contentType;
         }
 
         public dynamic BodyAs<T>()

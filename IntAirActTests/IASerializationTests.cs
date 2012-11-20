@@ -59,9 +59,11 @@ namespace IntAirActTests
         [TestMethod()]
         public void ConstructorTest()
         {
-            byte[] body = new byte[] { 0, 1 };
-            IADeSerialization deSerialization = new IADeSerialization(body);
-            Assert.AreEqual(body, deSerialization.Body);
+            byte[] expectedBody = new byte[] { 0, 1 };
+            string expectedContentType = "text/plain";
+            IADeSerialization deSerialization = new IADeSerialization(expectedBody, expectedContentType);
+            Assert.AreEqual(expectedBody, deSerialization.Body);
+            Assert.AreEqual(expectedContentType, deSerialization.ContentType);
         }
 
         [TestMethod()]

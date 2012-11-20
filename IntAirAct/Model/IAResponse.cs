@@ -11,7 +11,7 @@ namespace IntAirAct
         public int StatusCode { get; set; }
         public Dictionary<String, String> Metadata { get; set; }
 
-        public IAResponse() : base(new byte[0])
+        public IAResponse() : base()
         {
             this.StatusCode = 200;
             this.Metadata = new Dictionary<string,string>();

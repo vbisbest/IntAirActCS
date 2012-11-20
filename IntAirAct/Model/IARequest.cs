@@ -12,14 +12,15 @@ namespace IntAirAct
         public Dictionary<String, String> Parameters { get; set; }
         public IADevice Origin { get; set; }
 
-        public IARequest(IARoute route) : base(new byte[0])
+        public IARequest(IARoute route) : base()
         {
             this.Route = route;
             this.Metadata = new Dictionary<string,string>();
             this.Parameters = new Dictionary<string,string>();
         }
 
-        public IARequest(IARoute route, Dictionary<String, String> metadata, Dictionary<String, String> parameters, IADevice origin, byte[] body) : base(body)
+        public IARequest(IARoute route, Dictionary<String, String> metadata, Dictionary<String, String> parameters, IADevice origin, byte[] body, string contentType)
+            : base(body, contentType)
         {
             this.Route = route;
             this.Metadata = metadata;
