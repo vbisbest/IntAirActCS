@@ -207,7 +207,7 @@ namespace IntAirAct
                     }
                     else
                     {
-                        Console.WriteLine(String.Format("An error ocurred: {0}", error.Message));
+                        Console.WriteLine(String.Format("An error ocurred: {0}", error));
                     }
                 });
             }
