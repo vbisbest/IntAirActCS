@@ -31,6 +31,10 @@ namespace IntAirAct
             {
                 return BodyAsString();
             }
+            else if (type.IsAssignableFrom(typeof(int)))
+            {
+                return int.Parse(BodyAsString());
+            }
             else
             {
                 object data = JsonConvert.DeserializeObject(BodyAsString());
@@ -40,15 +44,105 @@ namespace IntAirAct
 
         private dynamic Deserialize<T>(object data)
         {
-            if (data.GetType().IsAssignableFrom(typeof(JArray)))
+            if (data == null)
             {
-                List<T> result = new List<T>();
-                foreach (object item in (JArray)data)
+                return null;
+            }
+            if (data.GetType().IsAssignableFrom(typeof(JValue)))
+            {
+                data = ((JValue)data).Value;
+            }
+            Type type = typeof(T);
+            if (data.GetType().IsAssignableFrom(typeof(string)))
+            {
+                string value = (string)data;
+                if (type.IsAssignableFrom(typeof(string)))
                 {
-                    result.Add(Deserialize<T>(item));
+                    return value;
                 }
-                return result;
-            } else if (data.GetType().IsAssignableFrom(typeof(JObject))) {
+                else if (type.IsAssignableFrom(typeof(int)))
+                {
+                    return int.Parse(value);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (data.GetType().IsAssignableFrom(typeof(int)))
+            {
+                int value = (int)data;
+                if (type.IsAssignableFrom(typeof(int)))
+                {
+                    return value;
+                }
+                else if (type.IsAssignableFrom(typeof(string)))
+                {
+                    return "" + value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (data.GetType().IsAssignableFrom(typeof(long)))
+            {
+                long value = (long)data;
+                if (type.IsAssignableFrom(typeof(int)))
+                {
+                    try
+                    {
+                        int result = Convert.ToInt32(value);
+                        return result;
+                    }
+                    catch (OverflowException)
+                    {
+                        return value;
+                    }
+                }
+                else if (type.IsAssignableFrom(typeof(string)))
+                {
+                    return "" + data;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else if (data.GetType().IsAssignableFrom(typeof(JArray)))
+            {
+                if (type.IsAssignableFrom(typeof(string[])))
+                {
+                    List<string> result = new List<string>();
+                    foreach (object item in (JArray)data)
+                    {
+                        result.Add(Deserialize<string>(item));
+                    }
+                    return result.ToArray();
+                }
+                else if (type.IsAssignableFrom(typeof(int[])))
+                {
+                    List<int> result = new List<int>();
+                    foreach (object item in (JArray)data)
+                    {
+                        int value = Deserialize<int>(item);
+                        result.Add(value);
+                    }
+                    return result.ToArray();
+                }
+                else
+                {
+                    List<T> result = new List<T>();
+                    foreach (object item in (JArray)data)
+                    {
+                        T val = Deserialize<T>(item);
+                        result.Add(val);
+                    }
+                    return result;
+                }
+            }
+            else if (data.GetType().IsAssignableFrom(typeof(JObject)))
+            {
                 JObject jObject = (JObject)data;
                 return jObject.ToObject<T>();
             }

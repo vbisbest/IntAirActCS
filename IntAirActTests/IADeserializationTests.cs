@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntAirAct;
+using System.Collections.Generic;
 
 namespace IntAirActTests
 {
@@ -56,9 +57,53 @@ namespace IntAirActTests
         #endregion
 
         [TestMethod()]
-        public void Test()
+        public void BodyAsStringTest()
         {
-            
+            string expected = "example string";
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWithString(expected);
+            string actual = deSerialization.BodyAs<String>();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void BodyAsNumberTest()
+        {
+            int expected = 50;
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(expected);
+            int actual = deSerialization.BodyAs<int>();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void BodyAsAnArrayOfStringTest()
+        {
+            string[] expected = new string[] { "example string" };
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(expected);
+            string[] actual = deSerialization.BodyAs<string[]>();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void BodyAsAnArrayOfNumbersTest()
+        {
+            int[] expected = new int[] { 50 };
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(expected);
+            int[] actual = deSerialization.BodyAs<int[]>();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void BodyAsADictionaryTest()
+        {
+            Dictionary<string, string> expected = new Dictionary<string, string>() { {"key", "value"} };
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(expected);
+            Dictionary<string, string> actual = deSerialization.BodyAs<Dictionary<string, string>>();
+            CollectionAssert.AreEqual(expected, actual);
         }
     }
 }
