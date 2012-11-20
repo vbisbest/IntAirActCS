@@ -196,9 +196,9 @@ namespace IntAirAct
                         if (response.StatusCode == 200)
                         {
                             List<IARoute> supportedRoutes = response.BodyAs<IARoute>();
-                            IADevice dev = new IADevice(service.Name, service.Hostname, service.Port, new HashSet<IARoute>(supportedRoutes));
-                            this.devices.Add(device);
-                            OnDeviceFound(device, false);
+                            IADevice deviceWithRoutes = new IADevice(service.Name, service.Hostname, service.Port, new HashSet<IARoute>(supportedRoutes));
+                            this.devices.Add(deviceWithRoutes);
+                            OnDeviceFound(deviceWithRoutes, false);
                         }
                         else
                         {
