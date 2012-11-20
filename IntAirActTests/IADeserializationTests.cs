@@ -105,5 +105,16 @@ namespace IntAirActTests
             Dictionary<string, string> actual = deSerialization.BodyAs<Dictionary<string, string>>();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod()]
+        public void BodyAsIANumberTest()
+        {
+            IAModelWithIntProperty expected = new IAModelWithIntProperty();
+            expected.Number = 50;
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(expected);
+            IAModelWithIntProperty actual = deSerialization.BodyAs<IAModelWithIntProperty>();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
