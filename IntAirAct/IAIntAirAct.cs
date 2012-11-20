@@ -164,6 +164,15 @@ namespace IntAirAct
             return this.Devices.FindAll(device => device.SupportedRoutes.Contains(route));
         }
 
+        public IADevice DeviceWithName(string name)
+        {
+            if (this.OwnDevice.Name.Equals(name))
+            {
+                return this.OwnDevice;
+            }
+            return this.Devices.Find(device => device.Name.Equals(name));
+        }
+
         public void Route(IARoute route, Action<IARequest, IAResponse> action)
         {
             SupportedRoutes.Add(route);
