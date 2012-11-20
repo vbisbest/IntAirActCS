@@ -36,11 +36,17 @@ namespace IntAirAct
             NancyServerAdapter adapter = new NancyServerAdapter();
             Owin.AppDelegate app = Gate.Adapters.Nancy.NancyAdapter.App();
             adapter.App = app;
-            // register the server adapter for the module serving the routes
-            container.Register<NancyServerAdapter>(adapter);
             IAClient client = new RestSharpClient();
 
-            return new IAIntAirAct(adapter, client);
+            // register the server adapter for the module serving the routes
+            container.Register<NancyServerAdapter>(adapter);
+
+            IAIntAirAct intAirAct = new IAIntAirAct(adapter, client);
+            
+            // register IntAirAct for getting the origin devices in NancyModule
+            container.Register<IAIntAirAct>(intAirAct);
+
+            return intAirAct;
         }
 
         public IAIntAirAct(IAServer server, IAClient client)
