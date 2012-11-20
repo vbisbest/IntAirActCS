@@ -37,8 +37,15 @@ namespace IntAirAct
             }
             else
             {
-                object data = JsonConvert.DeserializeObject(BodyAsString());
-                return Deserialize<T>(data);
+                try
+                {
+                    object data = JsonConvert.DeserializeObject(BodyAsString());
+                    return Deserialize<T>(data);
+                }
+                catch (FormatException)
+                {
+                    return null;
+                }
             }
         }
 
