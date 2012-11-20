@@ -5,13 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntAirActImageWindows", "In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntAirAct", "IntAirAct\IntAirAct.csproj", "{8A1CECE0-6F76-40A8-AEDC-B3D241D8A962}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9CE310FB-565C-4EED-9B2B-AC3FBA4E7619}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDiscovery", "ServiceDiscovery\ServiceDiscovery.csproj", "{CD87E926-3CD6-4878-8EDE-9EB6600C75DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publisher.csproj", "{D1DB1C26-CD76-4669-9BFF-B9B1595CB563}"
@@ -28,6 +21,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroconfService", "Frameworks\ZeroConfigNetServices\ZeroconfService\ZeroconfService.csproj", "{AD5CF7A9-93C4-48DD-ACD8-38DD434F1491}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDiscoveryTests", "ServiceDiscoveryTests\ServiceDiscoveryTests.csproj", "{1B94DF72-85F9-43DC-9639-9A80FE9A9766}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C0897069-C9BF-4CE9-BFDA-E02E68644C15}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
