@@ -152,5 +152,26 @@ namespace IntAirActTests
             IAModelReference actual = deSerialization.BodyAs<IAModelReference>();
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod()]
+        public void BodyAsReturnsNilTest()
+        {
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith("-");
+            IAModelWithIntProperty actual = deSerialization.BodyAs<IAModelWithIntProperty>();
+            Assert.AreEqual(null, actual);
+        }
+
+        [TestMethod()]
+        public void StringBodyAsNumberTest()
+        {
+            IAModelWithFloatProperty expected = new IAModelWithFloatProperty();
+            expected.Number = 50.6f;
+
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith("{\"number\":\"50.6\"}");
+            IAModelWithFloatProperty actual = deSerialization.BodyAs<IAModelWithFloatProperty>();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
