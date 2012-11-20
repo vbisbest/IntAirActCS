@@ -173,5 +173,17 @@ namespace IntAirActTests
             IAModelWithFloatProperty actual = deSerialization.BodyAs<IAModelWithFloatProperty>();
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod()]
+        public void BodyAsIAModelWithStringPropertyTest()
+        {
+            IAModelWithStringProperty expected = new IAModelWithStringProperty();
+            expected.StringProperty = "50.6";
+
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith("{\"stringProperty\":\"50.6\"}");
+            IAModelWithStringProperty actual = deSerialization.BodyAs<IAModelWithStringProperty>();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
