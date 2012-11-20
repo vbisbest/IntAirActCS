@@ -18,8 +18,24 @@ namespace IntAirAct
                 Action<IARequest, IAResponse> action = kvp.Value;
                 RouteBuilder rb = new RouteBuilder(route.Action, this);
                 rb[route.Resource] = x =>
-                {   
-                    IARequest iaRequest = new IARequest(route, null, null, null, Request.BodyAsByte());
+                {
+                    Dictionary<string, string> metadata = new Dictionary<string, string>();
+                    Dictionary<string, string> parameters = new Dictionary<string, string>();
+                    foreach (string key in x)
+                    {
+                        parameters.Add(key, x[key]);
+                    }
+                    string contentType = "";
+                    IADevice origin = null;
+                    if (Request.Headers.Keys.Contains("X-IA-Origin"))
+                    {
+                        IAIntAirAct intAirAct = TinyIoC.TinyIoCContainer.Current.Resolve<IAIntAirAct>();
+                        if (intAirAct != null)
+                        {
+                            origin = intAirAct.DeviceWithName(Request.Headers["X-IA-Origin"].First());
+                        }
+                    }
+                    IARequest iaRequest = new IARequest(route, metadata, parameters, origin, Request.BodyAsByte(), contentType);
                     IAResponse iaResponse = new IAResponse();
                     action(iaRequest, iaResponse);
                     Response response = new Response();
