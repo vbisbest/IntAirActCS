@@ -37,7 +37,7 @@ namespace IntAirAct
             IAResponse response = (IAResponse)obj;
             return (this.StatusCode == response.StatusCode)
                 && (this.Body == response.Body)
-                && (this.Metadata == response.Metadata || (this.Metadata != null && this.Metadata.Equals(response.Metadata)));
+                && (this.Metadata != null && this.Metadata.Equals(response.Metadata));
         }
 
         public override int GetHashCode()

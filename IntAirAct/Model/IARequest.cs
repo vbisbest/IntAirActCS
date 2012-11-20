@@ -44,10 +44,10 @@ namespace IntAirAct
             }
 
             IARequest request = (IARequest)obj;
-            return (this.Route == request.Route || (this.Route != null && this.Route.Equals(request.Route)))
-                && (this.Metadata == request.Metadata || (this.Metadata != null && this.Metadata.Equals(request.Metadata)))
-                && (this.Parameters == request.Parameters || (this.Parameters != null && this.Parameters.Equals(request.Parameters)))
-                && (this.Origin == request.Origin || (this.Origin != null && this.Origin.Equals(request.Origin)))
+            return (this.Route != null && this.Route.Equals(request.Route))
+                && (this.Metadata != null && this.Metadata.Equals(request.Metadata))
+                && (this.Parameters != null && this.Parameters.Equals(request.Parameters))
+                && (this.Origin != null && this.Origin.Equals(request.Origin))
                 && (this.Body == request.Body);
         }
 

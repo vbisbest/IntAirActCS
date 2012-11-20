@@ -46,7 +46,7 @@ namespace IntAirAct
             }
 
             IADevice device = (IADevice) obj;
-            return this.Name == device.Name || (this.Name != null && this.Name.Equals(device.Name));
+            return this.Name != null && this.Name.Equals(device.Name);
         }
 
         public override int GetHashCode()
