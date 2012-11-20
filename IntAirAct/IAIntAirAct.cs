@@ -191,7 +191,7 @@ namespace IntAirAct
                 IARequest request = new IARequest(IARoute.Get("/routes"));
                 SendRequest(request, device, delegate(IAResponse response, Exception error)
                 {
-                    if (error != null)
+                    if (error == null)
                     {
                         if (response.StatusCode == 200)
                         {
