@@ -77,6 +77,7 @@
     <Compile Include="IASerializationTests.cs" />
     <Compile Include="IADeserializationTests.cs" />
     <Compile Include="IARouteTest.cs" />
+    <Compile Include="Model\IAModelWithStringProperty.cs" />
     <Compile Include="Model\IAModelInheritance.cs" />
     <Compile Include="Model\IAModelReference.cs" />
     <Compile Include="Model\IAModelWithFloatProperty.cs" />
