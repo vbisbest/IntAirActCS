@@ -169,7 +169,7 @@ namespace IntAirAct
             this.client.SendRequest(request, device);
         }
 
-        public void SendRequest(IARequest request, IADevice device, Action<IAResponse> action)
+        public void SendRequest(IARequest request, IADevice device, Action<IAResponse, Exception> action)
         {
             this.client.SendRequest(request, device, action);
         }
@@ -189,18 +189,25 @@ namespace IntAirAct
             {
                 IADevice device = new IADevice(service.Name, service.Hostname, service.Port, null);
                 IARequest request = new IARequest(IARoute.Get("/routes"));
-                SendRequest(request, device, delegate(IAResponse response)
+                SendRequest(request, device, delegate(IAResponse response, Exception error)
                 {
-                    if (response.StatusCode == 200)
+                    if (error != null)
                     {
-                        List<IARoute> supportedRoutes = response.BodyAs<IARoute>();
-                        IADevice dev = new IADevice(service.Name, service.Hostname, service.Port, new HashSet<IARoute>(supportedRoutes));
-                        this.devices.Add(device);
-                        OnDeviceFound(device, false);
+                        if (response.StatusCode == 200)
+                        {
+                            List<IARoute> supportedRoutes = response.BodyAs<IARoute>();
+                            IADevice dev = new IADevice(service.Name, service.Hostname, service.Port, new HashSet<IARoute>(supportedRoutes));
+                            this.devices.Add(device);
+                            OnDeviceFound(device, false);
+                        }
+                        else
+                        {
+                            Console.WriteLine(String.Format("An error ocurred trying to request routes from {0}", device));
+                        }
                     }
                     else
                     {
-                        Console.WriteLine(String.Format("An error ocurred trying to request routes from {0}", device));
+                        Console.WriteLine(String.Format("An error ocurred: {0}", error.Message));
                     }
                 });
             }

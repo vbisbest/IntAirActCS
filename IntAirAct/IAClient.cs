@@ -9,6 +9,6 @@ namespace IntAirAct
     {
         void SendRequest(IARequest request, IADevice device);
 
-        void SendRequest(IARequest request, IADevice device, Action<IAResponse> action);
+        void SendRequest(IARequest request, IADevice device, Action<IAResponse, Exception> action);
     }
 }

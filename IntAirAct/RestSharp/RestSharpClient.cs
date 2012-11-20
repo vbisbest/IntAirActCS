@@ -13,13 +13,13 @@ namespace IntAirAct
             this.SendRequest(request, device, null);
         }
 
-        public void SendRequest(IARequest request, IADevice device, Action<IAResponse> action)
+        public void SendRequest(IARequest request, IADevice device, Action<IAResponse, Exception> action)
         {
             RestClient client = ClientFromDevice(device);
             RestRequest restRequest = RequestFromIARequest(request);
             client.ExecuteAsync(restRequest, response =>
             {
-                action(IAResponseFromRestResponse(response));
+                action(IAResponseFromRestResponse(response), response.ErrorException);
             });
         }
 
