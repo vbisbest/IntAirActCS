@@ -25,6 +25,7 @@ namespace IntAirAct
             this.Route = route;
             this.Metadata = metadata;
             this.Parameters = parameters;
+            this.Origin = origin;
         }
 
         public override string ToString()
