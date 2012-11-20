@@ -20,7 +20,10 @@ namespace IntAirAct
             RestRequest restRequest = RequestFromIARequest(request);
             client.ExecuteAsync(restRequest, response =>
             {
-                action(IAResponseFromRestResponse(response), response.ErrorException);
+                if (action != null)
+                {
+                    action(IAResponseFromRestResponse(response), response.ErrorException);
+                }
             });
         }
 
