@@ -21,9 +21,9 @@ namespace IntAirActImageWindows
             Application.SetCompatibleTextRenderingDefault(false);
             Form1 form = new Form1();
 
-            IAIntAirAct ia = IAIntAirAct.New();
+            IAIntAirAct intAirAct = IAIntAirAct.New();
 
-            ia.Route(new IARoute("PUT", "/image"), delegate(IARequest req, IAResponse res)
+            intAirAct.Route(new IARoute("PUT", "/image"), delegate(IARequest req, IAResponse res)
             {
                 logger.TraceEvent(TraceEventType.Information, 0, "Received request on {0}", req.Route);
                 
@@ -34,11 +34,11 @@ namespace IntAirActImageWindows
                 });
             });
             
-            ia.Start();
+            intAirAct.Start();
             
             Application.Run(form);
 
-            ia.Stop();
+            intAirAct.Stop();
         }
     }
 }
