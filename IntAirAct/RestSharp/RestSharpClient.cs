@@ -76,6 +76,10 @@ namespace IntAirAct
             result.StatusCode = (int)response.StatusCode;
             result.ContentType = response.ContentType;
             result.Body = response.RawBytes;
+            foreach (Parameter p in response.Headers)
+            {
+                result.Metadata.Add(p.Name, "" + p.Value);
+            }
             return result;
         }
 
