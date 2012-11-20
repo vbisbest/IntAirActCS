@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RestSharp;
+using System.Text.RegularExpressions;
 
 namespace IntAirAct
 {
@@ -58,7 +59,7 @@ namespace IntAirAct
                     result.Method = Method.GET;
                     break;
             }
-            result.Resource = request.Route.Resource;
+            result.Resource = ReplaceParameters(request.Route.Resource, request.Parameters);
             if (request.Origin != null)
             {
                 result.AddHeader("X-IA-Origin", request.Origin.Name);
@@ -72,6 +73,26 @@ namespace IntAirAct
             result.StatusCode = (int)response.StatusCode;
             result.ContentType = response.ContentType;
             result.Body = response.RawBytes;
+            return result;
+        }
+
+        private string ReplaceParameters(string path, Dictionary<string, string> parameters)
+        {
+            string result = Regex.Replace(path, @"{(\w+)}", delegate(Match match)
+            {
+                string value = match.ToString();
+                string key = value.Substring(1, value.Length - 2);
+                if (parameters.ContainsKey(key))
+                {
+                    string keyValue = parameters[key];
+                    parameters.Remove(key);
+                    return keyValue;
+                }
+                else
+                {
+                    return value;
+                }
+            });
             return result;
         }
     }
