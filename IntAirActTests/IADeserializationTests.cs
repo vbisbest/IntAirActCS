@@ -127,5 +127,30 @@ namespace IntAirActTests
             IAModelWithFloatProperty actual = deSerialization.BodyAs<IAModelWithFloatProperty>();
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod()]
+        public void BodyAsIAModelInheritanceTest()
+        {
+            IAModelInheritance expected = new IAModelInheritance();
+            expected.Number = 50;
+            expected.NumberTwo = 60;
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(expected);
+            IAModelInheritance actual = deSerialization.BodyAs<IAModelInheritance>();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void BodyAsIAModelReferenceTest()
+        {
+            IAModelWithIntProperty model = new IAModelWithIntProperty();
+            model.Number = 50;
+            IAModelReference expected = new IAModelReference();
+            expected.Number = model;
+            IADeSerialization deSerialization = new IADeSerialization();
+            deSerialization.SetBodyWith(expected);
+            IAModelReference actual = deSerialization.BodyAs<IAModelReference>();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
