@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroconfService", "Framewor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDiscoveryTests", "ServiceDiscoveryTests\ServiceDiscoveryTests.csproj", "{1B94DF72-85F9-43DC-9639-9A80FE9A9766}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C0897069-C9BF-4CE9-BFDA-E02E68644C15}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{48986CFE-BFF1-4B6A-AA42-2E2717BEB43F}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe

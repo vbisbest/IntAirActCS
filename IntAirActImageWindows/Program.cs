@@ -4,8 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
 using IntAirAct;
-using TinyIoC;
-using ServiceDiscovery;
 
 namespace IntAirActImageWindows
 {
