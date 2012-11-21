@@ -47,6 +47,11 @@ namespace IntAirAct
                     }
 
                     Dictionary<string, string> metadata = new Dictionary<string, string>();
+                    foreach (KeyValuePair<string, IEnumerable<string>> header in Request.Headers)
+                    {
+                        var value = header.Value.First();
+                        metadata[header.Key] = value;
+                    }
 
                     IARequest iaRequest = new IARequest(route, metadata, parameters, origin, Request.BodyAsByte(), contentType);
                     IAResponse iaResponse = new IAResponse();
