@@ -63,9 +63,17 @@ namespace IntAirAct
                     break;
             }
             result.Resource = ReplaceParameters(request.Route.Resource, request.Parameters);
+            foreach (KeyValuePair<string, string> parameter in request.Parameters)
+            {
+                result.AddParameter(parameter.Key, parameter.Value);
+            }
             if (request.Origin != null)
             {
                 result.AddHeader("X-IA-Origin", request.Origin.Name);
+            }
+            foreach (KeyValuePair<string, string> metaentry in request.Metadata)
+            {
+                result.AddHeader(metaentry.Key, metaentry.Value);
             }
             return result;
         }
