@@ -62,8 +62,9 @@ namespace IntAirAct
                     result.Method = Method.GET;
                     break;
             }
-            result.Resource = ReplaceParameters(request.Route.Resource, request.Parameters);
-            foreach (KeyValuePair<string, string> parameter in request.Parameters)
+            Dictionary<string, string> parameters = new Dictionary<string, string>(request.Parameters);
+            result.Resource = ReplaceParameters(request.Route.Resource, parameters);
+            foreach (KeyValuePair<string, string> parameter in parameters)
             {
                 result.AddParameter(parameter.Key, parameter.Value);
             }
