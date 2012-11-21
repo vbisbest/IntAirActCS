@@ -19,13 +19,23 @@ namespace IntAirAct
                 RouteBuilder rb = new RouteBuilder(route.Action, this);
                 rb[route.Resource] = x =>
                 {
-                    Dictionary<string, string> metadata = new Dictionary<string, string>();
                     Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+                    // get parameters out of path
                     foreach (string key in x)
                     {
-                        parameters.Add(key, x[key]);
+                        DynamicDictionaryValue value = x[key];
+                        parameters.Add(key, "" + value.Value);
                     }
-                    string contentType = "";
+
+                    // get parameters out of query string
+                    foreach (string key in Request.Query)
+                    {
+                        DynamicDictionaryValue value = Request.Query[key];
+                        parameters.Add(key, "" + value.Value);
+                    }
+                    string contentType = Request.Headers.ContentType;
+
                     IADevice origin = null;
                     if (Request.Headers.Keys.Contains("X-IA-Origin"))
                     {
@@ -35,6 +45,9 @@ namespace IntAirAct
                             origin = intAirAct.DeviceWithName(Request.Headers["X-IA-Origin"].First());
                         }
                     }
+
+                    Dictionary<string, string> metadata = new Dictionary<string, string>();
+
                     IARequest iaRequest = new IARequest(route, metadata, parameters, origin, Request.BodyAsByte(), contentType);
                     IAResponse iaResponse = new IAResponse();
                     action(iaRequest, iaResponse);
