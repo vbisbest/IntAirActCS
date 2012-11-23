@@ -5,6 +5,7 @@ using System.Text;
 using Nancy;
 using Nancy.Routing;
 using System.IO;
+using Nancy.Helpers;
 
 namespace IntAirAct
 {
@@ -17,15 +18,17 @@ namespace IntAirAct
                 IARoute route = kvp.Key;
                 Action<IARequest, IAResponse> action = kvp.Value;
                 RouteBuilder rb = new RouteBuilder(route.Action, this);
-                rb[route.Resource] = x =>
+                rb[route.Resource] = nancyDynamicDictionary =>
                 {
                     Dictionary<string, string> parameters = new Dictionary<string, string>();
 
                     // get parameters out of path
-                    foreach (string key in x)
+                    foreach (string key in nancyDynamicDictionary)
                     {
-                        DynamicDictionaryValue value = x[key];
-                        parameters.Add(key, "" + value.Value);
+                        
+                        DynamicDictionaryValue value = nancyDynamicDictionary[key];
+                        string urldecoded = HttpUtility.UrlDecode(value.ToString());
+                        parameters.Add(key, urldecoded);
                     }
 
                     // get parameters out of query string
