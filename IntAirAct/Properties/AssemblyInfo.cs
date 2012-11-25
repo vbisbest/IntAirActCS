@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("IntAirAct")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A Framework enabling Device Interaction using REST.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Arlo O'Keeffe")]
 [assembly: AssemblyProduct("IntAirAct")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright © 2012 Arlo Louis O'Keeffe, ASE Group of Frank Maurer (University of Calgary)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
