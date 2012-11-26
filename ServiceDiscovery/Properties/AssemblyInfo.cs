@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ServiceDiscovery")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A Framework that makes using Service Discovery a breeze.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Arlo O'Keeffe")]
 [assembly: AssemblyProduct("ServiceDiscovery")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright © 2012 Arlo O'Keeffe, ASE Group of Frank Maurer (University of Calgary)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
