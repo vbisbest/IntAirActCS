@@ -12,5 +12,8 @@
     <description>$description$</description>
     <copyright>Copyright © 2012 Arlo O'Keeffe, ASE Group of Frank Maurer (University of Calgary)</copyright>
     <tags>Bonjour Service Discovery</tags>
+    <dependencies>
+      <dependency id="ZeroconfService" version="0.6" />
+    </dependencies>
   </metadata>
 </package>
