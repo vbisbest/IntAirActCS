@@ -76,6 +76,14 @@ namespace IntAirAct
             {
                 result.AddHeader(metaentry.Key, metaentry.Value);
             }
+
+            result.AddHeader("Content-Type", request.ContentType);
+
+            Parameter p = new Parameter();
+            p.Value = System.Text.Encoding.UTF8.GetString(request.Body);
+            p.Type = ParameterType.RequestBody;
+            result.Parameters.Add(p);
+
             return result;
         }
 
