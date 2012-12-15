@@ -166,7 +166,7 @@ namespace IntAirAct
 
         public IADevice DeviceWithName(string name)
         {
-            if (this.OwnDevice.Name.Equals(name))
+            if (this.OwnDevice != null && this.OwnDevice.Name.Equals(name))
             {
                 return this.OwnDevice;
             }
