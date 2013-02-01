@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HttpWebRequest\HttpWebRequestClient.cs" />
     <Compile Include="IAClient.cs" />
     <Compile Include="IAServer.cs" />
     <Compile Include="Model\IADeSerialization.cs" />

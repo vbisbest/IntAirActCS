@@ -36,7 +36,7 @@ namespace IntAirAct
             NancyServerAdapter adapter = new NancyServerAdapter();
             Owin.AppDelegate app = Gate.Adapters.Nancy.NancyAdapter.App();
             adapter.App = app;
-            IAClient client = new RestSharpClient();
+            IAClient client = new HttpWebRequestClient();
 
             // register the server adapter for the module serving the routes
             container.Register<NancyServerAdapter>(adapter);
