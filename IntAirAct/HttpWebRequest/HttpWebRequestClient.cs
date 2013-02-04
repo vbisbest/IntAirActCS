@@ -9,6 +9,13 @@ using System.Text.RegularExpressions;
 namespace IntAirAct
 {
 
+    public class RequestState
+    {
+        public HttpWebRequest WebRequest { get; set; }
+        public IARequest IARequest { get; set; }
+        public Action<IAResponse, Exception> Action { get; set; }
+    }
+
     public class HttpWebRequestClient : IAClient
     {
         public void SendRequest(IARequest request, IADevice device)
@@ -19,30 +26,21 @@ namespace IntAirAct
         public void SendRequest(IARequest request, IADevice device, Action<IAResponse, Exception> action)
         {
             HttpWebRequest webRequest = CreateRequest(device, request);
-            IAsyncResult result = webRequest.BeginGetRequestStream(delegate(IAsyncResult asResult1)
-            {
-                Stream postStream = webRequest.EndGetRequestStream(asResult1);
-                postStream.Write(request.Body, 0, request.Body.Length);
-                postStream.Close();
-
-                webRequest.BeginGetResponse(delegate(IAsyncResult asResult2)
+            RequestState state = new RequestState
                 {
-                    IAResponse res = null;
-                    Exception e = null;
-                    try
-                    {
-                        HttpWebResponse response = (HttpWebResponse)webRequest.EndGetResponse(asResult2);
-                        res = IAResponseFromHttpWebResponse(response);
-                    }
-                    catch (WebException exception)
-                    {
-                        e = new Exception(exception.Message);
-                    }
+                    WebRequest = webRequest,
+                    Action = action,
+                    IARequest = request
+                };
 
-                    Console.WriteLine("Request done");
-                    action(res, e);
-                }, webRequest);
-            }, webRequest);
+            if (request.Route.Action == "GET" || request.Route.Action == "HEAD")
+            {
+                webRequest.BeginGetResponse(GetResponse, state);
+            }
+            else
+            {
+                webRequest.BeginGetRequestStream(GetResponseStream, state);
+            }
         }
 
         private HttpWebRequest CreateRequest(IADevice device, IARequest iaRequest)
@@ -78,7 +76,7 @@ namespace IntAirAct
             return request;
         }
 
-        private IAResponse IAResponseFromHttpWebResponse(HttpWebResponse webResponse)
+        private static IAResponse IAResponseFromHttpWebResponse(HttpWebResponse webResponse)
         {
             IAResponse response = new IAResponse();
 
@@ -100,6 +98,49 @@ namespace IntAirAct
             response.Body = b;
 
             return response;
+        }
+
+        private static void GetResponse(IAsyncResult asyncResult)
+        {
+            IAResponse res = null;
+            Exception e = null;
+            RequestState state = null;
+            try
+            {
+                state = (RequestState)asyncResult.AsyncState;
+                HttpWebResponse response = (HttpWebResponse)state.WebRequest.EndGetResponse(asyncResult);
+                res = IAResponseFromHttpWebResponse(response);
+                state.Action(res, e);
+            }
+            catch (Exception exception)
+            {
+                e = new Exception(exception.Message);
+            }
+            if (state != null)
+            {
+                state.Action(res, e);
+            }
+        }
+
+        private static void GetResponseStream(IAsyncResult asyncResult)
+        {
+            RequestState state = null;
+            try
+            {
+                state = (RequestState)asyncResult.AsyncState;
+                Stream postStream = state.WebRequest.EndGetRequestStream(asyncResult);
+                postStream.Write(state.IARequest.Body, 0, state.IARequest.Body.Length);
+                postStream.Close();
+
+                state.WebRequest.BeginGetResponse(GetResponse, state);
+            }
+            catch (Exception e)
+            {
+                if (state != null)
+                {
+                    state.Action(null, new Exception(e.Message));
+                }
+            }
         }
 
         private string ReplaceParameters(string path, Dictionary<string, string> parameters)
