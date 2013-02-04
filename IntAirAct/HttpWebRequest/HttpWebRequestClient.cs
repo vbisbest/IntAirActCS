@@ -110,7 +110,6 @@ namespace IntAirAct
                 state = (RequestState)asyncResult.AsyncState;
                 HttpWebResponse response = (HttpWebResponse)state.WebRequest.EndGetResponse(asyncResult);
                 res = IAResponseFromHttpWebResponse(response);
-                state.Action(res, e);
             }
             catch (Exception exception)
             {
