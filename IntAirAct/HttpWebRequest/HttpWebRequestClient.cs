@@ -136,7 +136,7 @@ namespace IntAirAct
             }
             catch (Exception e)
             {
-                if (state != null)
+                if (state != null && state.Action != null)
                 {
                     state.Action(null, new Exception(e.Message));
                 }
