@@ -115,7 +115,8 @@ namespace IntAirAct
             {
                 e = new Exception(exception.Message);
             }
-            if (state != null)
+
+            if (state != null && state.Action != null)
             {
                 state.Action(res, e);
             }
