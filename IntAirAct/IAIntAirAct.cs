@@ -6,6 +6,7 @@ using TinyIoC;
 using ServiceDiscovery;
 using System.Net;
 using System.ComponentModel;
+using Monads;
 
 namespace IntAirAct
 {
@@ -15,7 +16,7 @@ namespace IntAirAct
     public class IAIntAirAct : IDisposable
     {
         public bool IsRunning { get; private set; }
-        public IADevice OwnDevice { get; private set; }
+        public Option<IADevice> OwnDevice { get; private set; }
         public HashSet<IARoute> SupportedRoutes { get; set; }
         public event DeviceFoundHandler DeviceFound;
         public event DeviceLostHandler DeviceLost;
@@ -166,11 +167,8 @@ namespace IntAirAct
 
         public IADevice DeviceWithName(string name)
         {
-            if (this.OwnDevice != null && this.OwnDevice.Name.Equals(name))
-            {
-                return this.OwnDevice;
-            }
-            return this.Devices.Find(device => device.Name.Equals(name));
+            return this.OwnDevice.Where(x => x.Name.Equals(name)).
+              GetOrElse(() => this.Devices.Find(device => device.Name.Equals(name)));
         }
 
         public void Route(IARoute route, Action<IARequest, IAResponse> action)
@@ -197,7 +195,7 @@ namespace IntAirAct
             if (ownService)
             {
                 IADevice device = new IADevice(service.Name, service.Hostname, service.Port, this.SupportedRoutes);
-                this.OwnDevice = device;
+                this.OwnDevice = device.AsOption();
                 OnDeviceFound(device, true);
             }
             else
