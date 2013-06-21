@@ -39,6 +39,7 @@ namespace IntAirAct
             adapter.App = app;
             IAClient client = new HttpWebRequestClient();
 
+
             // register the server adapter for the module serving the routes
             container.Register<NancyServerAdapter>(adapter);
 
@@ -58,7 +59,7 @@ namespace IntAirAct
             this.IsRunning = false;
             this.SupportedRoutes = new HashSet<IARoute>();
             Port = 0;
-
+            this.OwnDevice = new None<IADevice>();
             this.Setup();
         }
 
@@ -185,6 +186,29 @@ namespace IntAirAct
         public void SendRequest(IARequest request, IADevice device, Action<IAResponse, Exception> action)
         {
             this.client.SendRequest(request, device, action);
+        }
+
+        public Promise<Try<IAResponse>> Send(IARequest request, IADevice device)
+        {
+            Try<IAResponse> result = null;
+            SendRequest(request, device, delegate(IAResponse response, Exception e)
+            {
+                result = MetaTry.Try<IAResponse>(() => {
+                    if (e != null)
+                    {
+                        throw new Exception(e.Message, e);
+                    }
+                    else 
+                    {
+                        return response;
+                    }
+                });
+            });
+            return ((Func<Try<IAResponse>>)delegate()
+            {
+                while (result == null) ;
+                return result;
+            }).AsPromise();
         }
 
         #endregion
