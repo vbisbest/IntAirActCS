@@ -64,10 +64,10 @@ namespace IntAirAct
             request.ContentType = iaRequest.ContentType;
             request.Method = iaRequest.Route.Action;
 
-            if (iaRequest.Origin != null)
+            iaRequest.Origin.Foreach(x =>
             {
-                request.Headers.Add(String.Format("X-IA-Origin: {0}", iaRequest.Origin.Name));
-            }
+                request.Headers.Add(String.Format("X-IA-Origin: {0}", x.Name));
+            });
             foreach (KeyValuePair<string, string> metaentry in iaRequest.Metadata)
             {
                 request.Headers.Add(String.Format("{0}: {1}", metaentry.Key, metaentry.Value));
