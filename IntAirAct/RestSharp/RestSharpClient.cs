@@ -68,10 +68,10 @@ namespace IntAirAct
             {
                 result.AddParameter(parameter.Key, parameter.Value);
             }
-            request.Origin.Foreach(x =>
+            if (request.Origin != null)
             {
-                result.AddHeader("X-IA-Origin", x.Name);
-            });
+                result.AddHeader("X-IA-Origin", request.Origin.Name);
+            }
             foreach (KeyValuePair<string, string> metaentry in request.Metadata)
             {
                 result.AddHeader(metaentry.Key, metaentry.Value);

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Monads;
 
 namespace IntAirAct
 {
@@ -11,14 +10,13 @@ namespace IntAirAct
         public IARoute Route { get; set; }
         public Dictionary<String, String> Metadata { get; set; }
         public Dictionary<String, String> Parameters { get; set; }
-        public Option<IADevice> Origin { get; set; }
+        public IADevice Origin { get; set; }
 
         public IARequest(IARoute route) : base()
         {
             this.Route = route;
             this.Metadata = new Dictionary<string,string>();
             this.Parameters = new Dictionary<string,string>();
-            this.Origin = new None<IADevice>();
         }
 
         public IARequest(IARoute route, Dictionary<String, String> metadata, Dictionary<String, String> parameters, IADevice origin, byte[] body, string contentType)
@@ -27,7 +25,7 @@ namespace IntAirAct
             this.Route = route;
             this.Metadata = metadata;
             this.Parameters = parameters;
-            this.Origin = origin.AsOption();
+            this.Origin = origin;
         }
 
         public override string ToString()
@@ -51,7 +49,7 @@ namespace IntAirAct
             return (this.Route != null && this.Route.Equals(request.Route))
                 && (this.Metadata != null && this.Metadata.Equals(request.Metadata))
                 && (this.Parameters != null && this.Parameters.Equals(request.Parameters))
-                && (this.Origin.Equals(request.Origin))
+                && (this.Origin != null && this.Origin.Equals(request.Origin))
                 && (this.Body == request.Body);
         }
 
@@ -61,7 +59,7 @@ namespace IntAirAct
             hash = hash * 31 + (this.Route == null ? 0 : this.Route.GetHashCode());
             hash = hash * 31 + (this.Metadata == null ? 0 : this.Metadata.GetHashCode());
             hash = hash * 31 + (this.Parameters == null ? 0 : this.Parameters.GetHashCode());
-            hash = hash * 31 + (this.Origin.Select(x => x.GetHashCode()).GetOrElse(()=>0));
+            hash = hash * 31 + (this.Origin == null ? 0 : this.Origin.GetHashCode());
             hash = hash * 31 + (this.Body == null ? 0 : this.Body.GetHashCode());
             return hash;
         }

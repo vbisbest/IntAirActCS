@@ -6,7 +6,6 @@ using TinyIoC;
 using ServiceDiscovery;
 using System.Net;
 using System.ComponentModel;
-using Monads;
 
 namespace IntAirAct
 {
@@ -16,7 +15,7 @@ namespace IntAirAct
     public class IAIntAirAct : IDisposable
     {
         public bool IsRunning { get; private set; }
-        public Option<IADevice> OwnDevice { get; private set; }
+        public IADevice OwnDevice { get; private set; }
         public HashSet<IARoute> SupportedRoutes { get; set; }
         public event DeviceFoundHandler DeviceFound;
         public event DeviceLostHandler DeviceLost;
@@ -39,7 +38,6 @@ namespace IntAirAct
             adapter.App = app;
             IAClient client = new HttpWebRequestClient();
 
-
             // register the server adapter for the module serving the routes
             container.Register<NancyServerAdapter>(adapter);
 
@@ -59,7 +57,7 @@ namespace IntAirAct
             this.IsRunning = false;
             this.SupportedRoutes = new HashSet<IARoute>();
             Port = 0;
-            this.OwnDevice = new None<IADevice>();
+
             this.Setup();
         }
 
@@ -168,8 +166,11 @@ namespace IntAirAct
 
         public IADevice DeviceWithName(string name)
         {
-            return this.OwnDevice.Where(x => x.Name.Equals(name)).
-              GetOrElse(() => this.Devices.Find(device => device.Name.Equals(name)));
+            if (this.OwnDevice != null && this.OwnDevice.Name.Equals(name))
+            {
+                return this.OwnDevice;
+            }
+            return this.Devices.Find(device => device.Name.Equals(name));
         }
 
         public void Route(IARoute route, Action<IARequest, IAResponse> action)
@@ -188,29 +189,6 @@ namespace IntAirAct
             this.client.SendRequest(request, device, action);
         }
 
-        public Promise<Try<IAResponse>> Send(IARequest request, IADevice device)
-        {
-            Try<IAResponse> result = null;
-            SendRequest(request, device, delegate(IAResponse response, Exception e)
-            {
-                result = MetaTry.Try<IAResponse>(() => {
-                    if (e != null)
-                    {
-                        throw new Exception(e.Message, e);
-                    }
-                    else 
-                    {
-                        return response;
-                    }
-                });
-            });
-            return ((Func<Try<IAResponse>>)delegate()
-            {
-                while (result == null) ;
-                return result;
-            }).AsPromise();
-        }
-
         #endregion
         #region Event Handling
 
@@ -219,7 +197,7 @@ namespace IntAirAct
             if (ownService)
             {
                 IADevice device = new IADevice(service.Name, service.Hostname, service.Port, this.SupportedRoutes);
-                this.OwnDevice = device.AsOption();
+                this.OwnDevice = device;
                 OnDeviceFound(device, true);
             }
             else
